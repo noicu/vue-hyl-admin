@@ -16,28 +16,13 @@ const dashboard: AppRouteModule = {
 
   routes: [
     {
-      path: '/welcome',
-      name: 'Welcome',
-      component: () => import('/@/views/dashboard/welcome/index.vue'),
-      meta: {
-        title: '首页',
-      },
-    },
-    {
       path: '/workbench',
       name: 'Workbench',
-      component: () => import('/@/views/dashboard/workbench/index.vue'),
+      component: () => import('/@/views/dashboard/index.vue'),
       meta: {
+        icon: 'ant-design:home-outlined',
         title: '工作台',
         affix: true,
-      },
-    },
-    {
-      path: '/analysis',
-      name: 'Analysis',
-      component: () => import('/@/views/dashboard/analysis/index.vue'),
-      meta: {
-        title: '分析页',
       },
     },
   ],
