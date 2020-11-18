@@ -14,7 +14,8 @@ export function createPageLoadingGuard(router: Router) {
       multiTabsSetting: { show } = {},
     } = appStore.getProjectConfig;
     if (!userStore.getTokenState) {
-      return true;
+      //建议: 不返回同样的值
+      return !userStore.getTokenState;
     }
     if (!openRouterTransition && openPageLoading) {
       appStore.commitPageLoadingState(true);

@@ -78,6 +78,8 @@
         showTableSetting: true,
       });
 
+      console.log(registerTable)
+
       return {
         registerTable,
       };

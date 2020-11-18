@@ -311,6 +311,8 @@
         wrapRef,
       });
 
+      console.log(tableAction)
+
       emit('register', tableAction);
       return {
         tableElRef,
