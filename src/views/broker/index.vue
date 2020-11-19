@@ -14,27 +14,26 @@
       dataIndex: 'id',
     },
     {
-      title: '姓名',
+      title: '名称',
       dataIndex: 'name',
       width: 120,
     },
     {
-      title: '地址',
-      dataIndex: 'address',
+      title: '摘要',
+      dataIndex: 'brief',
     },
     {
-      title: '编号',
-      dataIndex: 'no',
-      width: 80,
+      title: '服务码',
+      dataIndex: 'service_code',
     },
     {
-      title: '开始时间',
-      dataIndex: 'beginTime',
+      title: '更新时间',
+      dataIndex: 'update_at',
     },
     {
-      title: '结束时间',
+      title: '创建时间',
       sorter: true,
-      dataIndex: 'endTime',
+      dataIndex: 'created_at',
     },
   ];
 
@@ -42,27 +41,36 @@
     labelWidth: 100,
     schemas: [
       {
-        field: `field11`,
-        label: `字段33`,
-        component: 'Select',
-        defaultValue: '1',
-        componentProps: {
-          options: [
-            {
-              label: '选项1',
-              value: '1',
-            },
-            {
-              label: '选项2',
-              value: '2',
-            },
-          ],
-        },
-        colProps: {
-          xl: 12,
-          xxl: 8,
-        },
+      field: `name`,
+      label: `名称`,
+      component: 'Input',
+      colProps: {
+        xl: 12,
+        xxl: 8,
       },
+    }
+      // {
+      //   field: `name`,
+      //   label: `字段33`,
+      //   component: 'Select',
+      //   defaultValue: '1',
+      //   componentProps: {
+      //     options: [
+      //       {
+      //         label: '选项1',
+      //         value: '1',
+      //       },
+      //       {
+      //         label: '选项2',
+      //         value: '2',
+      //       },
+      //     ],
+      //   },
+      //   colProps: {
+      //     xl: 12,
+      //     xxl: 8,
+      //   },
+      // },
     ],
   };
 
@@ -72,13 +80,19 @@
       const [registerTable] = useTable({
         title: '运营商列表',
         api: brokerInfoList,
+        fetchSetting: {
+          pageField:'page_no',
+          sizeField:'rows_per_page',
+          listField:'data',
+          totalField:'rows_count',
+        },
         columns: Columns,
         useSearchForm: true,
         formConfig: FormItem,
         showTableSetting: true,
       });
 
-      console.log(registerTable)
+      console.log(registerTable, 81);
 
       return {
         registerTable,

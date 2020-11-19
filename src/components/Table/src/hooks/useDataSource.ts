@@ -97,9 +97,20 @@ export function useDataSource(
         pageParams[sizeField] = pageSize;
       }
 
+      // TODO 清理后值为空，key还在
+      // TODO getFieldsValue 无属性 需清除 where 的key
+      // TODO 编写新的解析模块
+      function getWhere() {
+        const where = getFieldsValue() || null;
+        return { where };
+      }
+
+      console.log(searchInfo, 1);
+      console.log(opt, 2);
+
       let params: any = {
         ...pageParams,
-        ...(useSearchForm ? getFieldsValue() : {}),
+        ...(useSearchForm ? getWhere() : {}),
         ...searchInfo,
         ...(opt ? opt.searchInfo : {}),
         ...(opt ? opt.sortInfo : {}),
@@ -110,6 +121,7 @@ export function useDataSource(
       }
 
       const res = await api(params);
+      console.log(res);
       let resultItems: any[] = get(res, listField);
       const resultTotal: number = get(res, totalField);
       if (afterFetch && isFunction(afterFetch)) {

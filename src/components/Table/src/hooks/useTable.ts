@@ -15,6 +15,7 @@ export function useTable(
   const loadedRef = ref<boolean | null>(false);
 
   function register(instance: TableActionType) {
+    console.log(instance,1);
     onUnmounted(() => {
       tableRef.value = null;
       loadedRef.value = null;
@@ -46,6 +47,8 @@ export function useTable(
       getTableInstance().redoHeight();
     },
     setLoading: (loading: boolean) => {
+
+
       getTableInstance().setLoading(loading);
     },
     getDataSource: () => {

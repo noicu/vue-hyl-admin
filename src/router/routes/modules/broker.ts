@@ -1,6 +1,7 @@
 import type { AppRouteModule } from '/@/router/types';
 
 import { PAGE_LAYOUT_COMPONENT } from '/@/router/constant';
+import { RoleEnum } from '/@/enums/roleEnum';
 
 const broker: AppRouteModule = {
   layout: {
@@ -22,6 +23,7 @@ const broker: AppRouteModule = {
       meta: {
         icon: 'ant-design:home-outlined',
         title: '运营商列表',
+        roles: [RoleEnum.SUPER],
       },
     },
   ],

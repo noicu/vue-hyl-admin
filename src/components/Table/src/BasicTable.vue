@@ -121,7 +121,9 @@
         const { title, titleHelpMessage, showSummary, showTableSetting, tableSetting } = unref(
           getMergeProps
         );
+        // 隐藏标题
         const hideTitle = !slots.tableTitle && !title && !slots.toolbar && !showTableSetting;
+        // 标题数据
         const titleData: any =
           hideTitle && !isString(title)
             ? {}
@@ -208,7 +210,7 @@
         }
         return (index || 0) % 2 === 1 ? 'basic-table-row__striped' : '';
       }
-
+      // 搜索变化
       function handleSearchInfoChange(info: any) {
         const { handleSearchInfoFn } = unref(getMergeProps);
         if (handleSearchInfoFn && isFunction(handleSearchInfoFn)) {
@@ -311,7 +313,7 @@
         wrapRef,
       });
 
-      console.log(tableAction)
+      console.log(tableAction,314)
 
       emit('register', tableAction);
       return {
