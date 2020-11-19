@@ -5,7 +5,7 @@
       <div class="login-form mx-6">
         <div class="login-form__content px-2 py-10">
           <header>
-            <img :src="logo" class="mr-4" />
+            <img :src="logo" class="mr-4" alt="" />
             <h1>{{ title }}</h1>
           </header>
 
@@ -93,7 +93,7 @@
       // const openLoginVerifyRef = computed(() => appStore.getProjectConfig.openLoginVerify);
 
       const formData = reactive({
-        account: 'vben',
+        account: '15299999999',
         password: '123456',
         // verify: undefined,
       });
@@ -122,14 +122,16 @@
           const data = await form.validate();
           const userInfo = await userStore.login(
             toRaw({
-              password: data.password,
-              username: data.account,
+              pwd: data.password,
+              user_code: data.account,
+              chart_key: '123',
+              chart_value: '456',
             })
           );
           if (userInfo) {
             notification.success({
               message: '登录成功',
-              description: `欢迎回来: ${userInfo.realName}`,
+              description: `欢迎回来: ${userInfo.nick}`,
               duration: 3,
             });
           }
@@ -155,6 +157,7 @@
     },
   });
 </script>
+
 <style lang="less" scoped>
   @import (reference) '../../../design/index.less';
 

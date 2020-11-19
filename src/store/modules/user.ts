@@ -1,9 +1,5 @@
 import { appStore } from './app';
-import type {
-  LoginParams,
-  GetUserInfoByUserIdModel,
-  GetUserInfoByUserIdParams,
-} from '/@/api/sys/model/userModel';
+import type { LoginParams, GetUserInfoByUserIdParams, UserInfo } from '/@/api/sys/model/userModel';
 
 import store from '/@/store/index';
 import { VuexModule, Module, getModule, Mutation, Action } from 'vuex-module-decorators';
@@ -22,9 +18,10 @@ import { tabStore } from './tab';
 import { loginApi, getUserInfoById } from '/@/api/sys/user';
 
 import { setLocal, getLocal, clearSession, clearLocal } from '/@/utils/helper/persistent';
+
 // import { FULL_PAGE_NOT_FOUND_ROUTE } from '/@/router/constant';
 
-export type UserInfo = Omit<GetUserInfoByUserIdModel, 'roles'>;
+// export type UserInfo = Omit<GetUserInfoByUserIdModel, 'roles'>;
 
 const NAME = 'user';
 hotModuleUnregisterModule(NAME);
@@ -83,40 +80,54 @@ class User extends VuexModule {
   }
 
   /**
-   * @description: login
+   * @description: 登录
    */
   @Action
-  async login(params: LoginParams, goHome = true): Promise<GetUserInfoByUserIdModel | null> {
+  async login(params: LoginParams, goHome = true): Promise<UserInfo | null> {
     try {
       const data = await loginApi(params);
-      const { token, userId } = data;
-      // get user info
-      const userInfo = await this.getUserInfoAction({ userId });
+      const { jwt, user_info, is_admin, is_broker_admin } = data;
 
-      // save token
-      this.commitTokenState(token);
+      let roleList = [];
 
-      // const name = FULL_PAGE_NOT_FOUND_ROUTE.name;
-      // name && router.removeRoute(name);
+      if (!is_admin && !is_broker_admin) {
+        const { createErrorModal } = useMessage();
+        createErrorModal({
+          content: '用户名或密码输入错误！',
+        });
+        return null;
+      }
+
+      if (is_admin) roleList.push('super');
+      if (is_broker_admin) roleList.push('broker');
+
+      // 保存 Token
+      this.commitTokenState(jwt);
+      // 保存 权限
+      this.commitRoleListState(roleList as RoleEnum[]);
+      // 保存 用户信息
+      this.commitUserInfoState(user_info);
+
       goHome &&
         (await router.push(PageEnum.BASE_HOME).then(() => {
           setTimeout(() => {
             appStore.commitPageLoadingState(false);
           }, 30);
         }));
-      return userInfo;
+      return user_info;
     } catch (error) {
       return null;
     }
   }
 
+  // ! 待修改
   @Action
   async getUserInfoAction({ userId }: GetUserInfoByUserIdParams) {
     const userInfo = await getUserInfoById({ userId });
-    const { role } = userInfo;
-    const roleList = [role.value] as RoleEnum[];
+    // const { role } = userInfo;
+    // const roleList = [role.value] as RoleEnum[];
     this.commitUserInfoState(userInfo);
-    this.commitRoleListState(roleList);
+    // this.commitRoleListState(roleList);
     return userInfo;
   }
 

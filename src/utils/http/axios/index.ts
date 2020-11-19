@@ -146,7 +146,7 @@ const transform: AxiosTransform = {
     const token = getToken();
     if (token) {
       // jwt token
-      config.headers.Authorization = token;
+      config.headers.Jwt = token;
     }
     return config;
   },

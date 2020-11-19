@@ -3,22 +3,22 @@ import {
   LoginParams,
   LoginResultModel,
   GetUserInfoByUserIdParams,
-  GetUserInfoByUserIdModel,
+  UserInfo,
 } from './model/userModel';
 
 enum Api {
-  Login = '/login',
-  GetUserInfoById = '/getUserInfoById',
-  GetPermCodeByUserId = '/getPermCodeByUserId',
+  LOGIN_URL = '/yi/user/Login', // 登录
+  GET_USER_INFO_BY_ID = '/getUserInfoById',
+  GET_PERM_CODE_BY_USER_ID = '/getPermCodeByUserId',
 }
 
 /**
- * @description: user login api
+ * @description: 用户登录接口
  */
 export function loginApi(params: LoginParams) {
   return defHttp.request<LoginResultModel>(
     {
-      url: Api.Login,
+      url: Api.LOGIN_URL,
       method: 'POST',
       params,
     },
@@ -32,8 +32,8 @@ export function loginApi(params: LoginParams) {
  * @description: getUserInfoById
  */
 export function getUserInfoById(params: GetUserInfoByUserIdParams) {
-  return defHttp.request<GetUserInfoByUserIdModel>({
-    url: Api.GetUserInfoById,
+  return defHttp.request<UserInfo>({
+    url: Api.GET_USER_INFO_BY_ID,
     method: 'GET',
     params,
   });
@@ -41,7 +41,7 @@ export function getUserInfoById(params: GetUserInfoByUserIdParams) {
 
 export function getPermCodeByUserId(params: GetUserInfoByUserIdParams) {
   return defHttp.request<string[]>({
-    url: Api.GetPermCodeByUserId,
+    url: Api.GET_PERM_CODE_BY_USER_ID,
     method: 'GET',
     params,
   });
