@@ -41,42 +41,44 @@ const transform: AxiosTransform = {
     }
     // 错误的时候返回
 
-    const { data } = res;
-    if (!data) {
+    const { data: result } = res;
+    if (!result) {
       // return '[HTTP] Request has no return value';
       return errorResult;
     }
-    //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    const { code, result, message } = data;
+    //  这里 code，data，msg为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
+    const { code, data, msg } = result;
 
     // 这里逻辑可以根据项目进行修改
-    const hasSuccess = data && Reflect.has(data, 'code') && code === ResultEnum.SUCCESS;
+    const hasSuccess = result && Reflect.has(result, 'code') && code === ResultEnum.SUCCESS;
+
     if (!hasSuccess) {
-      if (message) {
+      console.log(result, Reflect.has(result, 'code'), code === ResultEnum.SUCCESS);
+      if (msg) {
         // errorMessageMode=‘modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
         if (options.errorMessageMode === 'modal') {
-          createErrorModal({ title: '错误提示', content: message });
+          createErrorModal({ title: '错误提示', content: msg });
         } else {
-          createMessage.error(message);
+          createMessage.error(msg);
         }
       }
-      Promise.reject(new Error(message));
+      Promise.reject(new Error(msg));
       return errorResult;
     }
 
     // 接口请求成功，直接返回结果
     if (code === ResultEnum.SUCCESS) {
-      return result;
+      return data;
     }
     // 接口请求错误，统一提示错误信息
     if (code === ResultEnum.ERROR) {
-      if (message) {
-        createMessage.error(data.message);
-        Promise.reject(new Error(message));
-      } else {
-        const msg = '操作失败,系统异常!';
-        createMessage.error(msg);
+      if (msg) {
+        createMessage.error(result.msg);
         Promise.reject(new Error(msg));
+      } else {
+        const m = '操作失败,系统异常!';
+        createMessage.error(m);
+        Promise.reject(new Error(m));
       }
       return errorResult;
     }
@@ -90,6 +92,7 @@ const transform: AxiosTransform = {
       Promise.reject(new Error(timeoutMsg));
       return errorResult;
     }
+
     return errorResult;
   },
 

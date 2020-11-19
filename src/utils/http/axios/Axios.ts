@@ -6,7 +6,7 @@ import { isFunction } from '/@/utils/is';
 import { cloneDeep } from 'lodash-es';
 
 import type { RequestOptions, CreateAxiosOptions, Result, UploadFileParams } from './types';
-// import { ContentTypeEnum } from '/@/enums/httpEnum';
+
 import { errorResult } from './const';
 import { ContentTypeEnum } from '/@/enums/httpEnum';
 
@@ -16,6 +16,9 @@ export * from './axiosTransform';
  * @description:  axios模块
  */
 export class VAxios {
+  /**
+   * @description:  axios实例
+   */
   private axiosInstance: AxiosInstance;
   private readonly options: CreateAxiosOptions;
 
@@ -157,13 +160,14 @@ export class VAxios {
     if (beforeRequestHook && isFunction(beforeRequestHook)) {
       conf = beforeRequestHook(conf, opt);
     }
+
     return new Promise((resolve, reject) => {
       this.axiosInstance
         .request<any, AxiosResponse<Result>>(conf)
         .then((res: AxiosResponse<Result>) => {
           if (transformRequestData && isFunction(transformRequestData)) {
             const ret = transformRequestData(res, opt);
-            ret !== errorResult ? resolve(ret) : reject(new Error('request error!'));
+            ret !== errorResult ? resolve(ret) : reject(new Error('请求错误!'));
             return;
           }
           resolve((res as unknown) as Promise<T>);

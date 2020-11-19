@@ -17,15 +17,13 @@ const app = createApp(App);
 
 // ui
 setupAntd(app);
-// router
+// 路由
 setupRouter(app);
-// store
+// 状态
 setupStore(app);
 
-// Directives
 setupDirectives(app);
 
-// error-handle
 setupErrorHandle(app);
 
 router.isReady().then(() => {
@@ -37,10 +35,10 @@ if (isDevMode()) {
   window.__APP__ = app;
 }
 
-// If you do not need to use the mock service in the production environment, you can comment the code
+// 如不需要在生产环境中使用模拟服务，则可以注释代码
 if (isProdMode() && isUseMock()) {
   setupProdMockServer();
 }
 
-// Used to share app instances in other modules
+// 用于在其他模块中共享应用程序实例
 setApp(app);

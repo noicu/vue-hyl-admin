@@ -1,5 +1,6 @@
-import { ApiGetList, ApiResult, ApiResultList } from '../model/baseModel';
+import { ApiGetList, ApiResultList } from '../model/baseModel';
 import { defHttp } from '/@/utils/http/axios';
+import { Result } from '/@/utils/http/axios/types';
 
 enum Api {
   BROKER_ADMIN_LIST_URL       = '/yi/user/BrokerAdminList',        // 获取代理管理员列表
@@ -45,7 +46,7 @@ export interface BrokerApply extends BrokerInfo {
  * @description: 获取运营商列表
  */
 export function brokerInfoList(params: ApiGetList<BrokerInfo>) {
-  return defHttp.request<ApiResult<ApiResultList<BrokerInfo>>>({
+  return defHttp.request<Result<ApiResultList<BrokerInfo>>>({
     url   : Api.BROKER_INFO_PAGE_URL,
     method: 'POST',
     params,
@@ -56,7 +57,7 @@ export function brokerInfoList(params: ApiGetList<BrokerInfo>) {
  * @description: 获取申请运营商列表
  */
 export function brokerApplyList(params: ApiGetList<BrokerApply>) {
-  return defHttp.request<ApiResult<ApiResultList<BrokerApply>>>({
+  return defHttp.request<Result<ApiResultList<BrokerApply>>>({
     url   : Api.BROKER_APPLY_PAGE_URL,
     method: 'POST',
     params,

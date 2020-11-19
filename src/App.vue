@@ -23,18 +23,20 @@
     name: 'App',
     components: { ConfigProvider },
     setup() {
-      // Initialize application settings
+      // 初始化应用程序设置
       useInitAppConfigStore();
-      // Initialize breakpoint monitoring
+      // 初始化断点监控
       createBreakpointListen();
-      // Get system configuration
+      // 获取系统配置
       const { projectSetting } = useSetting();
-      // Get ConfigProvider configuration
+      // 获取提供者配置
       const { transformCellText } = useConfigProvider();
+
+      console.log(projectSetting,transformCellText)
 
       let lockOn = {};
       if (projectSetting.lockTime) {
-        // Monitor the mouse or keyboard time, used to recalculate the lock screen time
+        // 监控鼠标或键盘时间，用于重新计算锁定屏幕时间
         const { on } = useLockPage();
         lockOn = on;
       }

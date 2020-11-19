@@ -8,7 +8,7 @@ export function useTable(
   tableProps?: Partial<BasicTableProps>
 ): [(instance: TableActionType) => void, TableActionType] {
   if (!getCurrentInstance()) {
-    throw new Error('Please put useTable function in the setup function!');
+    throw new Error('请把 useTable 放入 setup 执行!');
   }
 
   const tableRef = ref<TableActionType | null>(null);

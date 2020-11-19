@@ -42,7 +42,7 @@ export function useThemeMode(mode: ThemeModeEnum) {
   };
 }
 
-// Initial project configuration
+// 初始项目配置
 export function useInitAppConfigStore() {
   let projCfg: ProjectConfig = getLocal(PROJ_CFG_KEY) as ProjectConfig;
   if (!projCfg) {
@@ -67,7 +67,7 @@ export function useInitAppConfigStore() {
   appStore.commitProjectConfigState(projCfg);
 }
 
-// Config Provider
+// 配置提供者
 export function useConfigProvider() {
   function transformCellText({ text }: { text: string }) {
     if (isNull(text) || isUnDef(text)) {

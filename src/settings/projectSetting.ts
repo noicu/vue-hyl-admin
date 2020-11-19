@@ -5,19 +5,19 @@ import { ContentEnum, PermissionModeEnum, RouterTransitionEnum } from '/@/enums/
 import { primaryColor } from '../../build/config/lessModifyVars';
 import { isProdMode } from '/@/utils/env';
 
-// ! You need to clear the browser cache after the change
+// ! 修改后，需要清理浏览器缓存
 const setting: ProjectConfig = {
-  // color
+  // 颜色
   // TODO 主题色
   themeColor: primaryColor,
 
-  // header bg color
+  // 顶栏主题
   headerBgColor: '#ffffff',
 
-  // sidebar menu bg color
+  // 侧边栏主题
   menuBgColor: '#273352',
 
-  // Whether to show the configuration button
+  // 是否显示配置按钮
   showSettingButton: true,
   // 权限模式
   permissionMode: PermissionModeEnum.ROLE,
@@ -25,14 +25,12 @@ const setting: ProjectConfig = {
   grayMode: false,
   // 色弱模式
   colorWeak: false,
-
   // 是否取消菜单,顶部,多标签页显示, 用于可能内嵌在别的系统内
   fullContent: false,
   // content mode
   contentMode: ContentEnum.FULL,
   // 是否显示logo
   showLogo: true,
-
   // 头部配置
   headerSetting: {
     fixed: true,
