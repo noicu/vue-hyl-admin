@@ -3,30 +3,30 @@ import type { AppRouteModule } from '/@/router/types';
 import { PAGE_LAYOUT_COMPONENT } from '/@/router/constant';
 import { RoleEnum } from '/@/enums/roleEnum';
 
-const broker: AppRouteModule = {
+const admin: AppRouteModule = {
   layout: {
-    path: '/broker',
-    name: 'Broker',
+    path: '/admin',
+    name: 'Admin',
     component: PAGE_LAYOUT_COMPONENT,
-    redirect: '/broker/brokerList',
+    redirect: '/admin/adminList',
     meta: {
       icon: 'ant-design:home-outlined',
-      title: '运营商',
+      title: '管理员',
     },
   },
 
   routes: [
     {
-      path: '/brokerList',
-      name: 'BrokerList',
-      component: () => import('/@/views/broker/index.vue'),
+      path: '/adminList',
+      name: 'AdminList',
+      component: () => import('/@/views/admin/index.vue'),
       meta: {
         icon: 'ant-design:home-outlined',
-        title: '运营商列表',
+        title: '管理员列表',
         roles: [RoleEnum.SUPER],
       },
     },
   ],
 };
 
-export default broker;
+export default admin;

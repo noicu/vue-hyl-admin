@@ -101,12 +101,21 @@ export function useDataSource(
       // TODO getFieldsValue 无属性 需清除 where 的key
       // TODO 编写新的解析模块
       function getWhere() {
-        const where = getFieldsValue() || null;
-        return { where };
+        const where = getFieldsValue();
+        let whereKeys = 0;
+        const w: {
+          [key: string]: any;
+        } = {};
+        Object.keys(where).forEach((item) => {
+          if (where[item] !== '' && where[item] !== undefined) {
+            whereKeys++;
+            w[item] = where[item];
+          }
+        });
+        return whereKeys ? { where: w } : {};
       }
 
-      console.log(searchInfo, 1);
-      console.log(opt, 2);
+      console.log(pageParams, searchInfo, opt);
 
       let params: any = {
         ...pageParams,
