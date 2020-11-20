@@ -67,12 +67,12 @@ export default defineComponent({
     function renderTabContent() {
       const { tabItem: { meta, params } = {} } = props;
       console.log(params);
+      // TODO: tab显示参数内容待定
       return (
         <div class={`multiple-tabs-content__content `} onContextmenu={handleContextMenu}>
           {renderIcon()}
           <span class="ml-1">{meta && meta.title}</span>
-          // TODO: tab显示参数内容待定
-          <span class="ml-1">{params && params.id}</span>
+          <span class="ml-1">{params && params.id} - 待定</span>
         </div>
       );
     }
