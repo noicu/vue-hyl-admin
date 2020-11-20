@@ -40,7 +40,9 @@
   import { createImgPreview } from '/@/components/Preview/index';
   import { productInfoList } from '/@/api/product/product';
   import { Tag } from 'ant-design-vue';
-import router from '/@/router';
+  import router from '/@/router';
+
+  // import { useGo } from '/@/hooks/web/usePage';
   const Columns: BasicColumn[] = [
     {
       title: 'UID',
@@ -89,13 +91,16 @@ import router from '/@/router';
   export default defineComponent({
     components: { BasicTable, Tag, TableAction },
     setup() {
+      // const go = useGo();
+
       function handleClick(img: string) {
         createImgPreview({ imageList: [img] });
       }
       function handleEdit(record: EditRecordRow) {
         // currentEditKeyRef.value = record.key;
-        router.push({ name: 'ProductDesc', params: { id:record.id_of_es } })
-        console.log(record.id_of_es)
+        router.push({ name: 'ProductDesc', params: { id: record.id_of_es } });
+        // go({ name: 'ProductDesc', params: { id: record.id_of_es } }, false);
+        console.log(record.id_of_es);
         record.editable = true;
       }
       function createActions(record: EditRecordRow): ActionItem[] {

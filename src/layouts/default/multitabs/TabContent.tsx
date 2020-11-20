@@ -65,11 +65,14 @@ export default defineComponent({
       return <Icon icon={icon} class="align-middle " style={{ marginBottom: '2px' }} />;
     }
     function renderTabContent() {
-      const { tabItem: { meta } = {} } = props;
+      const { tabItem: { meta, params } = {} } = props;
+      console.log(params);
       return (
         <div class={`multiple-tabs-content__content `} onContextmenu={handleContextMenu}>
           {renderIcon()}
           <span class="ml-1">{meta && meta.title}</span>
+          // TODO: tab显示参数内容待定
+          <span class="ml-1">{params && params.id}</span>
         </div>
       );
     }
