@@ -72,7 +72,7 @@ export default defineComponent({
         <div class={`multiple-tabs-content__content `} onContextmenu={handleContextMenu}>
           {renderIcon()}
           <span class="ml-1">{meta && meta.title}</span>
-          <span class="ml-1">{params && params.id} - 待定</span>
+          <span class="ml-1">{params && params.id + ' - 待定'}</span>
         </div>
       );
     }
