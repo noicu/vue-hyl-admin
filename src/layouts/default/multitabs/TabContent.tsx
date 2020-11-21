@@ -64,15 +64,21 @@ export default defineComponent({
       if (!icon || !unref(getProjectConfigRef).multiTabsSetting.showIcon) return null;
       return <Icon icon={icon} class="align-middle " style={{ marginBottom: '2px' }} />;
     }
-    function renderTabContent() {
-      const { tabItem: { meta, params } = {} } = props;
+    // TODO: tab显示参数内容待定
+    function renderSubtitle() {
+      const { tabItem: { params } = {} } = props;
       console.log(params);
-      // TODO: tab显示参数内容待定
+      if (params && params.id && params.id != undefined)
+        return <span class="ml-1">{params.id + ' - 待定'}</span>;
+    }
+    function renderTabContent() {
+      const { tabItem: { meta } = {} } = props;
+
       return (
         <div class={`multiple-tabs-content__content `} onContextmenu={handleContextMenu}>
           {renderIcon()}
           <span class="ml-1">{meta && meta.title}</span>
-          <span class="ml-1">{params && params.id + ' - 待定'}</span>
+          {renderSubtitle()}
         </div>
       );
     }

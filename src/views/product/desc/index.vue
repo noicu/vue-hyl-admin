@@ -1,96 +1,73 @@
 <template>
-  <div>
-    <a-page-header :title="'基础详情页'+ params.id" :ghost="false" />
+  <div class="high-form">
+    <a-page-header title="商品详情" sub-title="ID：BXT5aHUBUEDNcUc8voXi" :ghost="false">
 
-    <div class="m-5 desc-wrap">
-      <Description
-        size="middle"
-        title="退款申请"
-        :bordered="false"
-        :column="3"
-        :data="refundData"
-        :schema="refundSchema"
-      />
-      <a-divider />
-      <Description
-        size="middle"
-        title="用户信息"
-        :bordered="false"
-        :column="3"
-        :data="personData"
-        :schema="personSchema"
-      />
-      <a-divider />
+    </a-page-header>
 
-      <BasicTable @register="registerRefundTable" />
-      <a-divider />
-      <BasicTable @register="registerTimeTable" />
+    <div class="m-5">
+      <a-card title="基本信息" :bordered="false">
+        <BasicForm @register="register" layout="vertical" />
+      </a-card>
+      <a-card title="颜色管理" :bordered="false" class="mt-5">
+        <PersonTable ref="tableRef" />
+      </a-card>
+      <a-card title="图片管理" :bordered="false" class="mt-5">
+        <PersonTable ref="tableRef" />
+      </a-card>
     </div>
+
+    <app-footer>
+      <template #left>
+        最近更新时间：2020-10-27 15:34:31
+      </template>
+      <template #right>
+        <a-button type="primary" @click="submitAll">提交</a-button>
+      </template>
+    </app-footer>
   </div>
 </template>
 <script lang="ts">
-  import { computed, defineComponent, unref } from 'vue';
-  import { Description } from '/@/components/Description/index';
-  import { BasicTable, useTable } from '/@/components/Table';
+  import { BasicForm, useForm } from '/@/components/Form';
+  import { computed, defineComponent, ref, unref } from 'vue';
+  import PersonTable from './PersonTable.vue';
+  import { schemas } from './data';
   import { useRouter } from 'vue-router';
 
-  import {
-    refundSchema,
-    refundData,
-    personSchema,
-    personData,
-    refundTableSchema,
-    refundTimeTableSchema,
-    refundTableData,
-    refundTimeTableData,
-  } from './data';
   export default defineComponent({
-    components: { Description, BasicTable },
+    components: { BasicForm, PersonTable },
     setup() {
       const { currentRoute } = useRouter();
+      const tableRef = ref<{ getDataSource: () => any } | null>(null);
 
-      const [registerRefundTable] = useTable({
-        title: '退货商品',
-        dataSource: refundTableData,
-        columns: refundTableSchema,
-        pagination: false,
-        showIndexColumn: false,
-        scroll: { y: 300 },
-        showSummary: true,
-        summaryFunc: handleSummary,
+      const [register, { validate }] = useForm({
+        baseColProps: {
+          span: 6,
+        },
+        schemas: schemas,
+        showActionButtonGroup: false,
       });
 
-      const [registerTimeTable] = useTable({
-        title: '退货进度',
-        columns: refundTimeTableSchema,
-        pagination: false,
-        dataSource: refundTimeTableData,
-        showIndexColumn: false,
-        scroll: { y: 300 },
-      });
+      // async function getProduct(){
+      //   try {
 
-      function handleSummary(tableData: any[]) {
-        let totalT5 = 0;
-        let totalT6 = 0;
-        tableData.forEach((item) => {
-          totalT5 += item.t5;
-          totalT6 += item.t6;
-        });
-        return [
-          {
-            t1: '总计',
-            t5: totalT5,
-            t6: totalT6,
-          },
-        ];
+      //   } catch (error) {}
+      // }
+
+      async function submitAll() {
+        try {
+          if (tableRef.value) {
+            console.log('table data:', tableRef.value.getDataSource());
+          }
+
+          const [values, taskValues] = await Promise.all([validate()]);
+          console.log('form data:', values, taskValues);
+        } catch (error) {}
       }
+
       return {
-        registerRefundTable,
-        registerTimeTable,
-        refundSchema,
-        refundData,
-        personSchema,
-        personData,
+        register,
+        submitAll,
+        tableRef,
         params: computed(() => {
           return unref(currentRoute).params;
         }),
@@ -99,8 +76,7 @@
   });
 </script>
 <style lang="less" scoped>
-  .desc-wrap {
-    padding: 16px;
-    background: #fff;
+  .high-form {
+    padding-bottom: 48px;
   }
 </style>

@@ -40,12 +40,27 @@ export interface ProductInfo {
   visit_count: number;
 }
 
+export interface ProductID {
+  id_of_es: string;
+}
+
 /**
  * @description: 获取商品列表
  */
 export function productInfoList(params: ApiGetList<ProductInfo>) {
   return defHttp.request<ApiResultList<ProductInfo>>({
     url: Api.PRODUCT_PAGE,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 根据ID获取商品
+ */
+export function productInfo(params: ProductID) {
+  return defHttp.request<Result<ProductInfo>>({
+    url: Api.PRODUCT_GET,
     method: 'POST',
     params,
   });

@@ -98,7 +98,7 @@
       }
       function handleEdit(record: EditRecordRow) {
         // currentEditKeyRef.value = record.key;
-        router.push({ name: 'ProductDesc', params: { id: record.id_of_es } });
+        router.push({ name: 'ProductDesc', params: { id: record.id_of_es },meta:{a:1} });
         // go({ name: 'ProductDesc', params: { id: record.id_of_es } }, false);
         console.log(record.id_of_es);
         record.editable = true;
