@@ -23,19 +23,14 @@
 
   const columns: BasicColumn[] = [
     {
-      title: '成员姓名',
+      title: '名称',
       dataIndex: 'name',
       customRender: renderEditableRow({ dataIndex: 'name', placeholder: '请输入成员姓名' }),
     },
     {
-      title: '工号',
+      title: '价格',
       dataIndex: 'no',
       customRender: renderEditableRow({ dataIndex: 'no', placeholder: '请输入工号' }),
-    },
-    {
-      title: '所属部门',
-      dataIndex: 'dept',
-      customRender: renderEditableRow({ dataIndex: 'dept', placeholder: '请输入所属部门' }),
     },
   ];
 

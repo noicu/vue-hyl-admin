@@ -1,147 +1,79 @@
 import { FormSchema } from '/@/components/Form';
 
-const basicOptions: SelectOptions = [
+const productTypeOptions: SelectOptions = [
   {
-    label: '付晓晓',
-    value: '1',
+    label: '类型1',
+    value: 15,
   },
   {
-    label: '周毛毛',
-    value: '2',
-  },
-];
-
-const storeTypeOptions: SelectOptions = [
-  {
-    label: '私密',
-    value: '1',
-  },
-  {
-    label: '公开',
-    value: '2',
+    label: '类型2',
+    value: 16,
   },
 ];
 
 export const schemas: FormSchema[] = [
   {
-    field: 'f1',
+    field: 'name',
     component: 'Input',
     label: '名称',
     required: true,
   },
   {
-    field: 'f2',
+    field: 'remark',
     component: 'Input',
     label: '备注',
     required: true,
-    componentProps: {
-      addonBefore: 'http://',
-      addonAfter: 'com',
-    },
     colProps: {
       offset: 2,
     },
   },
   {
-    field: 'f3',
-    component: 'Select',
+    field: 'key_word',
+    component: 'Input',
     label: '关键词',
-    componentProps: {
-      options: basicOptions,
-    },
     required: true,
     colProps: {
       offset: 2,
     },
   },
   {
-    field: 'f4',
-    component: 'Select',
+    field: 'visit_count',
+    component: 'InputNumber',
     label: '访问次数',
-    componentProps: {
-      options: basicOptions,
-    },
-    required: true,
+    rules: [
+      {
+        type: 'number',
+        required: true,
+      },
+    ],
   },
   {
-    field: 'f5',
-    component: 'RangePicker',
+    field: 'cate_id',
+    component: 'Select',
     label: '类别',
-    required: true,
+    rules: [
+      {
+        type: 'number',
+        required: true,
+      },
+    ],
     colProps: {
       offset: 2,
     },
+    componentProps: {
+      options: productTypeOptions,
+    },
   },
   {
-    field: 'f6',
-    component: 'Select',
+    field: 'enabled',
+    component: 'Switch',
     label: '公开',
-    componentProps: {
-      options: storeTypeOptions,
-    },
-    required: true,
-    colProps: {
-      offset: 2,
-    },
-  },
-];
-export const taskSchemas: FormSchema[] = [
-  {
-    field: 't1',
-    component: 'Input',
-    label: '任务名',
-    required: true,
-  },
-  {
-    field: 't2',
-    component: 'Input',
-    label: '任务描述',
-    required: true,
-    colProps: {
-      offset: 2,
-    },
-  },
-  {
-    field: 't3',
-    component: 'Select',
-    label: '执行人',
-    componentProps: {
-      options: basicOptions,
-    },
-    required: true,
-    colProps: {
-      offset: 2,
-    },
-  },
-  {
-    field: 't4',
-    component: 'Select',
-    label: '责任人',
-    componentProps: {
-      options: basicOptions,
-    },
-    required: true,
-  },
-  {
-    field: 't5',
-    component: 'TimePicker',
-    label: '生效日期',
-    required: true,
-    componentProps: {
-      style: { width: '100%' },
-    },
-    colProps: {
-      offset: 2,
-    },
-  },
-  {
-    field: 't6',
-    component: 'Select',
-    label: '任务类型',
-    componentProps: {
-      options: storeTypeOptions,
-    },
-    required: true,
+    rules: [
+      {
+        type: 'boolean',
+        required: true,
+      },
+    ],
     colProps: {
       offset: 2,
     },
