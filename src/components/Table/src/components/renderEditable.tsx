@@ -219,7 +219,7 @@ export function renderEditableRow({
 }
 
 export type EditRecordRow<T = { [key: string]: any }> = {
-  editable: boolean;
-  onCancel: Fn;
-  onSubmit: Fn;
+  editable?: boolean;
+  onCancel?: Fn;
+  onSubmit?: Fn;
 } & T;
