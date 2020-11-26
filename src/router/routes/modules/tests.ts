@@ -19,7 +19,7 @@ const test: AppRouteModule = {
     {
       path: '/fractal',
       name: 'Fractal',
-      component: () => import('/@/views/tests/fractal.vue'),
+      component: () => import('/@/views/tests/index.vue'),
       meta: {
         title: '分形',
         roles: [RoleEnum.SUPER],
