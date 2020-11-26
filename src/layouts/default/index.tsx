@@ -18,9 +18,9 @@ import './index.less';
 export default defineComponent({
   name: 'DefaultLayout',
   setup() {
-    // ! Only register global components here
-    // ! Can reduce the size of the first screen code
-    // default layout It is loaded after login. So it won’t be packaged to the first screen
+    // ! 仅在此处注册全局组件
+    // ! 可以减小第一个屏幕代码的大小
+    // 默认布局登录后加载。 因此它不会打包到第一个屏幕
     registerGlobComp();
 
     const { getFullContent } = useFullContent();

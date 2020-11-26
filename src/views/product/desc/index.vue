@@ -20,20 +20,31 @@
         </a-form>
       </a-card>
       <a-card title="图片管理" :bordered="false" class="mt-5">
-        <CardGrid v-for="it in 10" class="img-input-card">
-          <img
-            :src="'http://p.0755yicai.com/63159644-5cbf-4345-8faa-a481be7b56a6?e=1919315383&token=gEpp05gnISRQeLZ6d5GCnAryXSFDnMfl_G5iG5p5:42Hi6nvqOEn3v3JAHaglMwusKoU='"
-            class="img"
-            @click="
-              handleClick(
-                'http://p.0755yicai.com/63159644-5cbf-4345-8faa-a481be7b56a6?e=1919315383&token=gEpp05gnISRQeLZ6d5GCnAryXSFDnMfl_G5iG5p5:42Hi6nvqOEn3v3JAHaglMwusKoU='
-              )
-            "
-            :alt="'img'"
-          />
-        </CardGrid>
+        <draggable
+          v-model="data2"
+          group="people"
+          @start="drag = true"
+          @end="drag = false"
+          item-key="id"
+        >
+          <template #item="{ element }">
+            <CardGrid class="img-input-card">
+              <img
+                :src="'http://p.0755yicai.com/63159644-5cbf-4345-8faa-a481be7b56a6?e=1919315383&token=gEpp05gnISRQeLZ6d5GCnAryXSFDnMfl_G5iG5p5:42Hi6nvqOEn3v3JAHaglMwusKoU='"
+                class="img"
+                @click="
+                  handleClick(
+                    'http://p.0755yicai.com/63159644-5cbf-4345-8faa-a481be7b56a6?e=1919315383&token=gEpp05gnISRQeLZ6d5GCnAryXSFDnMfl_G5iG5p5:42Hi6nvqOEn3v3JAHaglMwusKoU='
+                  )
+                "
+                :alt="'img'"
+              />
+            </CardGrid>
+          </template>
+        </draggable>
+
         <CardGrid class="img-input-card">
-          <Icon name="image">
+          <!-- <Icon :icon="postIcon" /> -->
         </CardGrid>
       </a-card>
     </div>
@@ -54,9 +65,10 @@
   import { schemas } from './data';
   import { useRouter } from 'vue-router';
   import { createImgPreview } from '/@/components/Preview/index';
+  import Draggable from 'vuedraggable';
 
   export default defineComponent({
-    components: { BasicForm, PersonTable, CardGrid: Card.Grid },
+    components: { BasicForm, PersonTable, CardGrid: Card.Grid, Draggable },
     setup() {
       const { currentRoute } = useRouter();
       const tableRef = ref<{ getDataSource: () => any } | null>(null);
@@ -144,12 +156,20 @@
         },
       ];
 
+      const data2 = [
+        { name: 'John', id: 1 },
+        { name: 'Joao', id: 2 },
+        { name: 'Jean', id: 3 },
+        { name: 'Gerard', id: 4 },
+      ];
+
       return {
         handleClick,
         register,
         submitAll,
         tableRef,
         data,
+        data2,
         params: computed(() => {
           return unref(currentRoute).params;
         }),
