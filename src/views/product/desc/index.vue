@@ -9,7 +9,7 @@
       </a-card>
       <a-card title="颜色管理" :bordered="false" class="mt-5">
         <a-form layout="vertical">
-          <CardGrid v-for="it in 10" class="color-input-card">
+          <CardGrid v-for="it in 3" class="color-input-card">
             <a-form-item label="名称" style="margin-bottom: 0">
               <a-input placeholder="" />
             </a-form-item>

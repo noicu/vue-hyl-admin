@@ -21,7 +21,7 @@ const test: AppRouteModule = {
       name: 'Fractal',
       component: () => import('/@/views/tests/index.vue'),
       meta: {
-        title: '分形',
+        title: '测试',
         roles: [RoleEnum.SUPER],
       },
     },

@@ -45,9 +45,9 @@
   // import { useGo } from '/@/hooks/web/usePage';
   const Columns: BasicColumn[] = [
     {
-      title: 'UID',
+      title: 'ID',
       width: 150,
-      dataIndex: 'uid',
+      dataIndex: 'id_of_es',
     },
     {
       title: '名称',
