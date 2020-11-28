@@ -1,40 +1,37 @@
 import type { PropType } from 'vue';
 import type { Axis, ContextMenuItem } from './types';
 export const props = {
-  width: {
-    type: Number as PropType<number>,
-    default: 180,
+  show: {
+    type: Boolean,
+    default: false,
   },
-  customEvent: {
-    type: Object as PropType<Event>,
-    default: null,
-  },
-  // 样式
-  styles: {
-    type: Object as PropType<any>,
-    default: null,
-  },
-  showIcon: {
-    // 是否显示icon
-    type: Boolean as PropType<boolean>,
-    default: true,
+  onFinished: {
+    type: Function,
+    default: () => {},
   },
   axis: {
-    // 鼠标右键点击的位置
+    // 位置
     type: Object as PropType<Axis>,
     default() {
       return { x: 0, y: 0 };
     },
   },
-  items: {
-    // 最重要的列表，没有的话直接不显示
-    type: Array as PropType<ContextMenuItem[]>,
+  schemas: {
+    // 列表
+    type: Array as PropType<Array<any>>,
     default() {
       return [];
     },
   },
-  resolve: {
-    type: Function as PropType<any>,
-    default: null,
+  val: {
+    type: Object as PropType<RegExpMatchArray>,
+    default: () => [],
+  },
+  data: {
+    // 列表
+    type: Array,
+    default() {
+      return [];
+    },
   },
 };

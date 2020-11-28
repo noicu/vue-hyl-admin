@@ -25,6 +25,7 @@
               placeholder="请输入文字"
               spellcheck="false"
               autocapitalize="none"
+              tabindex="0"
               @input="handleInput"
               @compositionstart="handleStart"
               @compositionend="handleEnd"
@@ -46,7 +47,7 @@
   /// https://webix.com/
   /// https://console.cloud.google.com/iam-admin/iam?project=trans-crawler-232514
   /// https://blog.csdn.net/michael2012zhao/article/details/1485650
-  import { createVNode, defineComponent, ref, render, watch } from 'vue';
+  import { computed, createVNode, defineComponent, ref, render, watch } from 'vue';
   // import { Menu, Divider } from 'ant-design-vue';
   import Fmenu from './fmenu';
   // interface Filter<T> {
@@ -86,17 +87,24 @@
       const innerText = ref('');
       const filterInput = ref<Nullable<HTMLElement>>(null);
       const focus = ref<boolean>(false);
-      watch(innerText, (v) => {
-        let text = v.match(/([\u4e00-\u9fa5_a-zA-Z_0-9\\-]*)(:|：*)(=|!|<=|>=|<|>|.*)([0-9]*)/);
-        if (text && text[1]) {
-          const k = text[1];
-          console.log(filtersConfig.map((item) => item.key).indexOf(k));
-          console.log(filtersConfig.map((item) => item.key).map((item) => item.indexOf(k)));
-          console.log(filtersConfig.map((item) => item.key_text).indexOf(k));
-          console.log(filtersConfig.map((item) => item.key_text.indexOf(k)));
-        }
-        console.log(text);
+
+      watch(innerText, () => {
+        // let text = v.match(/([\u4e00-\u9fa5_a-zA-Z_0-9\\-]*)(:|：*)(=|!|<=|>=|<|>|.*)([0-9]*)/);
+        // if (text && text[1]) {
+        //   const k = text[1];
+        //   console.log(filtersConfig.map((item) => item.key).indexOf(k));
+        //   console.log(filtersConfig.map((item) => item.key).map((item) => item.indexOf(k)));
+        //   console.log(filtersConfig.map((item) => item.key_text).indexOf(k));
+        //   console.log(filtersConfig.map((item) => item.key_text.indexOf(k)));
+        // }
+        // console.log(text);
+        createOptionsMenu();
       });
+
+      const textArray = computed(() =>
+        innerText.value.match(/([\u4e00-\u9fa5_a-zA-Z_0-9\\-]*)(:|：*)(=|!|<=|>=|<|>|.*)([0-9]*)/)
+      );
+
       function handleInput(event: any) {
         innerText.value = event.target.innerText;
       }
@@ -115,60 +123,65 @@
       }
       function handleFocus() {
         focus.value = true;
-        console.log('获得焦点');
+        console.log('获得焦点', filterInput);
       }
-      function onFilter() {
-        console.log();
-        filterInput.value?.focus();
-        console.log(filterInput);
-        console.log(getParentTop(filterInput.value));
-        console.log(getParentLeft(filterInput.value));
 
-        let overlay = document.getElementsByClassName('overlay-container');
+      watch(focus, () => createOptionsMenu());
+
+      function createOptionsMenu() {
+        // console.log(textArray.value)
         const vm = createVNode(Fmenu, {
           axis: { x: getParentLeft(filterInput.value), y: getParentTop(filterInput.value) + 46 },
+          show: focus.value,
+          onFinished: () => {
+            filterInput.value?.blur();
+            if (textArray.value && textArray.value[3] == '') filterInput.value?.focus();
+          },
+          val: textArray.value,
+          schemas: filtersConfig, // 可用查询的key 及配置
+          data: [], // 当前表格数据，用于分析推荐值
           items: [
             {
-              label: 'New',
+              label: innerText.value,
               icon: 'ant-design:plus-outlined',
-              children: [
-                {
-                  label: 'New1-1',
-                  icon: 'ant-design:plus-outlined',
-                  divider: true,
-                  children: [
-                    {
-                      label: 'New1-1-1',
-                    },
-                    {
-                      label: 'New1-2-1',
-                      disabled: true,
-                    },
-                  ],
-                },
-                {
-                  label: 'New1-2',
-                  icon: 'ant-design:plus-outlined',
-                },
-              ],
             },
           ],
         });
-
         render(vm, document.body);
+      }
 
-        if (!overlay.length) {
-          var iframe = document.createElement('div');
-          iframe.className = 'overlay-container';
-          document.body.appendChild(iframe);
-        } else {
-          const ov = overlay[0];
-          ov.innerHTML += '<div>123123</div>';
+      function onFilter() {
+        const el = filterInput.value as any;
+        getC(el);
+        // const value = el.innerText;
+        // el.focus();
+        // el.innerText = '';
+        // el.innerText = value;
+        // document.body.createTextRange();
+        // el.selectionStart = el.selectionEnd = value.length;
 
-        }
+        console.log(document.getElementsByClassName('input')[0]);
+        console.log(filterInput);
+        // console.log(getParentTop(filterInput.value));
+        // console.log(getParentLeft(filterInput.value));
 
         // filterInput.value.focus();
       }
+      // div contenteditable 重新编辑时focus光标定位到前面问题解决
+      function getC(el: any) {
+        el.focus();
+        var range = document.createRange();
+        range.selectNodeContents(el);
+        range.collapse(false);
+        var sel = window.getSelection();
+        //判断光标位置，如不需要可删除
+        if (sel?.anchorOffset != 0) {
+          return;
+        }
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+
       function getParentTop(e: any) {
         var offset = e.offsetTop;
         if (e.offsetParent != null) {
@@ -199,7 +212,7 @@
 </script>
 <style lang="less" scoped>
   .input {
-    width: 200px;
+    // width: 200px;
     // height: 24px;
     padding: 5px 8px;
     font-size: 14px;
