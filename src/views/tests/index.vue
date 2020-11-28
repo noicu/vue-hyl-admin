@@ -167,6 +167,9 @@
 
         // filterInput.value.focus();
       }
+      function handlerUp(e: any) {
+        e.preventDefault();
+      }
       // div contenteditable 重新编辑时focus光标定位到前面问题解决
       function getC(el: any) {
         el.focus();
@@ -199,6 +202,7 @@
       return {
         filterInput,
         onFilter,
+        handlerUp,
         filtersConfig,
         innerText,
         handleInput,
