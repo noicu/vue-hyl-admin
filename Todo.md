@@ -18,23 +18,24 @@
 - 审批 BROKER_APPLY_PAGE_URL
 
 处理审批
-  - 运营商审批
-  - 大师审批
+
+- 运营商审批
+- 大师审批
+
+关键词 key_word 名称 name 备注 remark 访问次数 visit_count
+
+最近更新时间 last_updated 类别 cate_id cate_name 是否可用 enabled
+
+图片管理 地址 path 排序 sort_no
+
+颜色分类 名称 code 价格 price
 
 
-关键词 key_word
-名称 name
-备注 remark
-访问次数 visit_count
-
-最近更新时间 last_updated
-类别 cate_id cate_name
-是否可用 enabled
-
-图片管理
-  地址 path
-  排序 sort_no
-
-颜色分类
-  名称 code
-  价格 price
+{
+  key:'key',
+  key_text:'名称',
+  val:'value',
+  val_text:'值'
+}
+展示 ['名称:值','名称',':','值']
+处理 ['key:value','key',':','value']

@@ -64,3 +64,31 @@ export function unique<T = any>(arr: T[], key: string): T[] {
 export function es6Unique<T>(arr: T[]): T[] {
   return Array.from(new Set(arr));
 }
+
+/**
+ * @description: 查询字符串出现的位置
+ */
+export function findPos(
+  str: string,
+  search: string,
+  index: number = 0,
+  arr: Array<[number, number]> = []
+): Array<[number, number]> {
+  index = str.indexOf(search, index);
+  if (index !== -1) {
+    arr.push([index, index + search.length]);
+    return findPos(str, search, index + 1, arr);
+  }
+  console.log(index, arr);
+  return arr;
+}
+
+export function generateMixed(n: number) {
+  var chars = ['!', '@', '#', '$', '%', '^', '&', '(', ')'];
+  var res = '';
+  for (var i = 0; i < n; i++) {
+    var id = Math.ceil(Math.random() * chars.length - 1);
+    res += chars[id];
+  }
+  return res;
+}

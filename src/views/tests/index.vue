@@ -47,8 +47,8 @@
   /// https://webix.com/
   /// https://console.cloud.google.com/iam-admin/iam?project=trans-crawler-232514
   /// https://blog.csdn.net/michael2012zhao/article/details/1485650
-  import { computed, createVNode, defineComponent, ref, render, watch } from 'vue';
-  // import { Menu, Divider } from 'ant-design-vue';
+  import { computed, createVNode, defineComponent, ref, render, unref, watch } from 'vue';
+
   import Fmenu from './fmenu';
   // interface Filter<T> {
   //   key: string;
@@ -102,7 +102,7 @@
       });
 
       const textArray = computed(() =>
-        innerText.value.match(/([\u4e00-\u9fa5_a-zA-Z_0-9\\-]*)(:|：*)(=|!|<=|>=|<|>|.*)([0-9]*)/)
+        innerText.value.match(/([\u4e00-\u9fa5_a-zA-Z_0-9\\-]*)(:|：|!|<.|>.|=|.*)(.*)/)
       );
 
       function handleInput(event: any) {
@@ -133,13 +133,32 @@
         const vm = createVNode(Fmenu, {
           axis: { x: getParentLeft(filterInput.value), y: getParentTop(filterInput.value) + 46 },
           show: focus.value,
-          onFinished: () => {
+          onFinished: (e: any) => {
+            let el = unref(filterInput.value) as any;
+            if (e) el.innerText += e.value + ':';
+
+            // 修改div.input的innerText不会触发input事件
+            // 更新记录的字符串
+            innerText.value = el.innerText;
+            getC(el);
+
+            console.log(textArray);
+
             filterInput.value?.blur();
             if (textArray.value && textArray.value[3] == '') filterInput.value?.focus();
           },
           val: textArray.value,
           schemas: filtersConfig, // 可用查询的key 及配置
-          data: [], // 当前表格数据，用于分析推荐值
+          data: [
+            {
+              key: '123123',
+              key1: 'value1',
+            },
+            {
+              key: '56789',
+              key1: 'value2',
+            },
+          ], // 当前表格数据，用于分析推荐值
           items: [
             {
               label: innerText.value,

@@ -29,7 +29,7 @@ export const props = {
   },
   data: {
     // 列表
-    type: Array,
+    type: Array as PropType<Array<any>>,
     default() {
       return [];
     },

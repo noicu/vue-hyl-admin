@@ -11,9 +11,32 @@ import {
 } from 'vue';
 
 import { props } from './props';
+import { Divider } from 'ant-design-vue';
 
 import './index.less';
+import { findPos } from '/@/utils';
 const prefixCls = 'filter-menu';
+
+interface FilterDataRT {
+  key: string;
+  key_show: string;
+  linq: '>' | '<' | '>=' | '<=' | '=';
+  value: string;
+  value_show: string;
+}
+enum FMIT {
+  title,
+  key,
+  value,
+  operator,
+}
+
+interface FilterMenuItem {
+  label: string;
+  type: FMIT;
+  pos?: Array<string | JSX.Element>;
+}
+
 export default defineComponent({
   name: 'ContextMenu',
   props,
@@ -39,18 +62,54 @@ export default defineComponent({
     }
 
     const items = computed(() => {
-      const { schemas, val } = props;
+      const { schemas, val, data } = unref(props);
       console.log(val);
-      let its: Array<any> = [];
+      let its: Array<FilterMenuItem> = [];
       if (val[1] === '') {
         its = [
           {
-            label: '属性',
-            type: 'title',
+            label: '运算符',
+            type: FMIT.title,
           },
-          ...schemas.map((it) => ({ label: it.key_text })),
+          {
+            label: '或',
+            type: FMIT.operator,
+          },
+          {
+            label: '属性',
+            type: FMIT.title,
+          },
+          ...schemas.map((it) => ({ label: it.key_text, type: FMIT.key, value: it.key })),
         ];
       }
+      if (val[1] != '' && val[2] == '') {
+        its = [
+          {
+            label: '属性',
+            type: FMIT.title,
+          },
+          ...schemas
+            .filter((it) => it.key_text.indexOf(val[1]) !== -1)
+            .map((it) => ({
+              label: it.key_text,
+              type: FMIT.key,
+              value: it.key,
+              pos: getPos(it.key_text, val[1]),
+            })),
+        ];
+      }
+      if (val[2] != '') {
+        its = [
+          {
+            label: '属性',
+            type: FMIT.title,
+          },
+          ...data
+            .filter((it) => it[val[1]] && it[val[1]] != '')
+            .map((it, i) => ({ label: it[val[1]], type: FMIT.key, value: it[val[1]] })),
+        ];
+      }
+      console.log(its);
       return its;
     });
 
@@ -66,35 +125,76 @@ export default defineComponent({
       };
     });
 
-    function handlerClick(el: any) {
-      el.preventDefault();
+    function handlerItemClick(e: MouseEvent) {
+      e.preventDefault();
     }
 
-    function handlerUp() {
-      props.onFinished();
+    function handlerItemUp(it: any) {
+      console.log('handlerItemUp');
+      props.onFinished(it);
+    }
+
+    // 消除点击失去焦点事件
+    function handlerStoppage(e: MouseEvent) {
+      e.preventDefault();
     }
 
     function renderMenuItem() {
-      return items.value.map((item, index) => {
-        if (item.type == 'title') {
-          return <li class="filter-menu-title">{item.label}</li>;
+      let itemss = unref(items);
+      console.log(itemss);
+      return itemss.map((item, index) => {
+        if (!item) return null;
+        switch (item.type) {
+          case FMIT.title:
+            return (
+              <li class="filter-menu-title" onMousedown={handlerStoppage}>
+                {item.label}
+                <Divider />
+              </li>
+            );
+          case FMIT.operator:
+            return (
+              <li class="filter-menu-operator">
+                {item.label}
+                <Divider />
+              </li>
+            );
+          case FMIT.key:
+            return (
+              <li
+                class="filter-menu-item"
+                onMousedown={handlerItemClick}
+                onMouseup={(e: MouseEvent) => handlerItemUp(item)}
+              >
+                {item.pos ? item.pos : item.label}
+              </li>
+            );
         }
-        return (
-          <li class="filter-menu-item" onMousedown={handlerClick} onMouseup={handlerUp}>
-            {item.label}
-          </li>
-        );
       });
+    }
+
+    function getPos(source: string, str: string) {
+      let ff = '-^`*-';
+      return source
+        .replace(new RegExp(str, 'g'), ff + str + ff)
+        .split(ff)
+        .map((it) => (it == str ? <span class="filter-menu-high">{str}</span> : it));
     }
 
     return () => {
       const { show } = props;
-      if (!items.value.length) return null;
+      console.log(items);
+      if (!items.value.filter((it) => it.type !== FMIT.title).length) return null;
       return !show ? null : (
         <div class={[prefixCls]} ref={wrapRef} style={unref(getStyle)}>
           {renderMenuItem()}
         </div>
       );
+      // return (
+      //   <div class={[prefixCls]} ref={wrapRef} style={unref(getStyle)}>
+      //     {renderMenuItem()}
+      //   </div>
+      // );
     };
   },
 });

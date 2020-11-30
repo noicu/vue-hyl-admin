@@ -18,10 +18,10 @@ export interface WObj {
 }
 
 export interface WhereExpression {
-  $gt?: number | string | Date;
-  $gte?: number | string | Date;
-  $lt?: number | string | Date;
-  $lte?: number | string | Date;
+  $gt?: number | string | Date; // 大于
+  $gte?: number | string | Date; // 大于等于
+  $lt?: number | string | Date; // 小于
+  $lte?: number | string | Date; // 小于等于
   $in?: any;
 }
 
