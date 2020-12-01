@@ -1,13 +1,9 @@
 import type { PropType } from 'vue';
-import type { Axis, ContextMenuItem } from './types';
+import type { Axis, ContextMenuItem, FilterMenuItem, FiltersConfig } from './types';
 export const props = {
   show: {
     type: Boolean,
     default: false,
-  },
-  onFinished: {
-    type: Function,
-    default: () => {},
   },
   axis: {
     // 位置
@@ -18,7 +14,7 @@ export const props = {
   },
   schemas: {
     // 列表
-    type: Array as PropType<Array<any>>,
+    type: Array as PropType<FiltersConfig[]>,
     default() {
       return [];
     },

@@ -6,11 +6,11 @@
     </div>
     <div class="filter-edit-area" @click="onFilter">
       <div class="filter-chip-list">
-        <div class="filter-chip-content" v-for="it in 10">
+        <div class="filter-chip-content" v-for="it in filterData">
           <div class="filter-chip-text-content">
-            <div class="filter-chip-text-key">kay</div>
-            <div class="filter-chip-text-linq">:</div>
-            <div class="filter-chip-text-value">123</div>
+            <div class="filter-chip-text-key">{{it.key_show}}</div>
+            <div class="filter-chip-text-linq">{{it.linq}}</div>
+            <div class="filter-chip-text-value">{{it.value_show}}</div>
           </div>
           <div class="filter-chip-close">
             <Icon icon="ant-design:close-outlined" />
@@ -50,11 +50,13 @@
   import { computed, createVNode, defineComponent, ref, render, unref, watch } from 'vue';
 
   import Fmenu from './fmenu';
+  import { FilterDataRT, FilterMenuItem, FiltersConfig, FMIT } from './types';
+  import { findKey } from './utils';
   // interface Filter<T> {
   //   key: string;
   //   value: T;
   // }
-  const filtersConfig = [
+  const filtersConfig: FiltersConfig[] = [
     {
       key: 'key',
       key_text: 'k键值key',
@@ -87,23 +89,25 @@
       const innerText = ref('');
       const filterInput = ref<Nullable<HTMLElement>>(null);
       const focus = ref<boolean>(false);
+      const filterData = ref<FilterDataRT[]>([]);
 
       watch(innerText, () => {
         // let text = v.match(/([\u4e00-\u9fa5_a-zA-Z_0-9\\-]*)(:|：*)(=|!|<=|>=|<|>|.*)([0-9]*)/);
-        // if (text && text[1]) {
-        //   const k = text[1];
-        //   console.log(filtersConfig.map((item) => item.key).indexOf(k));
-        //   console.log(filtersConfig.map((item) => item.key).map((item) => item.indexOf(k)));
-        //   console.log(filtersConfig.map((item) => item.key_text).indexOf(k));
-        //   console.log(filtersConfig.map((item) => item.key_text.indexOf(k)));
-        // }
-        // console.log(text);
         createOptionsMenu();
       });
 
-      const textArray = computed(() =>
-        innerText.value.match(/([\u4e00-\u9fa5_a-zA-Z_0-9\\-]*)(:|：|!|<.|>.|=|.*)(.*)/)
-      );
+      const textArray = computed(() => {
+        let str = unref(innerText).match(/([\u4e00-\u9fa5_a-zA-Z_0-9\\-]*)(:|：|!|<.|>.|=|.*)(.*)/);
+        if (!str) str = ['', '', '', ''];
+        return str;
+      });
+
+      function addFilterData(fd: FilterDataRT) {
+        let el = unref(filterInput.value) as any;
+        filterData.value.push(fd);
+        el.innerText = '';
+        innerText.value = el.innerText;
+      }
 
       function handleInput(event: any) {
         innerText.value = event.target.innerText;
@@ -121,6 +125,7 @@
         focus.value = false;
         console.log('失去焦点');
       }
+
       function handleFocus() {
         focus.value = true;
         console.log('获得焦点', filterInput);
@@ -129,24 +134,10 @@
       watch(focus, () => createOptionsMenu());
 
       function createOptionsMenu() {
-        // console.log(textArray.value)
         const vm = createVNode(Fmenu, {
-          axis: { x: getParentLeft(filterInput.value), y: getParentTop(filterInput.value) + 46 },
+          axis: { x: getParentLeft(filterInput.value), y: getParentTop(filterInput.value) + 34 },
           show: focus.value,
-          onFinished: (e: any) => {
-            let el = unref(filterInput.value) as any;
-            if (e) el.innerText += e.value + ':';
-
-            // 修改div.input的innerText不会触发input事件
-            // 更新记录的字符串
-            innerText.value = el.innerText;
-            getC(el);
-
-            console.log(textArray);
-
-            filterInput.value?.blur();
-            if (textArray.value && textArray.value[3] == '') filterInput.value?.focus();
-          },
+          onFinished,
           val: textArray.value,
           schemas: filtersConfig, // 可用查询的key 及配置
           data: [
@@ -169,22 +160,48 @@
         render(vm, document.body);
       }
 
+      function onFinished(e: FilterMenuItem) {
+        let el = unref(filterInput.value) as any;
+
+        if (e.type != FMIT.value && e.type != FMIT.operator) {
+          switch (e.type) {
+            case FMIT.key:
+              el.innerText = e.label + ':';
+              break;
+            default:
+              el.innerText += e.label;
+              break;
+          }
+          // 修改div.input的innerText不会触发input事件
+          // 更新记录的字符串
+          innerText.value = el.innerText;
+          getC(el);
+          return;
+        }
+        switch (e.type) {
+          case FMIT.value:
+            let ta = unref(textArray);
+            let a = el.innerText.split(ta[2]);
+            a[1] = e.label;
+            el.innerText = a.join(ta[2]);
+            let kbj = findKey(filtersConfig, ta[1])
+            addFilterData({
+              key: kbj.key,
+              key_show: ta[1],
+              linq: ta[2],
+              value: e.label,
+              value_show: e.label,
+            });
+            break;
+          case FMIT.operator:
+            break;
+        }
+        filterInput.value?.blur();
+      }
+
       function onFilter() {
         const el = filterInput.value as any;
         getC(el);
-        // const value = el.innerText;
-        // el.focus();
-        // el.innerText = '';
-        // el.innerText = value;
-        // document.body.createTextRange();
-        // el.selectionStart = el.selectionEnd = value.length;
-
-        console.log(document.getElementsByClassName('input')[0]);
-        console.log(filterInput);
-        // console.log(getParentTop(filterInput.value));
-        // console.log(getParentLeft(filterInput.value));
-
-        // filterInput.value.focus();
       }
       function handlerUp(e: any) {
         e.preventDefault();
@@ -220,6 +237,7 @@
       }
       return {
         filterInput,
+        filterData,
         onFilter,
         handlerUp,
         filtersConfig,

@@ -28,3 +28,37 @@ export type Props = {
   width?: number;
   showIcon?: boolean;
 };
+
+export interface FilterDataRT {
+  key: string;
+  key_show: string;
+  linq: string; //'>' | '<' | '>=' | '<=' | '='
+  value: string;
+  value_show: string;
+}
+
+export enum FMIT {
+  title,
+  key,
+  value,
+  operator,
+}
+
+export interface FilterMenuItem {
+  label: string;
+  type: FMIT;
+  pos?: Array<string | JSX.Element>;
+}
+
+export interface FiltersConfig {
+  key: string;
+  key_text: string;
+  type: string;
+  linq: boolean;
+  option: FiltersConfigOption[];
+}
+
+export interface FiltersConfigOption {
+  label: string;
+  value: any;
+}

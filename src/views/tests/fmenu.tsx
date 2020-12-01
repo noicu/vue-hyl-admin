@@ -1,72 +1,29 @@
-import {
-  defineComponent,
-  nextTick,
-  onMounted,
-  reactive,
-  computed,
-  ref,
-  unref,
-  watch,
-  onUnmounted,
-} from 'vue';
+import { defineComponent, computed, ref, unref, onUnmounted } from 'vue';
 
 import { props } from './props';
 import { Divider } from 'ant-design-vue';
 
 import './index.less';
-import { findPos } from '/@/utils';
+import { FilterMenuItem, FiltersConfig, FMIT } from './types';
+import { findKey } from './utils';
 const prefixCls = 'filter-menu';
-
-interface FilterDataRT {
-  key: string;
-  key_show: string;
-  linq: '>' | '<' | '>=' | '<=' | '=';
-  value: string;
-  value_show: string;
-}
-enum FMIT {
-  title,
-  key,
-  value,
-  operator,
-}
-
-interface FilterMenuItem {
-  label: string;
-  type: FMIT;
-  pos?: Array<string | JSX.Element>;
-}
 
 export default defineComponent({
   name: 'ContextMenu',
+  emits: ['finished'],
   props,
-  setup(props) {
+  setup(props, { emit }) {
     const wrapRef = ref<Nullable<HTMLDivElement>>(null);
-    // const items = ref<Array<any>>([]);
 
     onUnmounted(() => {
       const el = unref(wrapRef);
       el && document.body.removeChild(el);
     });
 
-    function analysis() {
-      // const { schemas, val } = props;
-      // console.log(val);
-      // schemas.forEach((it) => {
-      //   items.value.push({
-      //     label: it.key_text,
-      //     value: '',
-      //   });
-      //   console.log(it);
-      // });
-    }
-
     const items = computed(() => {
-      const { schemas, val, data } = unref(props);
-      console.log(val);
-      let its: Array<FilterMenuItem> = [];
+      const { schemas, val } = unref(props);
       if (val[1] === '') {
-        its = [
+        return [
           {
             label: '运算符',
             type: FMIT.title,
@@ -79,11 +36,11 @@ export default defineComponent({
             label: '属性',
             type: FMIT.title,
           },
-          ...schemas.map((it) => ({ label: it.key_text, type: FMIT.key, value: it.key })),
-        ];
+          ...schemas.map((it) => ({ label: it.key_text, type: FMIT.key })),
+        ] as FilterMenuItem[];
       }
       if (val[1] != '' && val[2] == '') {
-        its = [
+        return [
           {
             label: '属性',
             type: FMIT.title,
@@ -93,33 +50,49 @@ export default defineComponent({
             .map((it) => ({
               label: it.key_text,
               type: FMIT.key,
-              value: it.key,
               pos: getPos(it.key_text, val[1]),
             })),
-        ];
+        ] as FilterMenuItem[];
       }
       if (val[2] != '') {
-        its = [
+        return [
           {
             label: '属性',
             type: FMIT.title,
           },
-          ...data
-            .filter((it) => it[val[1]] && it[val[1]] != '')
-            .map((it, i) => ({ label: it[val[1]], type: FMIT.key, value: it[val[1]] })),
-        ];
+          ...searchValue(),
+        ] as FilterMenuItem[];
       }
-      console.log(its);
-      return its;
+      return [];
     });
 
+    function searchValue(): FilterMenuItem[] {
+      const { schemas, val, data } = unref(props);
+      let key: any = findKey(schemas, val[1])?.key;
+      let arr = [];
+      if (key != null) {
+        let label;
+        let bol = val[3] == '';
+
+        for (let i = 0; i < data.length; i++) {
+          label = data[i][key];
+          if (label && label != '' && (bol || label.indexOf(val[3]) !== -1)) {
+            arr.push({ label, type: FMIT.value, pos: getPos(label, val[3]) });
+          }
+        }
+      }
+      return arr;
+    }
+
     const getStyle = computed(() => {
-      const { axis } = props;
-      const { x, y } = axis || { x: 0, y: 0 };
+      const { axis, val } = props;
+      let { x, y } = axis || { x: 0, y: 0 };
+      if (val[2] != '') x += val[1].replace(/[\u0391-\uFFE5]/g, 'aa').length * 8;
       const menuHeight = (items.value || []).length * 24;
       const menuWidth = 180;
       const body = document.body;
       return {
+        // 判断 位置加组件宽度 是否大于屏幕宽度
         left: (body.clientWidth < x + menuWidth ? x - menuWidth : x) + 'px',
         top: (body.clientHeight < y + menuHeight ? y - menuHeight : y) + 'px',
       };
@@ -129,9 +102,8 @@ export default defineComponent({
       e.preventDefault();
     }
 
-    function handlerItemUp(it: any) {
-      console.log('handlerItemUp');
-      props.onFinished(it);
+    function handlerItemUp(it: FilterMenuItem) {
+      emit('finished', it);
     }
 
     // 消除点击失去焦点事件
@@ -140,9 +112,7 @@ export default defineComponent({
     }
 
     function renderMenuItem() {
-      let itemss = unref(items);
-      console.log(itemss);
-      return itemss.map((item, index) => {
+      return unref(items).map((item) => {
         if (!item) return null;
         switch (item.type) {
           case FMIT.title:
@@ -159,21 +129,21 @@ export default defineComponent({
                 <Divider />
               </li>
             );
-          case FMIT.key:
-            return (
-              <li
-                class="filter-menu-item"
-                onMousedown={handlerItemClick}
-                onMouseup={(e: MouseEvent) => handlerItemUp(item)}
-              >
-                {item.pos ? item.pos : item.label}
-              </li>
-            );
         }
+        return (
+          <li
+            class="filter-menu-item"
+            onMousedown={handlerItemClick}
+            onMouseup={(e: MouseEvent) => handlerItemUp(item)}
+          >
+            {item.pos && item.pos.length ? item.pos : item.label}
+          </li>
+        );
       });
     }
 
     function getPos(source: string, str: string) {
+      if (!str || !source) return [];
       let ff = '-^`*-';
       return source
         .replace(new RegExp(str, 'g'), ff + str + ff)
@@ -183,18 +153,18 @@ export default defineComponent({
 
     return () => {
       const { show } = props;
-      console.log(items);
+      // return (
+      //   <div class={[prefixCls]} ref={wrapRef} style={unref(getStyle)}>
+      //     {renderMenuItem()}
+      //   </div>
+      // );
+
       if (!items.value.filter((it) => it.type !== FMIT.title).length) return null;
       return !show ? null : (
         <div class={[prefixCls]} ref={wrapRef} style={unref(getStyle)}>
           {renderMenuItem()}
         </div>
       );
-      // return (
-      //   <div class={[prefixCls]} ref={wrapRef} style={unref(getStyle)}>
-      //     {renderMenuItem()}
-      //   </div>
-      // );
     };
   },
 });
