@@ -13,9 +13,9 @@ export interface Where {
   $or?: WObj[];
 }
 
-export interface WObj {
-  [key: string]: WhereExpression | number | string;
-}
+export type WObj = {
+  [key in string | number]: WhereExpression | number | string;
+};
 
 export interface WhereExpression {
   $gt?: number | string | Date; // 大于
