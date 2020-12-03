@@ -21,6 +21,7 @@
         <slot :name="`form-${item}`" v-bind="data" />
       </template>
     </BasicForm>
+    <Filters></Filters>
     <Table
       ref="tableElRef"
       v-bind="getBindValues"
@@ -52,7 +53,7 @@
   import renderFooter from './components/renderFooter';
   import renderExpandIcon from './components/renderExpandIcon';
   import { BasicForm, FormProps, useForm } from '/@/components/Form/index';
-
+import  {Filters} from '/@/components/Filters'
   import { isFunction, isString } from '/@/utils/is';
   import { deepMerge } from '/@/utils';
   import { omit } from 'lodash-es';
@@ -71,7 +72,7 @@
   import './style/index.less';
   export default defineComponent({
     props: basicProps,
-    components: { Table, BasicForm },
+    components: { Table, BasicForm,Filters },
     emits: ['fetch-success', 'fetch-error', 'selection-change', 'register'],
     setup(props, { attrs, emit, slots }) {
       const tableElRef = ref<any>(null);
