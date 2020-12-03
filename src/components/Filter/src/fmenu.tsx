@@ -1,6 +1,6 @@
 import { defineComponent, computed, ref, unref, onUnmounted, Transition } from 'vue';
 
-import { props } from './props';
+import { fmenuProps as props } from './props';
 import { Divider } from 'ant-design-vue';
 
 import './index.less';

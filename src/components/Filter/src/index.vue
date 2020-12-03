@@ -63,43 +63,14 @@
   } from 'vue';
 
   import Fmenu from './fmenu';
-  import { FilterDataRT, FilterMenuItem, FiltersConfig, FMIT } from './types';
+  import { FilterDataRT, FilterMenuItem, FMIT } from './types';
   import { findKey } from './utils';
-  // import { Where, WObj } from '/@/api/model/baseModel';
-  // interface Filter<T> {
-  //   key: string;
-  //   value: T;
-  // }
-  const filtersConfig: FiltersConfig[] = [
-    {
-      key: 'key',
-      key_text: 'k键值key',
-      type: 'string',
-      linq: false,
-      option: [
-        {
-          label: '',
-          value: '',
-        },
-      ],
-    },
-    {
-      key: 'key1',
-      key_text: 'k键值key2',
-      type: 'string',
-      linq: false, // 表达式
-      option: [
-        {
-          label: '',
-          value: '',
-        },
-      ],
-    },
-  ];
+  import { filterProps as props } from './props';
 
   export default defineComponent({
     components: { Icon },
-    setup() {
+    props,
+    setup({ filtersConfig, dataSource: data }) {
       const innerText = ref('');
       const filterInput = ref<Nullable<HTMLElement>>(null);
       const focus = ref<boolean>(false);
@@ -119,7 +90,7 @@
         return str;
       });
 
-      watch(filterData,()=>toOrm())
+      watch(filterData, () => toOrm());
 
       function addFilterData(fd: FilterDataRT) {
         let el = unref(filterInput.value) as any;
@@ -144,7 +115,7 @@
           });
         }
 
-        console.log(_and)
+        console.log(_and);
       }
 
       function handleInput(event: any) {
@@ -178,16 +149,7 @@
           onFinished,
           val: textArray.value,
           schemas: filtersConfig, // 可用查询的key 及配置
-          data: [
-            {
-              key: '123123',
-              key1: 'value1',
-            },
-            {
-              key: '56789',
-              key1: 'value2',
-            },
-          ], // 当前表格数据，用于分析推荐值
+          data, // 当前表格数据，用于分析推荐值
           items: [
             {
               label: innerText.value,
@@ -248,6 +210,7 @@
         const el = filterInput.value as any;
         getC(el);
       }
+
       function handlerUp(e: any) {
         e.preventDefault();
       }
@@ -273,6 +236,7 @@
         }
         return offset;
       }
+
       function getParentLeft(e: any) {
         var offset = e.offsetLeft;
         if (e.offsetParent != null) {
@@ -280,7 +244,11 @@
         }
         return offset;
       }
+      function handleChange(pagination: any, filters: any, sorter: any) {
+        console.log('Various parameters', pagination, filters, sorter);
+      }
       return {
+        handleChange,
         filterInput,
         filterData,
         onFilter,

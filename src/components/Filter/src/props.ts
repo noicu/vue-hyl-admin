@@ -1,6 +1,22 @@
 import type { PropType } from 'vue';
 import type { Axis, ContextMenuItem, FilterMenuItem, FiltersConfig } from './types';
-export const props = {
+export const filterProps = {
+  filtersConfig: {
+    // 列表
+    type: Array as PropType<FiltersConfig[]>,
+    default() {
+      return [];
+    },
+  },
+  dataSource: {
+    type: Array as PropType<Array<any>>,
+    default() {
+      return [];
+    },
+  },
+};
+
+export const fmenuProps = {
   show: {
     type: Boolean,
     default: false,
