@@ -1,13 +1,17 @@
 <template>
   <div class="filter">
     <div class="filter-exposed-container"></div>
-    <div class="filter-icon">
-      <Icon icon="ant-design:format-painter-outlined" size="18" />
+    <div class="filter-icon" @click="onFilter">
+      <Icon icon="mdi:filter-variant" size="20" />
     </div>
     <div class="filter-edit-area" @click="onFilter">
       <div class="filter-chip-list">
         <transition-group name="slide-x-fade" appear>
-          <div class="filter-chip-content" v-for="(it, i) in filterData" :key="it">
+          <div
+            class="filter-chip-content"
+            v-for="(it, i) in filterData"
+            :key="it.key + it.value + i"
+          >
             <div class="filter-chip-text-content">
               <div class="filter-chip-text-key">{{ it.key_show }}</div>
               <div class="filter-chip-text-linq">{{ it.linq }}</div>
@@ -25,7 +29,7 @@
               ref="filterInput"
               class="input"
               contenteditable
-              placeholder="请输入文字"
+              :placeholder="placeholder"
               spellcheck="false"
               autocapitalize="none"
               tabindex="0"
@@ -34,14 +38,68 @@
               @compositionend="handleEnd"
               @blur="handleBlur"
               @focus="handleFocus"
+              @keydown="handleAdd"
             ></div>
           </div>
         </div>
       </div>
     </div>
-    <div class="filter-icon filter-clear-icon">
-      <Icon icon="ant-design:format-painter-outlined" size="18" />
-    </div>
+    <a-popover title="查询">
+      <template #content>
+        <div>使用属性来创建细化过滤条件的查询，</div>
+        <div>以缩小搜索结果范围。</div>
+        <div>
+          <span>示例：</span>
+          <div class="filter-chip-content">
+            <div class="filter-chip-text-content">
+              <div class="filter-chip-text-key">名称</div>
+              <div class="filter-chip-text-linq">:</div>
+              <div class="filter-chip-text-value">张三</div>
+            </div>
+            <div class="filter-chip-close">
+              <Icon icon="ant-design:close-outlined" />
+            </div>
+          </div>
+        </div>
+        <div>在过滤条件查询之间添加 OR 可搜索多个字词。</div>
+        <div>
+          <span>示例：</span>
+          <div class="filter-chip-content">
+            <div class="filter-chip-text-content">
+              <div class="filter-chip-text-key">名称</div>
+              <div class="filter-chip-text-linq">:</div>
+              <div class="filter-chip-text-value">张三</div>
+            </div>
+            <div class="filter-chip-close">
+              <Icon icon="ant-design:close-outlined" />
+            </div>
+          </div>
+          <div class="filter-chip-content">
+            <div class="filter-chip-text-content">
+              <div class="filter-chip-text-key"></div>
+              <div class="filter-chip-text-linq">或</div>
+              <div class="filter-chip-text-value"></div>
+            </div>
+            <div class="filter-chip-close">
+              <Icon icon="ant-design:close-outlined" />
+            </div>
+          </div>
+          <div class="filter-chip-content">
+            <div class="filter-chip-text-content">
+              <div class="filter-chip-text-key">名称</div>
+              <div class="filter-chip-text-linq">:</div>
+              <div class="filter-chip-text-value">李四</div>
+            </div>
+            <div class="filter-chip-close">
+              <Icon icon="ant-design:close-outlined" />
+            </div>
+          </div>
+        </div>
+      </template>
+      <div class="filter-icon filter-clear-icon">
+        <Icon icon="mdi:help-circle-outline" size="20" />
+      </div>
+    </a-popover>
     <div class="filter-exposed-container"></div>
   </div>
 </template>
@@ -70,7 +128,7 @@
   export default defineComponent({
     components: { Icon },
     props,
-    setup({ filtersConfig, dataSource: data }) {
+    setup({ filtersConfig, dataSource: data, placeholder }) {
       const innerText = ref('');
       const filterInput = ref<Nullable<HTMLElement>>(null);
       const focus = ref<boolean>(false);
@@ -98,6 +156,17 @@
         el.innerText = '';
         innerText.value = el.innerText;
       }
+
+      function handleAdd(e: KeyboardEvent) {
+        if (e.keyCode == 13) {
+          e.preventDefault();
+          console.log(data);
+        }
+      }
+
+      watch(()=>unref(data),(v)=>{
+        console.log(v,'==========');
+      })
 
       function toOrm() {
         // let obj: any = {
@@ -248,6 +317,7 @@
         console.log('Various parameters', pagination, filters, sorter);
       }
       return {
+        handleAdd,
         handleChange,
         filterInput,
         filterData,
@@ -261,11 +331,17 @@
         handleBlur,
         handleFocus,
         handleDelete,
+        placeholder,
       };
     },
   });
 </script>
 <style lang="less" scoped>
+  p {
+    padding: 0;
+    margin: 0;
+  }
+
   .slide-x-fade-enter-active {
     transition: all 0.1s ease-out;
   }
@@ -298,6 +374,7 @@
     width: 100%;
     flex-direction: row;
     background: #fff;
+    flex: 1;
 
     &-exposed-container {
       display: inline-flex;
@@ -308,8 +385,11 @@
 
     &-icon {
       display: inline-block;
-      margin: 11px 4px 11px 19px;
-      line-height: 0;
+      width: 34px;
+      height: 34px;
+      // margin: 1px 4px 1px 19px;
+      line-height: 34px;
+      text-align: center;
       vertical-align: middle;
     }
 
@@ -377,10 +457,10 @@
     }
 
     &-clear-icon {
-      width: 24px;
-      height: 24px;
-      padding: 0;
-      line-height: 24px;
+      // width: 24px;
+      // height: 24px;
+      // padding: 0;
+      // line-height: 24px;
     }
   }
 </style>

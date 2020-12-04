@@ -53,9 +53,9 @@ export interface FilterMenuItem {
 export interface FiltersConfig {
   key: string;
   key_text: string;
-  type: string;
-  linq: boolean;
-  option: FiltersConfigOption[];
+  type?: string;
+  linq?: boolean;
+  option?: FiltersConfigOption[];
 }
 
 export interface FiltersConfigOption {

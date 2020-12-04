@@ -162,7 +162,7 @@ export default defineComponent({
       // if (!items.value.filter((it) => it.type !== FMIT.title).length) return null;
       return (
         <Transition name="slide-fade">
-          {!items.value.filter((it) => it.type !== FMIT.title).length || !show ? null : (
+          {!items.value.filter((it) => it.type !== FMIT.title).length || !show ? null: (
             <div class={[prefixCls]} ref={wrapRef} style={unref(getStyle)}>
               {renderMenuItem()}
             </div>

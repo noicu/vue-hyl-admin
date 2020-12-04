@@ -9,9 +9,15 @@ export const filterProps = {
     },
   },
   dataSource: {
-    type: Array as PropType<Array<any>>,
+    type: Array as PropType<any[]>,
     default() {
       return [];
+    },
+  },
+  placeholder: {
+    type: String,
+    default() {
+      return '请输入查询条件';
     },
   },
 };

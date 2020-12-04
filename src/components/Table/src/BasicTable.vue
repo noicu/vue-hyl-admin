@@ -21,7 +21,6 @@
         <slot :name="`form-${item}`" v-bind="data" />
       </template>
     </BasicForm>
-    <Filters></Filters>
     <Table
       ref="tableElRef"
       v-bind="getBindValues"
@@ -53,7 +52,6 @@
   import renderFooter from './components/renderFooter';
   import renderExpandIcon from './components/renderExpandIcon';
   import { BasicForm, FormProps, useForm } from '/@/components/Form/index';
-import  {Filters} from '/@/components/Filters'
   import { isFunction, isString } from '/@/utils/is';
   import { deepMerge } from '/@/utils';
   import { omit } from 'lodash-es';
@@ -72,7 +70,7 @@ import  {Filters} from '/@/components/Filters'
   import './style/index.less';
   export default defineComponent({
     props: basicProps,
-    components: { Table, BasicForm,Filters },
+    components: { Table, BasicForm },
     emits: ['fetch-success', 'fetch-error', 'selection-change', 'register'],
     setup(props, { attrs, emit, slots }) {
       const tableElRef = ref<any>(null);
@@ -119,9 +117,14 @@ import  {Filters} from '/@/components/Filters'
       });
 
       const getBindValues = computed(() => {
-        const { title, titleHelpMessage, showSummary, showTableSetting, tableSetting } = unref(
-          getMergeProps
-        );
+        const {
+          title,
+          titleHelpMessage,
+          showSummary,
+          showTableSetting,
+          tableSetting,
+          showFilter,
+        } = unref(getMergeProps);
         // 隐藏标题
         const hideTitle = !slots.tableTitle && !title && !slots.toolbar && !showTableSetting;
         // 标题数据
@@ -137,6 +140,7 @@ import  {Filters} from '/@/components/Filters'
                       titleHelpMessage,
                       slots,
                       showTableSetting,
+                      showFilter,
                       tableSetting
                     ),
               };
@@ -314,7 +318,7 @@ import  {Filters} from '/@/components/Filters'
         wrapRef,
       });
 
-      console.log(tableAction,314)
+      console.log(tableAction, 314);
 
       emit('register', tableAction);
       return {

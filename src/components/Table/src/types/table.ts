@@ -130,6 +130,8 @@ export interface BasicTableProps<T = any> {
   inset?: boolean;
   // 显示表格设置
   showTableSetting?: boolean;
+  // 显示过滤
+  showFilter?: boolean;
   tableSetting?: TableSetting;
   // 斑马纹
   striped?: boolean;

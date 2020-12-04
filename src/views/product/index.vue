@@ -114,6 +114,7 @@
       const [registerTable] = useTable({
         title: '商品列表',
         api: productInfoList,
+        showFilter: true,
         fetchSetting: {
           pageField: 'page_no',
           sizeField: 'rows_per_page',
