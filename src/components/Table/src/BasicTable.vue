@@ -217,6 +217,7 @@
       }
       // 搜索变化
       function handleSearchInfoChange(info: any) {
+        console.log('handleSearchInfoChange')
         const { handleSearchInfoFn } = unref(getMergeProps);
         if (handleSearchInfoFn && isFunction(handleSearchInfoFn)) {
           info = handleSearchInfoFn(info) || info;
@@ -230,6 +231,8 @@
         filters: Partial<Record<string, string[]>>,
         sorter: SorterResult
       ) {
+        console.log('handleTableChange')
+
         const { clearSelectOnPageChange, sortFn } = unref(getMergeProps);
         if (clearSelectOnPageChange) {
           clearSelectedRowKeys();

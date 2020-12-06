@@ -30,11 +30,13 @@ export type Props = {
 };
 
 export interface FilterDataRT {
-  key: string;
-  key_show?: string;
+  id: string;
+  field: string;
+  label?: string;
   linq: string; //'>' | '<' | '>=' | '<=' | '='
   value: string;
-  value_show?: string;
+  placeholder?: string;
+  unclosable?: boolean; // 无法关闭
 }
 
 export enum FMIT {
@@ -51,8 +53,8 @@ export interface FilterMenuItem {
 }
 
 export interface FiltersConfig {
-  key: string;
-  key_text: string;
+  field: string;
+  label: string;
   type?: string;
   linq?: boolean;
   option?: FiltersConfigOption[];

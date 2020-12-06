@@ -4,7 +4,7 @@
 
 <script lang="ts">
   import { Filters, FiltersConfig } from '/@/components/Filters';
-  import { defineComponent, computed, watch, ref, unref, reactive } from 'vue';
+  import { defineComponent, computed, watch, reactive } from 'vue';
   import { injectTable } from '../hooks/useProvinceTable';
 
   export default defineComponent({
@@ -14,22 +14,17 @@
       const table = injectTable();
       console.log(table.getDataSource);
       let filtersConfig: FiltersConfig[] = [];
-      let dataSource = reactive([]);
+      let dataSource = reactive<any[]>([]);
 
-      watch(table.getDataSource, (v: Proxy) => {
-        unique()
-        dataSource.push(...v)
-        // v.forEach((it) => dataSource.push(it));
-
-        // dataSource = unref(v.length);
-        console.log(dataSource);
+      watch(table.getDataSource, (v) => {
+        dataSource.push(...v);
       });
 
       table.getColumns({ ignoreIndex: true, ignoreAction: true }).forEach((item) => {
         console.log(item);
         filtersConfig.push({
-          key: item.dataIndex,
-          key_text: item.title,
+          field: item.dataIndex as string,
+          label: item.title as string,
         });
       });
       const getProps = computed(() => ({

@@ -6,6 +6,7 @@ import { Divider } from 'ant-design-vue';
 import './index.less';
 import { FilterMenuItem, FiltersConfig, FMIT } from './types';
 import { findKey } from './utils';
+import { unique } from '/@/utils';
 const prefixCls = 'filter-menu';
 
 export default defineComponent({
@@ -36,7 +37,7 @@ export default defineComponent({
             label: '属性',
             type: FMIT.title,
           },
-          ...schemas.map((it) => ({ label: it.key_text, type: FMIT.key })),
+          ...schemas.map((it) => ({ label: it.label, type: FMIT.key })),
         ] as FilterMenuItem[];
       }
       if (val[1] != '' && val[2] == '') {
@@ -46,11 +47,11 @@ export default defineComponent({
             type: FMIT.title,
           },
           ...schemas
-            .filter((it) => it.key_text.indexOf(val[1]) !== -1)
+            .filter((it) => it.label.indexOf(val[1]) !== -1)
             .map((it) => ({
-              label: it.key_text,
+              label: it.label,
               type: FMIT.key,
-              pos: getPos(it.key_text, val[1]),
+              pos: getPos(it.label, val[1]),
             })),
         ] as FilterMenuItem[];
       }
@@ -68,20 +69,20 @@ export default defineComponent({
 
     function searchValue(): FilterMenuItem[] {
       const { schemas, val, data } = unref(props);
-      let key: any = findKey(schemas, val[1])?.key;
+      let field: any = findKey(schemas, val[1])?.field;
       let arr = [];
-      if (key != null) {
+      if (field != null) {
         let label;
         let bol = val[3] == '';
 
         for (let i = 0; i < data.length; i++) {
-          label = data[i][key];
+          label = data[i][field];
           if (label && label != '' && (bol || label.indexOf(val[3]) !== -1)) {
             arr.push({ label, type: FMIT.value, pos: getPos(label, val[3]) });
           }
         }
       }
-      return arr;
+      return unique(arr, 'label');
     }
 
     const getStyle = computed(() => {
@@ -162,7 +163,7 @@ export default defineComponent({
       // if (!items.value.filter((it) => it.type !== FMIT.title).length) return null;
       return (
         <Transition name="slide-fade">
-          {!items.value.filter((it) => it.type !== FMIT.title).length || !show ? null: (
+          {!items.value.filter((it) => it.type !== FMIT.title).length || !show ? null : (
             <div class={[prefixCls]} ref={wrapRef} style={unref(getStyle)}>
               {renderMenuItem()}
             </div>

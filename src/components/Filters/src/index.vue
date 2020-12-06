@@ -7,18 +7,14 @@
     <div class="filter-edit-area" @click="onFilter">
       <div class="filter-chip-list">
         <transition-group name="slide-x-fade" appear>
-          <div
-            class="filter-chip-content"
-            v-for="(it, i) in filterData"
-            :key="it.key + it.value + i"
-          >
+          <div class="filter-chip-content" v-for="(it, i) in filterData" :key="it.id">
             <div class="filter-chip-text-content">
-              <div class="filter-chip-text-key">{{ it.key_show }}</div>
+              <div class="filter-chip-text-key">{{ it.label }}</div>
               <div class="filter-chip-text-linq">{{ it.linq }}</div>
-              <div class="filter-chip-text-value">{{ it.value_show }}</div>
+              <div class="filter-chip-text-value">{{ it.placeholder || it.value }}</div>
             </div>
             <div class="filter-chip-close" @click.stop="(e) => handleDelete(i, e)">
-              <Icon icon="ant-design:close-outlined" />
+              <Icon icon="mdi:close-circle-outline" />
             </div>
           </div>
         </transition-group>
@@ -57,7 +53,7 @@
               <div class="filter-chip-text-value">张三</div>
             </div>
             <div class="filter-chip-close">
-              <Icon icon="ant-design:close-outlined" />
+              <Icon icon="mdi:close-circle-outline" />
             </div>
           </div>
         </div>
@@ -71,7 +67,7 @@
               <div class="filter-chip-text-value">张三</div>
             </div>
             <div class="filter-chip-close">
-              <Icon icon="ant-design:close-outlined" />
+              <Icon icon="mdi:close-circle-outline" />
             </div>
           </div>
           <div class="filter-chip-content">
@@ -81,7 +77,7 @@
               <div class="filter-chip-text-value"></div>
             </div>
             <div class="filter-chip-close">
-              <Icon icon="ant-design:close-outlined" />
+              <Icon icon="mdi:close-circle-outline" />
             </div>
           </div>
           <div class="filter-chip-content">
@@ -91,7 +87,7 @@
               <div class="filter-chip-text-value">李四</div>
             </div>
             <div class="filter-chip-close">
-              <Icon icon="ant-design:close-outlined" />
+              <Icon icon="mdi:close-circle-outline" />
             </div>
           </div>
         </div>
@@ -124,6 +120,7 @@
   import { FilterDataRT, FilterMenuItem, FMIT } from './types';
   import { findKey } from './utils';
   import { filterProps as props } from './props';
+  import { buildUUID } from '/@/utils/uuid';
 
   export default defineComponent({
     components: { Icon },
@@ -150,25 +147,34 @@
 
       watch(filterData, () => toOrm());
 
-      function addFilterData(fd: FilterDataRT) {
+      function addFilterData(fd: Omit<FilterDataRT, 'id'>) {
+        let fds: FilterDataRT = { ...fd, id: buildUUID() };
         let el = unref(filterInput.value) as any;
-        filterData.push(fd);
+        filterData.push(fds);
         el.innerText = '';
         innerText.value = el.innerText;
       }
 
-      function handleAdd(e: KeyboardEvent) {
+      function handleAdd(e: any) {
         if (e.keyCode == 13) {
           e.preventDefault();
-          console.log(data);
+        }
+        if (e.keyCode == 8 && !e.target.innerText && filterData.length) {
+          filterData.splice(filterData.length - 1, 1);
+          console.log(e);
         }
       }
 
-      watch(()=>unref(data),(v)=>{
-        console.log(v,'==========');
-      })
+      watch(
+        () => unref(data),
+        (v) => {
+          console.log(v, '==========');
+        }
+      );
 
       function toOrm() {
+        createOptionsMenu();
+
         // let obj: any = {
         //   aa: 1,
         // };
@@ -176,10 +182,10 @@
 
         if (filterData.length) {
           filterData.forEach((fd) => {
-            if (_and.hasOwnProperty(fd.key)) {
-              _and[fd.key].push(fd.value);
+            if (_and.hasOwnProperty(fd.field)) {
+              _and[fd.field].push(fd.value);
             } else {
-              _and[fd.key] = [fd.value];
+              _and[fd.field] = [fd.value];
             }
           });
         }
@@ -255,11 +261,11 @@
             el.innerText = a.join(ta[2]);
             let kbj = findKey(filtersConfig, ta[1]);
             addFilterData({
-              key: kbj.key,
-              key_show: ta[1],
+              field: kbj.field,
+              label: ta[1],
               linq: ta[2],
               value: e.label,
-              value_show: e.label,
+              placeholder: e.label,
             });
             break;
           case FMIT.operator:
@@ -428,12 +434,12 @@
         font-family: 'Roboto';
         font-size: 13px;
         font-weight: 400;
-        line-height: 20px;
+        line-height: 21px;
         fill: white;
         color: white;
         word-break: break-word;
         cursor: default;
-        background-color: #3367d6;
+        background-color: rgb(2, 143, 251);
         border-width: 0;
         border-radius: 10px;
         outline: none;
@@ -444,14 +450,33 @@
       &-text {
         &-key {
           display: inline-block;
+          color: rgba(255, 255, 255, 0.76);
         }
 
         &-linq {
           display: inline-block;
+          padding: 0 5px;
+          text-align: center;
+          cursor: pointer;
+
+          &:hover {
+            background: #ffffff36;
+          }
         }
 
         &-value {
           display: inline-block;
+        }
+      }
+
+      &-close {
+        margin-left: 5px;
+        // line-height: 21px;
+        color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+
+        &:hover {
+          color: rgba(255, 255, 255);
         }
       }
     }

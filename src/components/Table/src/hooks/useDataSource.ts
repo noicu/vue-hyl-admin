@@ -84,6 +84,7 @@ export function useDataSource(
     const { api, searchInfo, fetchSetting, beforeFetch, afterFetch, useSearchForm } = unref(
       propsRef
     );
+    console.log('fetch')
     if (!api || !isFunction(api)) return;
     try {
       loadingRef.value = true;
