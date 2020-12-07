@@ -117,7 +117,7 @@
           totalField: 'rows_count',
         },
         columns: Columns,
-        useSearchForm: true,
+        // useSearchForm: true,
         formConfig: FormItem,
         showTableSetting: true,
       });

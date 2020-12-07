@@ -165,11 +165,14 @@ export class VAxios {
       this.axiosInstance
         .request<any, AxiosResponse<Result>>(conf)
         .then((res: AxiosResponse<Result>) => {
+          // console.log(res);
           if (transformRequestData && isFunction(transformRequestData)) {
             const ret = transformRequestData(res, opt);
+            // console.log(ret);
             ret !== errorResult ? resolve(ret) : reject(new Error('请求错误!'));
             return;
           }
+
           resolve((res as unknown) as Promise<T>);
         })
         .catch((e: Error) => {
