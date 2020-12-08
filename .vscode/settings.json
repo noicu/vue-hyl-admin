@@ -207,5 +207,6 @@
 
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  }
+  },
+  "i18n-ally.localesPaths": "public/resource/tinymce/langs"
 }

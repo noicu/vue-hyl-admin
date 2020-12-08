@@ -132,7 +132,7 @@ class User extends VuexModule {
   }
 
   /**
-   * @description: login out
+   * @description: 注销
    */
   @Action
   async loginOut(goLogin = false) {
