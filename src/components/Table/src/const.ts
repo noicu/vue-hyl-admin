@@ -3,7 +3,7 @@ import type { SorterResult } from './types/table';
 export const ROW_KEY = 'key';
 
 // 可选的每页显示条数;
-export const PAGE_SIZE_OPTIONS = ['10', '20', '30', '50'];
+export const PAGE_SIZE_OPTIONS = ['10', '50', '80', '100'];
 
 // 每页显示条数
 export const PAGE_SIZE = ~~PAGE_SIZE_OPTIONS[0];
@@ -24,17 +24,10 @@ export const FETCH_SETTING = {
 // 配置通用排序函数
 export function DEFAULT_SORT_FN(sortInfo: SorterResult) {
   const { field, order } = sortInfo;
-  return order
-    ? {
-        sort: {
-          [field]: order === 'descend' ? 0 : 1,
-        },
-      }
-    : {};
-  // return {
-  //   // 传给后台的排序字段你
-  //   field,
-  //   // 传给后台的排序方式  asc/desc
-  //   order,
-  // };
+  return {
+    // 传给后台的排序字段你
+    field,
+    // 传给后台的排序方式  asc/desc
+    order,
+  };
 }

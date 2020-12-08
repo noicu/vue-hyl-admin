@@ -1,14 +1,14 @@
+import '../style/editable-cell.less';
+
 import { defineComponent, PropType, ref, unref, nextTick, watchEffect } from 'vue';
-import ClickOutSide from '/@/components/ClickOutSide/index.vue';
+import { ClickOutSide } from '/@/components/ClickOutSide';
 
 import { RenderEditableCellParams } from '../types/table';
 import { ComponentType } from '../types/componentType';
 
 import { componentMap } from '../componentMap';
-import { isString, isBoolean } from '/@/utils/is';
+import { isString, isBoolean, isArray } from '/@/utils/is';
 import { FormOutlined, CloseOutlined, CheckOutlined } from '@ant-design/icons-vue';
-
-import '../style/editable-cell.less';
 
 const prefixCls = 'editable-cell';
 const EditableCell = defineComponent({
@@ -50,6 +50,7 @@ const EditableCell = defineComponent({
     },
     placeholder: {
       type: String as PropType<string>,
+      default: '',
     },
   },
   emits: ['submit', 'cancel'],
@@ -92,9 +93,22 @@ const EditableCell = defineComponent({
 
     if (props.record) {
       /* eslint-disable  */
-      props.record.onCancel = handleCancel;
+      isArray(props.record.submitCbs)
+        ? props.record.submitCbs.push(handleSubmit)
+        : (props.record.submitCbs = [handleSubmit]);
+      /* eslint-disable  */
+      isArray(props.record.cancelCbs)
+        ? props.record.cancelCbs.push(handleCancel)
+        : (props.record.cancelCbs = [handleCancel]);
+
+      /* eslint-disable  */
+      props.record.onCancel = () => {
+        isArray(props.record?.cancelCbs) && props.record?.cancelCbs.forEach((fn) => fn());
+      };
       /* eslint-disable */
-      props.record.onSubmit = handleSubmit;
+      props.record.onSubmit = () => {
+        isArray(props.record?.submitCbs) && props.record?.submitCbs.forEach((fn) => fn());
+      };
     }
 
     function handleSubmit() {
@@ -219,7 +233,9 @@ export function renderEditableRow({
 }
 
 export type EditRecordRow<T = { [key: string]: any }> = {
-  editable?: boolean;
-  onCancel?: Fn;
-  onSubmit?: Fn;
+  editable: boolean;
+  onCancel: Fn;
+  onSubmit: Fn;
+  submitCbs: Fn[];
+  cancelCbs: Fn[];
 } & T;

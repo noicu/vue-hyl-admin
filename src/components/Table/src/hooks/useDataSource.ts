@@ -3,7 +3,7 @@ import type { PaginationProps } from '../types/pagination';
 
 import { watch, ref, unref, ComputedRef, computed, onMounted, Ref } from 'vue';
 
-import { useTimeoutFn } from '@vueuse/core';
+import { useTimeoutFn } from '/@/hooks/core/useTimeout';
 
 import { buildUUID } from '/@/utils/uuid';
 import { isFunction, isBoolean } from '/@/utils/is';
@@ -84,7 +84,6 @@ export function useDataSource(
     const { api, searchInfo, fetchSetting, beforeFetch, afterFetch, useSearchForm } = unref(
       propsRef
     );
-    console.log('fetch')
     if (!api || !isFunction(api)) return;
     try {
       loadingRef.value = true;
@@ -98,29 +97,9 @@ export function useDataSource(
         pageParams[sizeField] = pageSize;
       }
 
-      // TODO 清理后值为空，key还在
-      // TODO getFieldsValue 无属性 需清除 where 的key
-      // TODO 编写新的解析模块
-      function getWhere() {
-        const where = getFieldsValue();
-        let whereKeys = 0;
-        const w: {
-          [key: string]: any;
-        } = {};
-        Object.keys(where).forEach((item) => {
-          if (where[item] !== '' && where[item] !== undefined) {
-            whereKeys++;
-            w[item] = where[item];
-          }
-        });
-        return whereKeys ? { where: w } : {};
-      }
-
-      console.log(pageParams, searchInfo, opt);
-
       let params: any = {
         ...pageParams,
-        ...(useSearchForm ? getWhere() : {}),
+        ...(useSearchForm ? getFieldsValue() : {}),
         ...searchInfo,
         ...(opt ? opt.searchInfo : {}),
         ...(opt ? opt.sortInfo : {}),
@@ -131,7 +110,6 @@ export function useDataSource(
       }
 
       const res = await api(params);
-      console.log(res);
       let resultItems: any[] = get(res, listField);
       const resultTotal: number = get(res, totalField);
       if (afterFetch && isFunction(afterFetch)) {

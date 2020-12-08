@@ -1,14 +1,17 @@
 import type { ComponentType } from './types/index';
+import { useI18n } from '/@/hooks/web/useI18n';
+
+const { t } = useI18n();
 
 /**
  * @description: 生成placeholder
  */
 export function createPlaceholderMessage(component: ComponentType) {
   if (component.includes('Input') || component.includes('Complete')) {
-    return '请输入';
+    return t('component.form.input');
   }
   if (component.includes('Picker')) {
-    return '请选择';
+    return t('component.form.choose');
   }
   if (
     component.includes('Select') ||
@@ -18,7 +21,7 @@ export function createPlaceholderMessage(component: ComponentType) {
     component.includes('Switch')
   ) {
     // return `请选择${label}`;
-    return '请选择';
+    return t('component.form.choose');
   }
   return '';
 }

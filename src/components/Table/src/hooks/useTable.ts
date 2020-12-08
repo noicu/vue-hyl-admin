@@ -8,14 +8,13 @@ export function useTable(
   tableProps?: Partial<BasicTableProps>
 ): [(instance: TableActionType) => void, TableActionType] {
   if (!getCurrentInstance()) {
-    throw new Error('请把 useTable 放入 setup 执行!');
+    throw new Error('Please put useTable function in the setup function!');
   }
 
   const tableRef = ref<TableActionType | null>(null);
   const loadedRef = ref<boolean | null>(false);
 
   function register(instance: TableActionType) {
-    console.log(instance,1);
     onUnmounted(() => {
       tableRef.value = null;
       loadedRef.value = null;
@@ -47,8 +46,6 @@ export function useTable(
       getTableInstance().redoHeight();
     },
     setLoading: (loading: boolean) => {
-
-
       getTableInstance().setLoading(loading);
     },
     getDataSource: () => {

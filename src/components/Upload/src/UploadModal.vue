@@ -1,8 +1,8 @@
 <template>
   <BasicModal
     width="800px"
-    title="上传"
-    okText="保存"
+    :title="t('component.upload.upload')"
+    :okText="t('component.upload.save')"
     v-bind="$attrs"
     @register="register"
     @ok="handleOk"
@@ -23,15 +23,17 @@
         {{ getUploadBtnText }}
       </a-button>
     </template>
+
     <div class="upload-modal-toolbar">
-      <Alert :message="getHelpText" type="info" banner class="upload-modal-toolbar__text"></Alert>
+      <Alert :message="getHelpText" type="info" banner class="upload-modal-toolbar__text" />
+
       <Upload
         :accept="getStringAccept"
         :multiple="multiple"
         :before-upload="beforeUpload"
         class="upload-modal-toolbar__btn"
       >
-        <a-button type="primary"> 选择文件 </a-button>
+        <a-button type="primary"> {{ t('component.upload.choose') }} </a-button>
       </Upload>
     </div>
     <FileList :dataSource="fileListRef" :columns="columns" :actionColumn="actionColumn" />
@@ -50,17 +52,21 @@
   import { basicProps } from './props';
   import { createTableColumns, createActionColumn } from './data';
   // utils
-  import { checkFileType, checkImgType, getBase64WithFile } from './utils';
+  import { checkFileType, checkImgType, getBase64WithFile } from './helper';
   import { buildUUID } from '/@/utils/uuid';
   import { createImgPreview } from '/@/components/Preview/index';
   import { uploadApi } from '/@/api/sys/upload';
   import { isFunction } from '/@/utils/is';
   import { warn } from '/@/utils/log';
   import FileList from './FileList';
+
+  import { useI18n } from '/@/hooks/web/useI18n';
   export default defineComponent({
     components: { BasicModal, Upload, Alert, FileList },
     props: basicProps,
     setup(props, { emit }) {
+      const { t } = useI18n();
+
       //   是否正在上传
       const isUploadingRef = ref(false);
       const fileListRef = ref<FileItem[]>([]);
@@ -100,7 +106,11 @@
         const someError = fileListRef.value.some(
           (item) => item.status === UploadResultStatus.ERROR
         );
-        return isUploadingRef.value ? '上传中' : someError ? '重新上传失败文件' : '开始上传';
+        return isUploadingRef.value
+          ? t('component.upload.uploading')
+          : someError
+          ? t('component.upload.reUploadFailed')
+          : t('component.upload.startUpload');
       });
 
       // 上传前校验
@@ -108,16 +118,15 @@
         const { size, name } = file;
         const { maxSize } = props;
         const accept = unref(getAccept);
-
         // 设置最大值，则判断
         if (maxSize && file.size / 1024 / 1024 >= maxSize) {
-          createMessage.error(`只能上传不超过${maxSize}MB的文件!`);
+          createMessage.error(t('component.upload.maxSizeMultiple', [maxSize]));
           return false;
         }
 
         // 设置类型,则判断
         if (accept.length > 0 && !checkFileType(file, accept)) {
-          createMessage.error!(`只能上传${accept.join(',')}格式文件`);
+          createMessage.error!(t('acomponent.upload.cceptUpload', [accept.join(',')]));
           return false;
         }
         const commonItem = {
@@ -167,7 +176,6 @@
         }
         try {
           item.status = UploadResultStatus.UPLOADING;
-
           const { data } = await uploadApi(
             {
               ...(props.uploadParams || {}),
@@ -198,7 +206,7 @@
       async function handleStartUpload() {
         const { maxNumber } = props;
         if (fileListRef.value.length > maxNumber) {
-          return createMessage.warning(`最多只能上传${maxNumber}个文件`);
+          return createMessage.warning(t('component.upload.maxNumber', [maxNumber]));
         }
         try {
           isUploadingRef.value = true;
@@ -225,10 +233,10 @@
         const { maxNumber } = props;
 
         if (fileListRef.value.length > maxNumber) {
-          return createMessage.warning(`最多只能上传${maxNumber}个文件`);
+          return createMessage.warning(t('component.upload.maxNumber', [maxNumber]));
         }
         if (isUploadingRef.value) {
-          return createMessage.warning('请等待文件上传后，保存');
+          return createMessage.warning(t('component.upload.saveWarn'));
         }
         const fileList: string[] = [];
 
@@ -240,7 +248,7 @@
         }
         // 存在一个上传成功的即可保存
         if (fileList.length <= 0) {
-          return createMessage.warning('没有上传成功的文件，无法保存');
+          return createMessage.warning(t('component.upload.saveError'));
         }
         fileListRef.value = [];
         closeModal();
@@ -253,20 +261,11 @@
           fileListRef.value = [];
           return true;
         } else {
-          createMessage.warning('请等待文件上传结束后操作');
+          createMessage.warning(t('component.upload.uploadWait'));
           return false;
         }
       }
 
-      //   const [registerTable] = useTable({
-      //     columns: createTableColumns(),
-      //     actionColumn: createActionColumn(handleRemove, handlePreview),
-      //     pagination: false,
-      //     inset: true,
-      //     scroll: {
-      //       y: 3000,
-      //     },
-      //   });
       return {
         columns: createTableColumns(),
         actionColumn: createActionColumn(handleRemove, handlePreview),
@@ -285,6 +284,7 @@
         handleCloseFunc,
         getIsSelectFile,
         getUploadBtnText,
+        t,
       };
     },
   });

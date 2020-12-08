@@ -1,2 +1,7 @@
 import Authority from './src/index.vue';
-export default Authority;
+
+import { withInstall } from '../util';
+
+withInstall(Authority);
+
+export { Authority };

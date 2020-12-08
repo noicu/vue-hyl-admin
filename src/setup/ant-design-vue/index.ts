@@ -1,5 +1,5 @@
 // Load on demand
-
+// This module only introduces components globally before login
 import type { App } from 'vue';
 
 import {
@@ -11,8 +11,6 @@ import {
   Spin,
 } from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
-
-import './spin';
 
 export function setupAntd(app: App<Element>) {
   // need

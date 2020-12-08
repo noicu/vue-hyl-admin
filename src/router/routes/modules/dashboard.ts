@@ -1,28 +1,31 @@
 import type { AppRouteModule } from '/@/router/types';
 
-import { PAGE_LAYOUT_COMPONENT } from '/@/router/constant';
+import { LAYOUT } from '/@/router/constant';
 
 const dashboard: AppRouteModule = {
-  layout: {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: PAGE_LAYOUT_COMPONENT,
-    redirect: '/dashboard/workbench',
-    meta: {
-      icon: 'ant-design:home-outlined',
-      title: 'Dashboard',
-    },
+  path: '/dashboard',
+  name: 'Dashboard',
+  component: LAYOUT,
+  redirect: '/dashboard/welcome',
+  meta: {
+    icon: 'bx:bx-home',
+    title: 'routes.dashboard.dashboard',
   },
-
-  routes: [
+  children: [
     {
-      path: '/workbench',
+      path: 'workbench',
       name: 'Workbench',
-      component: () => import('/@/views/dashboard/index.vue'),
+      component: () => import('/@/views/dashboard/workbench/index.vue'),
       meta: {
-        icon: 'ant-design:home-outlined',
-        title: '工作台',
-        affix: true,
+        title: 'routes.dashboard.workbench',
+      },
+    },
+    {
+      path: 'analysis',
+      name: 'Analysis',
+      component: () => import('/@/views/dashboard/analysis/index.vue'),
+      meta: {
+        title: 'routes.dashboard.analysis',
       },
     },
   ],

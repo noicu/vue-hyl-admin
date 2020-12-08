@@ -5,7 +5,7 @@ import { TableActionType } from '/@/components/Table';
 
 export const basicProps = {
   model: {
-    type: Object as PropType<any>,
+    type: Object as PropType<Record<string, any>>,
     default: {},
   },
   // 标签宽度  固定宽度
@@ -27,6 +27,9 @@ export const basicProps = {
   mergeDynamicData: {
     type: Object as PropType<any>,
     default: null,
+  },
+  baseRowStyle: {
+    type: Object as PropType<any>,
   },
   baseColProps: {
     type: Object as PropType<any>,

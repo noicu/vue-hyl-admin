@@ -10,7 +10,7 @@ import { AxiosTransform } from './axiosTransform';
 
 import { checkStatus } from './checkStatus';
 
-import { useSetting } from '/@/hooks/core/useSetting';
+import { useGlobSetting } from '/@/hooks/setting';
 import { useMessage } from '/@/hooks/web/useMessage';
 
 import { RequestEnum, ResultEnum, ContentTypeEnum } from '/@/enums/httpEnum';
@@ -20,8 +20,9 @@ import { formatRequestDate } from '/@/utils/dateUtil';
 import { setObjToUrlParams, deepMerge } from '/@/utils';
 import { errorStore } from '/@/store/modules/error';
 import { errorResult } from './const';
+import { useI18n } from '/@/hooks/web/useI18n';
 
-const { globSetting } = useSetting();
+const globSetting = useGlobSetting();
 const prefix = globSetting.urlPrefix;
 const { createMessage, createErrorModal } = useMessage();
 
@@ -33,6 +34,7 @@ const transform: AxiosTransform = {
    * @description: 处理请求数据
    */
   transformRequestData: (res: AxiosResponse<Result>, options: RequestOptions) => {
+    const { t } = useI18n();
     const { isTransformRequestResult } = options;
     // 不进行任何处理，直接返回
     // 用于页面代码可能需要直接获取code，data，message这些信息时开启
@@ -41,58 +43,55 @@ const transform: AxiosTransform = {
     }
     // 错误的时候返回
 
-    const { data: result } = res;
-    if (!result) {
+    const { data } = res;
+    if (!data) {
       // return '[HTTP] Request has no return value';
       return errorResult;
     }
-    //  这里 code，data，msg为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    const { code, data, msg } = result;
+    //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
+    const { code, data: result, msg: message } = data;
 
     // 这里逻辑可以根据项目进行修改
-    const hasSuccess = result && Reflect.has(result, 'code') && code === ResultEnum.SUCCESS;
-
+    const hasSuccess = data && Reflect.has(data, 'code') && code === ResultEnum.SUCCESS;
     if (!hasSuccess) {
-      console.log(result, Reflect.has(result, 'code'), code === ResultEnum.SUCCESS);
-      if (msg) {
+      if (message) {
         // errorMessageMode=‘modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
         if (options.errorMessageMode === 'modal') {
-          createErrorModal({ title: '错误提示', content: msg });
+          createErrorModal({ title: t('sys.api.errorTip'), content: message });
         } else {
-          createMessage.error(msg);
+          createMessage.error(message);
         }
       }
-      Promise.reject(new Error(msg));
+      Promise.reject(new Error(message));
       return errorResult;
     }
 
     // 接口请求成功，直接返回结果
     if (code === ResultEnum.SUCCESS) {
-      return data;
+      return result;
     }
     // 接口请求错误，统一提示错误信息
     if (code === ResultEnum.ERROR) {
-      if (msg) {
-        createMessage.error(result.msg);
-        Promise.reject(new Error(msg));
+      if (message) {
+        createMessage.error(data.msg);
+        Promise.reject(new Error(message));
       } else {
-        const m = '操作失败,系统异常!';
-        createMessage.error(m);
-        Promise.reject(new Error(m));
+        const msg = t('sys.api.errorMessage');
+        createMessage.error(msg);
+        Promise.reject(new Error(msg));
       }
       return errorResult;
     }
     // 登录超时
     if (code === ResultEnum.TIMEOUT) {
-      const timeoutMsg = '登录超时,请重新登录!';
+      const timeoutMsg = t('sys.api.timeoutMessage');
       createErrorModal({
-        title: '操作失败',
+        title: t('sys.api.operationFailed'),
         content: timeoutMsg,
       });
       Promise.reject(new Error(timeoutMsg));
       return errorResult;
     }
-
     return errorResult;
   },
 
@@ -155,6 +154,7 @@ const transform: AxiosTransform = {
    * @description: 响应错误处理
    */
   responseInterceptorsCatch: (error: any) => {
+    const { t } = useI18n();
     errorStore.setupErrorHandle(error);
     const { response, code, message } = error || {};
     const msg: string =
@@ -162,12 +162,12 @@ const transform: AxiosTransform = {
     const err: string = error.toString();
     try {
       if (code === 'ECONNABORTED' && message.indexOf('timeout') !== -1) {
-        createMessage.error('接口请求超时,请刷新页面重试!');
+        createMessage.error(t('sys.api.apiTimeoutMessage'));
       }
       if (err && err.includes('Network Error')) {
         createErrorModal({
-          title: '网络异常',
-          content: '请检查您的网络连接是否正常!',
+          title: t('sys.api.networkException'),
+          content: t('sys.api.networkExceptionMsg'),
         });
       }
     } catch (error) {

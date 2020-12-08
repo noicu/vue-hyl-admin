@@ -1,5 +1,82 @@
 ## Wip
 
+## (破坏性更新) Breaking changes
+
+- 路由重构, 不再支持以前的格式。改为支持 vue-router 最初的默认结构，具体格式可以参考示例更改。实现多级路由缓存，不再将路由转化为 2 级。
+- 重构面包屑，使用 antd 的面包屑组件。之前的组件已删除
+
+### ✨ Features
+
+- 还原 antdv 默认 loading，重构 `Loading` 组件，增加`useLoading`和`v-loading`指令。并增加示例
+- i18n 支持 vscode `i18n-ally`插件
+- 新增多级路由缓存示例
+- 打包代码拆分(试验)
+
+### ⚡ Performance Improvements
+
+- 页面切换 loading 逻辑修改。对于已经加载过的页面不管有没有关闭,再次打开不会在显示 loading(已经打开过的页面再次打开速度比较快,可以不需要 loading,同理顶部进度条逻辑也一样)，刷新后恢复。
+
+### 🎫 Chores
+
+- 首屏 loading 修改
+- 升级`vue`到`3.0.4`
+- 升级`ant-design-vue`到`2.0.0-rc.3`
+- 重新引入`vueuse`
+- 移除 route meta 内的`afterCloseLoading`属性
+
+### 🐛 Bug Fixes
+
+- 修复表格 i18n 错误
+- 修复菜单图标大小不一致
+- 修复顶部菜单宽度计算问题
+- 修复表格 tabSetting 问题
+- 修复文件上传删除失效
+
+## 2.0.0-rc.12 (2020-11-30)
+
+## (破坏性更新) Breaking changes
+
+- ClickOutSide 组件引入方式由 `import ClickOutSide from '/@/components/ClickOutSide/index.vue'`变更为`import { ClickOutSide } from '/@/components/ClickOutSide'`
+- Button 组件引入方式由 `import Button from '/@/components/Button/index.vue'`变更为`import { Button } from '/@/components/Button'`
+- StrengthMeter 组件引入方式由 `import StrengthMeter from '/@/components/StrengthMeter'`变更为`import { StrengthMeter } from '/@/components/StrengthMeter'`
+- 除示例外加入全局国际化功能，支持中文与英文
+
+### ✨ Refactor
+
+- 重构整体 layout。更改代码实现方式。代码更精简
+- 配置项重构
+- 移除 messageSetting 配置
+- BasicTitle 组件 `showSpan`=> `span`
+
+### ✨ Features
+
+- 缓存可以配置是否加密,默认生产环境开启 Aes 加密
+- 新增标签页拖拽排序
+- 新增 LayoutFooter.默认显示，可以在配置内关闭
+
+### ⚡ Performance Improvements
+
+- 优化`Modal`组件全屏动画不流畅问题
+
+### 🐛 Bug Fixes
+
+- tree: 修复文本超出挡住操作按钮问题
+- useRedo: 修复通过 useRedo 刷新页面参数丢失问题
+- form: 修复表单校验先设置在校验及控制台错误信息问题
+- `modal`&`drawer` 修复组件传递数组参数问题
+- form: 修复`updateSchema`赋值含有`[]`时不生效
+- table: 修复表格 `TableAction` 图标显示问题
+- table: 修复表格列设置通过`setColumns`设置不显示
+
+### 🎫 Chores
+
+- 更新 antdv 到`2.0.0-rc.2`
+- 更新 vue 到`3.0.3`
+- 更新 vite 到`1.0.0.rc13`
+- 暂时删除 `@vueuse/core`.等稳定后在集成。目前不太稳定。
+
+## 2.0.0-rc.11 (2020-11-18)
+
 ### ✨ Features
 
 - 新增 base64 文件流下载
@@ -8,10 +85,17 @@
 - 新增个人页
 - 新增表单页
 - 新增详情页
+- 将上传组件默认集成到 form
 
 ### 🎫 Chores
 
-- 更新 antdv 到`2.0.0-rc.1`
+- 更新 antdv 到`2.0.0-rc.1`（暂时还原到 beta15,rc1 菜单卡顿太严重.）
+- 添加部分注释
+
+### ✨ Refactor
+
+- 移除`useModal`与`useDrawer`的`receiveDrawerDataRef`和`transferDrawerData`属性
+- `useModal`与`useDrawer`对应的`openModal`与`openDrawer`扩展第三个参数。用于再次打开触发回调
 
 ### 🐛 Bug Fixes
 
