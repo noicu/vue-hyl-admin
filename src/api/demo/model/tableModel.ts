@@ -1,4 +1,3 @@
-import { BasicPageParams, BasicFetchResult } from '/@/api/model/baseModel';
 /**
  * @description: Request list interface parameters
  */
@@ -12,6 +11,16 @@ export interface DemoListItem {
   name: string;
   no: number;
   status: number;
+}
+
+export interface BasicFetchResult<T extends any> {
+  items: T;
+  total: number;
+}
+
+export interface BasicPageParams {
+  page: number;
+  pageSize: number;
 }
 
 /**
