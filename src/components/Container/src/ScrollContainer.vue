@@ -11,50 +11,47 @@
 
 <script lang="ts">
   import { defineComponent, ref, unref, nextTick } from 'vue';
-  import { Scrollbar } from '/@/components/Scrollbar';
+  import { Scrollbar, ScrollbarType } from '/@/components/Scrollbar';
 
   import { useScrollTo } from '/@/hooks/event/useScrollTo';
-
   export default defineComponent({
     name: 'ScrollContainer',
     components: { Scrollbar },
     setup() {
-      const scrollbarRef = ref<RefInstanceType<any>>(null);
-
+      const scrollbarRef = ref<Nullable<ScrollbarType>>(null);
       function scrollTo(to: number, duration = 500) {
         const scrollbar = unref(scrollbarRef);
         if (!scrollbar) return;
-
         nextTick(() => {
+          const wrap = unref(scrollbar.wrap);
+          if (!wrap) return;
           const { start } = useScrollTo({
-            el: unref(scrollbar.$.wrap),
+            el: wrap,
             to,
             duration,
           });
           start();
         });
       }
-
       function getScrollWrap() {
         const scrollbar = unref(scrollbarRef);
         if (!scrollbar) return null;
-        return scrollbar.$.wrap;
+        return scrollbar.wrap;
       }
-
       function scrollBottom() {
         const scrollbar = unref(scrollbarRef);
         if (!scrollbar) return;
-
         nextTick(() => {
-          const scrollHeight = scrollbar.$.wrap.scrollHeight as number;
+          const wrap = unref(scrollbar.wrap);
+          if (!wrap) return;
+          const scrollHeight = wrap.scrollHeight as number;
           const { start } = useScrollTo({
-            el: unref(scrollbar.$.wrap),
+            el: wrap,
             to: scrollHeight,
           });
           start();
         });
       }
-
       return {
         scrollbarRef,
         scrollTo,
