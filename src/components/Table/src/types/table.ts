@@ -6,6 +6,7 @@ import type {
   TableRowSelection as ITableRowSelection,
 } from 'ant-design-vue/lib/table/interface';
 import { ComponentType } from './componentType';
+import { FilterDataRT, FiltersConfig } from '/@/components/Filters';
 // import { ColumnProps } from './column';
 export declare type SortOrder = 'ascend' | 'descend';
 export interface TableCurrentDataSource<T = any> {
@@ -130,6 +131,12 @@ export interface BasicTableProps<T = any> {
   inset?: boolean;
   // 显示表格设置
   showTableSetting?: boolean;
+  // 显示过滤
+  showFilter?: boolean;
+  // 过滤配置
+  FiltersConfig?: Partial<FiltersConfig>;
+  // 默认过滤条件
+  FilterData?: Partial<FilterDataRT>;
   tableSetting?: TableSetting;
   // 斑马纹
   striped?: boolean;

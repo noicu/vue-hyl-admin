@@ -23,6 +23,14 @@ const table: AppRouteModule = {
       },
     },
     {
+      path: 'filter',
+      name: 'TableFilterDemo',
+      component: () => import('/@/views/demo/table/FilterTable.vue'),
+      meta: {
+        title: t('routes.demo.table.filter'),
+      },
+    },
+    {
       path: 'treeTable',
       name: 'TreeTableDemo',
       component: () => import('/@/views/demo/table/TreeTable.vue'),

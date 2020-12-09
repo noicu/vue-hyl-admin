@@ -119,9 +119,14 @@
       });
 
       const getBindValues = computed(() => {
-        const { title, titleHelpMessage, showSummary, showTableSetting, tableSetting } = unref(
-          getMergeProps
-        );
+        const {
+          title,
+          titleHelpMessage,
+          showSummary,
+          showTableSetting,
+          tableSetting,
+          showFilter,
+        } = unref(getMergeProps);
         const hideTitle = !slots.tableTitle && !title && !slots.toolbar && !showTableSetting;
         const titleData: any =
           hideTitle && !isString(title)
@@ -135,6 +140,7 @@
                       titleHelpMessage,
                       slots,
                       showTableSetting,
+                      showFilter,
                       tableSetting
                     ),
               };

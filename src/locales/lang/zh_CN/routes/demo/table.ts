@@ -1,6 +1,6 @@
 export default {
-  table: 'Table',
-
+  table: '表格',
+  filter: '过滤',
   basic: '基础表格',
   treeTable: '树形表格',
   fetchTable: '远程加载示例',

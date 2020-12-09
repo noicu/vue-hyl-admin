@@ -1,6 +1,6 @@
 export default {
   table: 'Table',
-
+  filter: 'Filter',
   basic: 'Basic',
   treeTable: 'Tree',
   fetchTable: 'Remote loading',

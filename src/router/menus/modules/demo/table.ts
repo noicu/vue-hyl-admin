@@ -12,6 +12,10 @@ const menu: MenuModule = {
         name: t('routes.demo.table.basic'),
       },
       {
+        path: 'filter',
+        name: t('routes.demo.table.filter'),
+      },
+      {
         path: 'treeTable',
         name: t('routes.demo.table.treeTable'),
       },
