@@ -53,8 +53,8 @@
         ],
       });
       const realName = computed(() => {
-        const { realName } = userStore.getUserInfoState || {};
-        return realName;
+        const { nick } = userStore.getUserInfoState || {};
+        return nick;
       });
 
       const getIsNotPwd = computed(() => {
@@ -65,7 +65,7 @@
       });
 
       /**
-       * @description: unLock
+       * @description: 锁屏
        */
       async function unLock(valid = true) {
         let password = '';

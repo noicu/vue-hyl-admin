@@ -123,8 +123,16 @@ class App extends VuexModule {
     }
     const tryLogin = async () => {
       try {
-        const username = userStore.getUserInfoState.username;
-        const res = await userStore.login({ username, password }, false);
+        const username = userStore.getUserInfoState.user_code;
+        const res = await userStore.login(
+          {
+            pwd: password,
+            user_code: username,
+            chart_key: '123',
+            chart_value: '456',
+          },
+          false
+        );
         if (res) {
           this.resetLockInfo();
         }
