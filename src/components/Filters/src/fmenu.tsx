@@ -87,7 +87,8 @@ export default defineComponent({
 
     const getStyle = computed(() => {
       const { axis, val } = props;
-      const { x, y } = axis || { x: 0, y: 0 };
+      let x = axis.x || 0;
+      const y = axis.y || 0;
       if (val[2] != '') x += val[1].replace(/[\u0391-\uFFE5]/g, 'aa').length * 8;
       const menuHeight = (items.value || []).length * 24;
       const menuWidth = 180;
