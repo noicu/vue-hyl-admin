@@ -5,18 +5,21 @@ import type {
   ReturnMethods,
   UseModalInnerReturnType,
 } from './types';
+
 import {
   ref,
   onUnmounted,
   unref,
   getCurrentInstance,
   reactive,
-  computed,
   watchEffect,
   nextTick,
+  toRaw,
 } from 'vue';
 import { isProdMode } from '/@/utils/env';
 import { isFunction } from '/@/utils/is';
+import { isEqual } from 'lodash-es';
+import { tryOnUnmounted } from '/@/utils/helper/vueHelper';
 const dataTransferRef = reactive<any>({});
 
 /**
@@ -29,6 +32,7 @@ export function useModal(): UseModalReturnType {
   const modalRef = ref<Nullable<ModalMethods>>(null);
   const loadedRef = ref<Nullable<boolean>>(false);
   const uidRef = ref<string>('');
+
   function register(modalMethod: ModalMethods, uuid: string) {
     uidRef.value = uuid;
 
@@ -42,6 +46,7 @@ export function useModal(): UseModalReturnType {
 
     modalRef.value = modalMethod;
   }
+
   const getInstance = () => {
     const instance = unref(modalRef);
     if (!instance) {
@@ -55,24 +60,29 @@ export function useModal(): UseModalReturnType {
       getInstance().setModalProps(props);
     },
 
-    openModal: <T = any>(visible = true, data?: T): void => {
+    openModal: <T = any>(visible = true, data?: T, openOnSet = false): void => {
       getInstance().setModalProps({
         visible: visible,
       });
-      if (data) {
+
+      if (!data) return;
+
+      if (openOnSet) {
+        dataTransferRef[unref(uidRef)] = null;
+        dataTransferRef[unref(uidRef)] = data;
+        return;
+      }
+      const equal = isEqual(toRaw(dataTransferRef[unref(uidRef)]), data);
+      if (!equal) {
         dataTransferRef[unref(uidRef)] = data;
       }
-    },
-
-    transferModalData(val: any) {
-      dataTransferRef[unref(uidRef)] = val;
     },
   };
   return [register, methods];
 }
 
 export const useModalInner = (callbackFn?: Fn): UseModalInnerReturnType => {
-  const modalInstanceRef = ref<ModalMethods | null>(null);
+  const modalInstanceRef = ref<Nullable<ModalMethods>>(null);
   const currentInstall = getCurrentInstance();
   const uidRef = ref<string>('');
 
@@ -89,6 +99,11 @@ export const useModalInner = (callbackFn?: Fn): UseModalInnerReturnType => {
   };
 
   const register = (modalInstance: ModalMethods, uuid: string) => {
+    isProdMode() &&
+      tryOnUnmounted(() => {
+        modalInstanceRef.value = null;
+      });
+
     uidRef.value = uuid;
     modalInstanceRef.value = modalInstance;
     currentInstall.emit('register', modalInstance);
@@ -106,10 +121,6 @@ export const useModalInner = (callbackFn?: Fn): UseModalInnerReturnType => {
   return [
     register,
     {
-      receiveModalDataRef: computed(() => {
-        return dataTransferRef[unref(uidRef)];
-      }),
-
       changeLoading: (loading = true) => {
         getInstance().setModalProps({ loading });
       },

@@ -52,6 +52,7 @@
   import renderFooter from './components/renderFooter';
   import renderExpandIcon from './components/renderExpandIcon';
   import { BasicForm, FormProps, useForm } from '/@/components/Form/index';
+
   import { isFunction, isString } from '/@/utils/is';
   import { deepMerge } from '/@/utils';
   import { omit } from 'lodash-es';
@@ -68,12 +69,13 @@
   import { basicProps } from './props';
   import { ROW_KEY } from './const';
   import './style/index.less';
+  import { useExpose } from '/@/hooks/core/useExpose';
   export default defineComponent({
     props: basicProps,
     components: { Table, BasicForm },
     emits: ['fetch-success', 'fetch-error', 'selection-change', 'register'],
     setup(props, { attrs, emit, slots }) {
-      const tableElRef = ref<any>(null);
+      const tableElRef = ref<ComponentRef>(null);
       const wrapRef = ref<Nullable<HTMLDivElement>>(null);
       const innerPropsRef = ref<Partial<BasicTableProps>>();
       const [registerForm, { getFieldsValue }] = useForm();
@@ -125,9 +127,7 @@
           tableSetting,
           showFilter,
         } = unref(getMergeProps);
-        // 隐藏标题
         const hideTitle = !slots.tableTitle && !title && !slots.toolbar && !showTableSetting;
-        // 标题数据
         const titleData: any =
           hideTitle && !isString(title)
             ? {}
@@ -215,9 +215,8 @@
         }
         return (index || 0) % 2 === 1 ? 'basic-table-row__striped' : '';
       }
-      // 搜索变化
+
       function handleSearchInfoChange(info: any) {
-        console.log('handleSearchInfoChange')
         const { handleSearchInfoFn } = unref(getMergeProps);
         if (handleSearchInfoFn && isFunction(handleSearchInfoFn)) {
           info = handleSearchInfoFn(info) || info;
@@ -231,8 +230,6 @@
         filters: Partial<Record<string, string[]>>,
         sorter: SorterResult
       ) {
-        console.log('handleTableChange')
-
         const { clearSelectOnPageChange, sortFn } = unref(getMergeProps);
         if (clearSelectOnPageChange) {
           clearSelectedRowKeys();
@@ -251,10 +248,8 @@
         if (unref(getMergeProps).showSummary) {
           nextTick(() => {
             const tableEl = unref(tableElRef);
-            if (!tableEl) {
-              return;
-            }
-            const bodyDomList = tableEl.$el.querySelectorAll('.ant-table-body') as HTMLDivElement[];
+            if (!tableEl) return;
+            const bodyDomList = tableEl.$el.querySelectorAll('.ant-table-body');
             const bodyDom = bodyDomList[0];
             useEventListener({
               el: bodyDom,
@@ -321,7 +316,7 @@
         wrapRef,
       });
 
-      console.log(tableAction, 314);
+      useExpose<TableActionType>(tableAction);
 
       emit('register', tableAction);
       return {
@@ -336,7 +331,7 @@
         getRowClassName,
         wrapRef,
         tableAction,
-        ...tableAction,
+        redoHeight,
       };
     },
   });

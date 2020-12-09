@@ -1,4 +1,5 @@
 export const timestamp = () => +Date.now();
+import { isObject } from '/@/utils/is';
 export const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 export const noop = () => {};
 export const now = () => Date.now();
@@ -11,6 +12,7 @@ export function getPopupContainer(node?: HTMLElement): HTMLElement {
   }
   return document.body;
 }
+
 /**
  * Add the object as a parameter to the URL
  * @param baseUrl url
@@ -39,10 +41,7 @@ export function setObjToUrlParams(baseUrl: string, obj: any): string {
 export function deepMerge<T = any>(src: any, target: any): T {
   let key: string;
   for (key in target) {
-    src[key] =
-      src[key] && src[key].toString() === '[object Object]'
-        ? deepMerge(src[key], target[key])
-        : (src[key] = target[key]);
+    src[key] = isObject(src[key]) ? deepMerge(src[key], target[key]) : (src[key] = target[key]);
   }
   return src;
 }
@@ -65,30 +64,15 @@ export function es6Unique<T>(arr: T[]): T[] {
   return Array.from(new Set(arr));
 }
 
-/**
- * @description: 查询字符串出现的位置
- */
-export function findPos(
-  str: string,
-  search: string,
-  index: number = 0,
-  arr: Array<[number, number]> = []
-): Array<[number, number]> {
-  index = str.indexOf(search, index);
-  if (index !== -1) {
-    arr.push([index, index + search.length]);
-    return findPos(str, search, index + 1, arr);
-  }
-  console.log(index, arr);
-  return arr;
-}
+export function openWindow(
+  url: string,
+  opt?: { target?: TargetContext | string; noopener?: boolean; noreferrer?: boolean }
+) {
+  const { target = '__blank', noopener = true, noreferrer = true } = opt || {};
+  const feature: string[] = [];
 
-export function generateMixed(n: number) {
-  var chars = ['!', '@', '#', '$', '%', '^', '&', '(', ')'];
-  var res = '';
-  for (var i = 0; i < n; i++) {
-    var id = Math.ceil(Math.random() * chars.length - 1);
-    res += chars[id];
-  }
-  return res;
+  noopener && feature.push('noopener=yes');
+  noreferrer && feature.push('noreferrer=yes');
+
+  window.open(url, target, feature.join(','));
 }

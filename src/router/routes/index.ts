@@ -1,31 +1,29 @@
 import type { AppRouteRecordRaw, AppRouteModule } from '/@/router/types';
 
-import { DEFAULT_LAYOUT_COMPONENT, PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '../constant';
-import { genRouteModule } from '/@/utils/helper/routeHelper';
+import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE, LAYOUT } from '../constant';
+import { PageEnum } from '/@/enums/pageEnum';
+
 import modules from 'globby!/@/router/routes/modules/**/*.@(ts)';
+import { t } from '/@/hooks/web/useI18n';
 
 const routeModuleList: AppRouteModule[] = [];
 
 Object.keys(modules).forEach((key) => {
-  routeModuleList.push(modules[key]);
+  const mod = Array.isArray(modules[key]) ? [...modules[key]] : [modules[key]];
+  routeModuleList.push(...mod);
 });
 
-export const asyncRoutes = [
-  REDIRECT_ROUTE,
-  PAGE_NOT_FOUND_ROUTE,
-  ...genRouteModule(routeModuleList),
-];
+export const asyncRoutes = [PAGE_NOT_FOUND_ROUTE, ...routeModuleList];
 
-// 主框架根路由
-export const RootRoute: AppRouteRecordRaw = {
+const MainRoute: AppRouteModule = {
   path: '/',
-  name: 'Root',
-  component: DEFAULT_LAYOUT_COMPONENT,
-  redirect: '/dashboard',
+  name: 'MainRoute',
+  component: LAYOUT,
+  redirect: PageEnum.BASE_HOME,
   meta: {
-    title: 'Root',
+    icon: 'bx:bx-home',
+    title: t('routes.dashboard.dashboard'),
   },
-  children: [],
 };
 
 export const LoginRoute: AppRouteRecordRaw = {
@@ -33,9 +31,9 @@ export const LoginRoute: AppRouteRecordRaw = {
   name: 'Login',
   component: () => import('/@/views/sys/login/Login.vue'),
   meta: {
-    title: '登录',
+    title: t('routes.basic.login'),
   },
 };
 
 // 基础路由 不用权限
-export const basicRoutes = [LoginRoute, RootRoute];
+export const basicRoutes = [LoginRoute, MainRoute, REDIRECT_ROUTE];

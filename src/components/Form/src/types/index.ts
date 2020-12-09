@@ -93,7 +93,6 @@ export type ComponentType =
   | 'SelectOption'
   | 'TreeSelect'
   | 'Transfer'
-  // | 'Radio'
   | 'RadioButtonGroup'
   | 'RadioGroup'
   | 'Checkbox'
@@ -108,4 +107,5 @@ export type ComponentType =
   | 'ImageUpload'
   | 'Switch'
   | 'StrengthMeter'
+  | 'Upload'
   | 'Render';

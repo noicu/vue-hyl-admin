@@ -1,4 +1,4 @@
-import { FiltersConfig } from "./types";
+import { FiltersConfig } from './types';
 
 export function findKey(source: Array<FiltersConfig>, search: any): FiltersConfig {
   let obj: any = null;

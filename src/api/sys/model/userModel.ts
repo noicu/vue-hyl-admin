@@ -9,18 +9,6 @@ export interface LoginParams {
 }
 
 /**
- * @description: Get user information
- */
-export interface GetUserInfoByUserIdParams {
-  userId: string | number;
-}
-
-export interface RoleInfo {
-  roleName: string;
-  value: string;
-}
-
-/**
  * @description: 登录返回结果
  */
 export interface LoginResultModel {
@@ -57,18 +45,3 @@ export interface UserInfo {
   user_name: string;
   ver: number;
 }
-
-// /**
-//  * @description: Get user information return value
-//  */
-// export interface GetUserInfoByUserIdModel {
-//   role: RoleInfo;
-//   // 用户id
-//   userId: string | number;
-//   // 用户名
-//   username: string;
-//   // 真实名字
-//   realName: string;
-//   // 介绍
-//   desc?: string;
-// }

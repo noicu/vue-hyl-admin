@@ -1,6 +1,5 @@
 import Icon from './Icon/index';
-import Button from './Button/index.vue';
-import { AppFooter } from './Footer';
+import { Button } from './Button';
 import {
   // Need
   Button as AntButton,
@@ -32,10 +31,13 @@ import {
   PageHeader,
   Result,
   Empty,
+  Avatar,
+  Menu,
+  Breadcrumb,
 } from 'ant-design-vue';
-import { getApp } from '/@/useApp';
+import { getApp } from '/@/setup/App';
 
-const compList = [Icon, Button, AntButton.Group, AppFooter];
+const compList = [Icon, Button, AntButton.Group];
 
 // Fix hmr multiple registered components
 let registered = false;
@@ -54,6 +56,7 @@ export function registerGlobComp() {
   getApp()
     .use(Select)
     .use(Alert)
+    .use(Breadcrumb)
     .use(Checkbox)
     .use(DatePicker)
     .use(Radio)
@@ -77,5 +80,7 @@ export function registerGlobComp() {
     .use(PageHeader)
     .use(Result)
     .use(Empty)
+    .use(Avatar)
+    .use(Menu)
     .use(Tabs);
 }

@@ -1,6 +1,6 @@
 <template>
   <Form v-bind="{ ...$attrs, ...$props }" ref="formElRef" :model="formModel">
-    <Row :class="getProps.compact ? 'compact-form-row' : ''">
+    <Row :class="getProps.compact ? 'compact-form-row' : ''" :style="getRowWrapStyleRef">
       <slot name="formHeader" />
       <template v-for="schema in getSchema" :key="schema.field">
         <FormItem
@@ -16,6 +16,7 @@
           </template>
         </FormItem>
       </template>
+
       <FormAction
         v-bind="{ ...getActionPropsRef, ...advanceState }"
         @toggle-advanced="handleToggleAdvanced"
@@ -27,20 +28,17 @@
 <script lang="ts">
   import type { FormActionType, FormProps, FormSchema } from './types/form';
   import type { AdvanceState } from './types/hooks';
-  import type { Ref } from 'vue';
+  import type { Ref, WatchStopHandle } from 'vue';
   import type { ValidateFields } from 'ant-design-vue/lib/form/interface';
-
-  import { defineComponent, reactive, ref, computed, unref, toRef, onMounted, watch } from 'vue';
+  import { defineComponent, reactive, ref, computed, unref, onMounted, watch, toRefs } from 'vue';
   import { Form, Row } from 'ant-design-vue';
   import FormItem from './FormItem';
   import { basicProps } from './props';
   import FormAction from './FormAction';
-
   import { dateItemType } from './helper';
   import moment from 'moment';
   import { cloneDeep } from 'lodash-es';
   import { deepMerge } from '/@/utils';
-
   import { useFormValues } from './hooks/useFormValues';
   import useAdvanced from './hooks/useAdvanced';
   import { useFormAction } from './hooks/useFormAction';
@@ -52,30 +50,30 @@
     emits: ['advanced-change', 'reset', 'submit', 'register'],
     setup(props, { emit }) {
       const formModel = reactive({});
-
       const actionState = reactive({
         resetAction: {},
         submitAction: {},
       });
-
       const advanceState = reactive<AdvanceState>({
         isAdvanced: true,
         hideAdvanceBtn: false,
         isLoad: false,
         actionSpan: 6,
       });
-
       const defaultValueRef = ref<any>({});
+      const isInitedDefaultRef = ref(false);
       const propsRef = ref<Partial<FormProps>>({});
       const schemaRef = ref<Nullable<FormSchema[]>>(null);
       const formElRef = ref<Nullable<FormActionType>>(null);
-
       const getMergePropsRef = computed(
         (): FormProps => {
           return deepMerge(cloneDeep(props), unref(propsRef));
         }
       );
-
+      const getRowWrapStyleRef = computed((): any => {
+        const { baseRowStyle } = unref(getMergePropsRef);
+        return baseRowStyle || {};
+      });
       // 获取表单基本配置
       const getProps = computed(
         (): FormProps => {
@@ -92,12 +90,12 @@
           };
         }
       );
-
       const getSchema = computed((): FormSchema[] => {
         const schemas: FormSchema[] = unref(schemaRef) || (unref(getProps).schemas as any);
         for (const schema of schemas) {
           const { defaultValue, component } = schema;
-          if (defaultValue && dateItemType.includes(component!)) {
+          // handle date type
+          if (defaultValue && dateItemType.includes(component)) {
             if (!Array.isArray(defaultValue)) {
               schema.defaultValue = moment(defaultValue);
             } else {
@@ -111,7 +109,6 @@
         }
         return schemas as FormSchema[];
       });
-
       const { getActionPropsRef, handleToggleAdvanced } = useAdvanced({
         advanceState,
         emit,
@@ -121,15 +118,14 @@
         formModel,
         defaultValueRef,
       });
-
+      const { transformDateFunc, fieldMapToTime } = toRefs(props);
       const { handleFormValues, initDefault } = useFormValues({
-        transformDateFuncRef: toRef(props, 'transformDateFunc') as Ref<Fn<any>>,
-        fieldMapToTimeRef: toRef(props, 'fieldMapToTime'),
+        transformDateFuncRef: transformDateFunc as Ref<Fn<any>>,
+        fieldMapToTimeRef: fieldMapToTime,
         defaultValueRef,
         getSchema,
         formModel,
       });
-
       const {
         // handleSubmit,
         setFieldsValue,
@@ -152,7 +148,6 @@
         handleFormValues,
         actionState,
       });
-
       watch(
         () => unref(getMergePropsRef).model,
         () => {
@@ -163,22 +158,22 @@
           immediate: true,
         }
       );
-
-      watch(
+      const stopWatch: WatchStopHandle = watch(
         () => getSchema.value,
-        () => {
-          initDefault();
+        (schema) => {
+          if (unref(isInitedDefaultRef)) {
+            return stopWatch();
+          }
+          if (schema && schema.length) {
+            initDefault();
+            isInitedDefaultRef.value = true;
+          }
         }
       );
-
-      /**
-       * @description:设置表单
-       */
       function setProps(formProps: Partial<FormProps>): void {
         const mergeProps = deepMerge(unref(propsRef) || {}, formProps);
         propsRef.value = mergeProps;
       }
-
       const formActionType: Partial<FormActionType> = {
         getFieldsValue,
         setFieldsValue,
@@ -191,18 +186,17 @@
         validateFields: validateFields as ValidateFields,
         validate: validate as ValidateFields,
       };
-
       onMounted(() => {
         initDefault();
         emit('register', formActionType);
       });
-
       return {
         handleToggleAdvanced,
         formModel,
         getActionPropsRef,
         defaultValueRef,
         advanceState,
+        getRowWrapStyleRef,
         getProps,
         formElRef,
         getSchema,

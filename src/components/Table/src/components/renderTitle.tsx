@@ -3,8 +3,10 @@ import TableTitle from './TableTitle.vue';
 import { getSlot } from '/@/utils/helper/tsxHelper';
 import TableSettingComp from './TableSetting.vue';
 import { Divider } from 'ant-design-vue';
-import type { TableSetting } from '../types/table';
 import Filter from './TableFilter.vue';
+
+import type { TableSetting } from '../types/table';
+
 export default (
   title: any,
   titleHelpMessage: string | string[],
@@ -13,7 +15,6 @@ export default (
   showFilter: boolean,
   tableSetting: TableSetting
 ) => {
-  console.log(showFilter);
   return (
     <>
       {getSlot(slots, 'tableTitle') ||

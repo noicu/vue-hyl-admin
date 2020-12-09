@@ -4,15 +4,15 @@ import { fmenuProps as props } from './props';
 import { Divider } from 'ant-design-vue';
 
 import './index.less';
-import { FilterMenuItem, FiltersConfig, FMIT } from './types';
+import { FilterMenuItem, FMIT } from './types';
 import { findKey } from './utils';
 import { unique } from '/@/utils';
 const prefixCls = 'filter-menu';
 
 export default defineComponent({
   name: 'ContextMenu',
-  emits: ['finished'],
   props,
+  emits: ['finished'],
   setup(props, { emit }) {
     const wrapRef = ref<Nullable<HTMLDivElement>>(null);
 
@@ -69,11 +69,11 @@ export default defineComponent({
 
     function searchValue(): FilterMenuItem[] {
       const { schemas, val, data } = unref(props);
-      let field: any = findKey(schemas, val[1])?.field;
-      let arr = [];
+      const field: any = findKey(schemas, val[1])?.field;
+      const arr = [];
       if (field != null) {
         let label;
-        let bol = val[3] == '';
+        const bol = val[3] == '';
 
         for (let i = 0; i < data.length; i++) {
           label = data[i][field];
@@ -87,7 +87,8 @@ export default defineComponent({
 
     const getStyle = computed(() => {
       const { axis, val } = props;
-      let { x, y } = axis || { x: 0, y: 0 };
+      let x = axis.x || 0;
+      const y = axis.y || 0;
       if (val[2] != '') x += val[1].replace(/[\u0391-\uFFE5]/g, 'aa').length * 8;
       const menuHeight = (items.value || []).length * 24;
       const menuWidth = 180;
@@ -135,7 +136,7 @@ export default defineComponent({
           <li
             class="filter-menu-item"
             onMousedown={handlerItemClick}
-            onMouseup={(e: MouseEvent) => handlerItemUp(item)}
+            onMouseup={() => handlerItemUp(item)}
           >
             {item.pos && item.pos.length ? item.pos : item.label}
           </li>
@@ -145,7 +146,7 @@ export default defineComponent({
 
     function getPos(source: string, str: string) {
       if (!str || !source) return [];
-      let ff = '-^`*-';
+      const ff = '-^`*-';
       return source
         .replace(new RegExp(str, 'g'), ff + str + ff)
         .split(ff)

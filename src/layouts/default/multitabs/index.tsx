@@ -1,127 +1,94 @@
-import type { TabContentProps } from './tab.data';
-import type { TabItem } from '/@/store/modules/tab';
-import type { AppRouteRecordRaw } from '/@/router/types';
+import './index.less';
 
-import { defineComponent, watch, computed, unref, toRaw } from 'vue';
+import type { TabContentProps } from './types';
+
+import { defineComponent, watch, computed, unref, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import router from '/@/router';
 
 import { Tabs } from 'ant-design-vue';
 import TabContent from './TabContent';
 
 import { useGo } from '/@/hooks/web/usePage';
 
-import { TabContentEnum } from './tab.data';
+import { TabContentEnum } from './types';
 
 import { tabStore } from '/@/store/modules/tab';
 import { userStore } from '/@/store/modules/user';
 
-import { closeTab } from './useTabDropdown';
-import { useTabs } from '/@/hooks/web/useTabs';
+import { initAffixTabs, useTabsDrag } from './useMultipleTabs';
 
-import './index.less';
 export default defineComponent({
-  name: 'MultiTabs',
+  name: 'MultipleTabs',
   setup() {
-    let isAddAffix = false;
+    const activeKeyRef = ref('');
+
+    const affixTextList = initAffixTabs();
+
+    useTabsDrag(affixTextList);
+
     const go = useGo();
+
     const { currentRoute } = useRouter();
-    const { activeKeyRef } = useTabs();
 
-    // 当前tab列表
-    const getTabsState = computed(() => {
-      return tabStore.getTabsState;
-    });
+    const getTabsState = computed(() => tabStore.getTabsState);
 
-    // If you monitor routing changes, tab switching will be stuck. So use this method
     watch(
-      () => tabStore.getLastChangeRouteState,
+      () => tabStore.getLastChangeRouteState?.path,
       () => {
-        if (!isAddAffix) {
-          addAffixTabs();
-          isAddAffix = true;
-        }
-
         const lastChangeRoute = unref(tabStore.getLastChangeRouteState);
         if (!lastChangeRoute || !userStore.getTokenState) return;
-
         const { path, fullPath } = lastChangeRoute;
-        if (activeKeyRef.value !== (fullPath || path)) {
-          activeKeyRef.value = fullPath || path;
+        const p = fullPath || path;
+        if (activeKeyRef.value !== p) {
+          activeKeyRef.value = p;
         }
-        tabStore.commitAddTab((lastChangeRoute as unknown) as AppRouteRecordRaw);
+        tabStore.addTabAction(lastChangeRoute);
       },
       {
         immediate: true,
       }
     );
 
-    /**
-     * @description: 过滤所有固定路由
-     */
-    function filterAffixTabs(routes: AppRouteRecordRaw[]) {
-      const tabs: TabItem[] = [];
-      routes &&
-        routes.forEach((route) => {
-          if (route.meta && route.meta.affix) {
-            tabs.push(toRaw(route) as TabItem);
-          }
-        });
-      return tabs;
-    }
-
-    /**
-     * @description: 设置固定tabs
-     */
-    function addAffixTabs(): void {
-      const affixTabs = filterAffixTabs((router.getRoutes() as unknown) as AppRouteRecordRaw[]);
-      for (const tab of affixTabs) {
-        tabStore.commitAddTab(tab);
-      }
-    }
-
-    // tab切换
     function handleChange(activeKey: any) {
       activeKeyRef.value = activeKey;
       go(activeKey, false);
     }
 
-    // 关闭当前ab
+    // Close the current tab
     function handleEdit(targetKey: string) {
-      // 新增操作隐藏，目前只使用删除操作
-      const index = unref(getTabsState).findIndex(
-        (item) => (item.fullPath || item.path) === targetKey
-      );
-      index !== -1 && closeTab(unref(getTabsState)[index]);
+      // Added operation to hide, currently only use delete operation
+      tabStore.closeTabByKeyAction(targetKey);
     }
 
     function renderQuick() {
       const tabContentProps: TabContentProps = {
-        tabItem: (currentRoute as unknown) as AppRouteRecordRaw,
+        tabItem: currentRoute.value,
         type: TabContentEnum.EXTRA_TYPE,
-        trigger: ['click', 'contextmenu'],
       };
-      return (
-        <span>
-          <TabContent {...(tabContentProps as any)} />
-        </span>
-      );
+      return <TabContent {...tabContentProps} />;
     }
-    function renderTabs() {
-      return unref(getTabsState).map((item: TabItem) => {
-        const key = item.query ? item.fullPath : item.path;
 
+    function renderTabs() {
+      return unref(getTabsState).map((item) => {
+        const key = item.query ? item.fullPath : item.path;
+        const closable = !(item && item.meta && item.meta.affix);
+
+        const slots = {
+          tab: () => <TabContent tabItem={item} />,
+        };
         return (
-          <Tabs.TabPane key={key} closable={!(item && item.meta && item.meta.affix)}>
-            {{
-              tab: () => <TabContent tabItem={item} />,
-            }}
+          <Tabs.TabPane key={key} closable={closable}>
+            {slots}
           </Tabs.TabPane>
         );
       });
     }
 
     return () => {
+      const slots = {
+        default: () => renderTabs(),
+        tabBarExtraContent: () => renderQuick(),
+      };
       return (
         <div class="multiple-tabs">
           <Tabs
@@ -129,15 +96,12 @@ export default defineComponent({
             size="small"
             animated={false}
             hideAdd={true}
-            tabBarGutter={4}
+            tabBarGutter={3}
             activeKey={unref(activeKeyRef)}
             onChange={handleChange}
             onEdit={handleEdit}
           >
-            {{
-              default: () => renderTabs(),
-              tabBarExtraContent: () => renderQuick(),
-            }}
+            {slots}
           </Tabs>
         </div>
       );

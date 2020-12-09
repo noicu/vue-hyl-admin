@@ -3,22 +3,23 @@
     <div class="login-mask" />
     <div class="login-form-wrap">
       <div class="login-form mx-6">
+        <AppLocalePicker v-if="showLocale" class="login-form__locale" />
         <div class="login-form__content px-2 py-10">
           <header>
-            <img :src="logo" class="mr-4" alt="" />
+            <img :src="logo" class="mr-4" />
             <h1>{{ title }}</h1>
           </header>
 
           <a-form class="mx-auto mt-10" :model="formData" :rules="formRules" ref="formRef">
             <a-form-item name="account">
-              <a-input size="large" v-model:value="formData.account" placeholder="Username: vben" />
+              <a-input size="large" v-model:value="formData.account" placeholder="username: vben" />
             </a-form-item>
             <a-form-item name="password">
               <a-input-password
                 size="large"
                 visibilityToggle
                 v-model:value="formData.password"
-                placeholder="Password: 123456"
+                placeholder="password: 123456"
               />
             </a-form-item>
 
@@ -28,14 +29,16 @@
             <a-row>
               <a-col :span="12">
                 <a-form-item>
-                  <!-- 未做逻辑，需要自行处理 -->
-                  <a-checkbox v-model:checked="autoLogin" size="small">自动登录</a-checkbox>
+                  <!-- No logic, you need to deal with it yourself -->
+                  <a-checkbox v-model:checked="autoLogin" size="small">{{
+                    t('sys.login.autoLogin')
+                  }}</a-checkbox>
                 </a-form-item>
               </a-col>
               <a-col :span="12">
                 <a-form-item :style="{ 'text-align': 'right' }">
-                  <!-- 未做逻辑，需要自行处理 -->
-                  <a-button type="link" size="small">忘记密码</a-button>
+                  <!-- No logic, you need to deal with it yourself -->
+                  <a-button type="link" size="small">{{ t('sys.login.forgetPassword') }}</a-button>
                 </a-form-item>
               </a-col>
             </a-row>
@@ -47,7 +50,7 @@
                 :block="true"
                 @click="login"
                 :loading="formState.loading"
-                >登录</a-button
+                >{{ t('sys.login.loginButton') }}</a-button
               >
             </a-form-item>
           </a-form>
@@ -57,38 +60,37 @@
   </div>
 </template>
 <script lang="ts">
-  import {
-    defineComponent,
-    reactive,
-    ref,
-    unref,
-    toRaw,
-    // computed
-  } from 'vue';
+  import { defineComponent, reactive, ref, unref, toRaw } from 'vue';
   import { Checkbox } from 'ant-design-vue';
 
-  import Button from '/@/components/Button/index.vue';
+  import { Button } from '/@/components/Button';
+  import { AppLocalePicker } from '/@/components/Application';
   // import { BasicDragVerify, DragVerifyActionType } from '/@/components/Verify/index';
 
   import { userStore } from '/@/store/modules/user';
+
   // import { appStore } from '/@/store/modules/app';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { useSetting } from '/@/hooks/core/useSetting';
+  import { useGlobSetting, useProjectSetting } from '/@/hooks/setting';
   import logo from '/@/assets/images/logo.png';
+  import { useI18n } from '/@/hooks/web/useI18n';
 
   export default defineComponent({
     components: {
       //  BasicDragVerify,
       AButton: Button,
       ACheckbox: Checkbox,
+      AppLocalePicker,
     },
     setup() {
       const formRef = ref<any>(null);
       const autoLoginRef = ref(false);
       // const verifyRef = ref<RefInstanceType<DragVerifyActionType>>(null);
 
-      const { globSetting } = useSetting();
+      const globSetting = useGlobSetting();
+      const { locale } = useProjectSetting();
       const { notification } = useMessage();
+      const { t } = useI18n();
 
       // const openLoginVerifyRef = computed(() => appStore.getProjectConfig.openLoginVerify);
 
@@ -102,8 +104,10 @@
       });
 
       const formRules = reactive({
-        account: [{ required: true, message: '请输入账号', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+        account: [{ required: true, message: t('sys.login.accountPlaceholder'), trigger: 'blur' }],
+        password: [
+          { required: true, message: t('sys.login.passwordPlaceholder'), trigger: 'blur' },
+        ],
         // verify: unref(openLoginVerifyRef) ? [{ required: true, message: '请通过验证码校验' }] : [],
       });
 
@@ -130,8 +134,8 @@
           );
           if (userInfo) {
             notification.success({
-              message: '登录成功',
-              description: `欢迎回来: ${userInfo.nick}`,
+              message: t('sys.login.loginSuccessTitle'),
+              description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.nick}`,
               duration: 3,
             });
           }
@@ -141,7 +145,6 @@
           formState.loading = false;
         }
       }
-
       return {
         formRef,
         // verifyRef,
@@ -153,13 +156,21 @@
         // openLoginVerify: openLoginVerifyRef,
         title: globSetting && globSetting.title,
         logo,
+        t,
+        showLocale: locale.show,
       };
     },
   });
 </script>
-
-<style lang="less" scoped>
+<style lang="less">
   @import (reference) '../../../design/index.less';
+
+  .login-form__locale {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 1;
+  }
 
   .login {
     position: relative;
@@ -178,7 +189,9 @@
     }
 
     &-form {
-      width: 520px;
+      position: relative;
+      bottom: 60px;
+      width: 400px;
       background: @white;
       border: 10px solid rgba(255, 255, 255, 0.5);
       border-width: 8px;
@@ -192,19 +205,20 @@
         right: 0;
         display: flex;
         width: 100%;
-        height: 90%;
+        height: 100%;
+        // height: 90%;
         justify-content: center;
         align-items: center;
-        .respond-to(large, {
-          width: 600px;
-          right: calc(50% - 270px);
+        .respond-to(xlarge, {
+        justify-content: flex-end;
           });
-        .respond-to(xlarge, { width: 540px; right:0});
       }
 
       &__content {
+        position: relative;
         width: 100%;
         height: 100%;
+        padding: 60px 0 40px 0;
         border: 1px solid #999;
         border-radius: 2px;
 
@@ -221,7 +235,6 @@
           h1 {
             margin-bottom: 0;
             font-size: 24px;
-            // color: @primary-color;
             text-align: center;
           }
         }

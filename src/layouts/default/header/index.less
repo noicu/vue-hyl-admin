@@ -4,20 +4,32 @@
   display: flex;
   height: @header-height;
   padding: 0 20px 0 0;
+  margin-left: -1px;
   line-height: @header-height;
   color: @white;
   background: @white;
   align-items: center;
   justify-content: space-between;
 
+  &.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+  }
+
   &__left {
     display: flex;
-    flex-grow: 1;
+    height: 100%;
     align-items: center;
 
     .layout-trigger {
-      padding: 4px 10px 0 16px;
+      display: flex;
+      height: 100%;
+      padding: 1px 10px 0 16px;
       cursor: pointer;
+      align-items: center;
 
       .anticon {
         font-size: 17px;
@@ -41,12 +53,22 @@
     }
 
     .layout-breadcrumb {
+      display: flex;
       padding: 0 8px;
+      align-items: center;
+
+      .ant-breadcrumb-link {
+        .anticon {
+          margin-right: 4px;
+          margin-bottom: 2px;
+        }
+      }
     }
   }
 
   &__content {
     display: flex;
+    height: 100%;
     flex-grow: 1;
     align-items: center;
   }
@@ -61,6 +83,24 @@
       .ant-menu-submenu {
         height: @header-height;
         line-height: @header-height;
+      }
+    }
+
+    .layout-breadcrumb {
+      .ant-breadcrumb-link {
+        color: @breadcrumb-item-normal-color;
+
+        a {
+          color: @text-color-base;
+
+          &:hover {
+            color: @primary-color;
+          }
+        }
+      }
+
+      .ant-breadcrumb-separator {
+        color: @breadcrumb-item-normal-color;
       }
     }
 
@@ -83,6 +123,11 @@
       &-item {
         &:hover {
           background: @header-light-bg-hover-color;
+        }
+
+        &.locale {
+          padding: 0 10px;
+          color: rgba(0, 0, 0, 0.65);
         }
       }
 
@@ -139,19 +184,22 @@
       }
     }
 
-    .breadcrumb {
-      &__item:last-child .breadcrumb__inner,
-      &__item:last-child &__inner a,
-      &__item:last-child &__inner a:hover,
-      &__item:last-child &__inner:hover {
-        font-weight: 400;
+    .layout-breadcrumb {
+      .ant-breadcrumb-link {
         color: rgba(255, 255, 255, 0.6);
-        cursor: text;
+
+        a {
+          color: rgba(255, 255, 255, 0.8);
+
+          &:hover {
+            color: @white;
+          }
+        }
       }
 
-      &__inner,
-      &__separator {
-        color: @white;
+      .ant-breadcrumb-separator,
+      .anticon {
+        color: rgba(255, 255, 255, 0.8);
       }
     }
   }
@@ -184,7 +232,7 @@
   }
 
   &__menu {
-    margin-left: 20px;
+    margin-left: 4px;
     overflow: hidden;
     align-items: center;
   }
@@ -210,5 +258,11 @@
     &__header {
       border-radius: 50%;
     }
+  }
+}
+
+.app-layout-header-user-dropdown-overlay {
+  .ant-dropdown-menu-item {
+    min-width: 160px;
   }
 }

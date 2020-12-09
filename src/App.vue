@@ -1,50 +1,46 @@
 <template>
-  <ConfigProvider :locale="zhCN" :transform-cell-text="transformCellText" v-bind="lockOn">
-    <router-view />
+  <ConfigProvider
+    v-bind="lockEvent"
+    :locale="antConfigLocale"
+    :transform-cell-text="transformCellText"
+  >
+    <AppProvider>
+      <router-view />
+    </AppProvider>
   </ConfigProvider>
 </template>
 
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { ConfigProvider } from 'ant-design-vue';
-  import { createBreakpointListen } from '/@/hooks/event/useBreakpoint';
 
-  import zhCN from 'ant-design-vue/es/locale/zh_CN';
-  import moment from 'moment';
-  import 'moment/dist/locale/zh-cn';
+  import { getConfigProvider, initAppConfigStore } from '/@/setup/App';
 
-  import { useConfigProvider, useInitAppConfigStore } from './useApp';
   import { useLockPage } from '/@/hooks/web/useLockPage';
-  import { useSetting } from '/@/hooks/core/useSetting';
+  import { useLocale } from '/@/hooks/web/useLocale';
 
-  moment.locale('zh-cn');
+  import { AppProvider } from '/@/components/Application';
 
   export default defineComponent({
     name: 'App',
-    components: { ConfigProvider },
+    components: { ConfigProvider, AppProvider },
     setup() {
-      // 初始化应用程序设置
-      useInitAppConfigStore();
-      // 初始化断点监控
-      createBreakpointListen();
-      // 获取系统配置
-      const { projectSetting } = useSetting();
-      // 获取提供者配置
-      const { transformCellText } = useConfigProvider();
+      // Initialize vuex internal system configuration
+      initAppConfigStore();
 
-      console.log(projectSetting,transformCellText)
+      // Get ConfigProvider configuration
+      const { transformCellText } = getConfigProvider();
 
-      let lockOn = {};
-      if (projectSetting.lockTime) {
-        // 监控鼠标或键盘时间，用于重新计算锁定屏幕时间
-        const { on } = useLockPage();
-        lockOn = on;
-      }
+      // Create a lock screen monitor
+      const lockEvent = useLockPage();
+
+      // support Multi-language
+      const { antConfigLocale } = useLocale();
 
       return {
         transformCellText,
-        zhCN,
-        lockOn,
+        antConfigLocale,
+        lockEvent,
       };
     },
   });

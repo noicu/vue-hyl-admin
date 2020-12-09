@@ -15,25 +15,25 @@ export interface TableCurrentDataSource<T = any> {
 
 export interface TableRowSelection<T = any> extends ITableRowSelection {
   /**
-   * 选定行更改时执行回调
+   * Callback executed when selected rows change
    * @type Function
    */
   onChange?: (selectedRowKeys: string[] | number[], selectedRows: T[]) => any;
 
   /**
-   * 选择或取消选择一行时执行回调
+   * Callback executed when select/deselect one row
    * @type FunctionT
    */
   onSelect?: (record: T, selected: boolean, selectedRows: Object[], nativeEvent: Event) => any;
 
   /**
-   * 选择或取消选择所有行时执行回调
+   * Callback executed when select/deselect all rows
    * @type Function
    */
   onSelectAll?: (selected: boolean, selectedRows: T[], changeRows: T[]) => any;
 
   /**
-   * 反选时执行回调
+   * Callback executed when row selection is inverted
    * @type Function
    */
   onSelectInvert?: (selectedRows: string[] | number[]) => any;
@@ -202,158 +202,160 @@ export interface BasicTableProps<T = any> {
   loading?: boolean;
 
   /**
-   * 要显示列
+   * The column contains children to display
    * @default 'children'
    * @type string | string[]
    */
   childrenColumnName?: string | string[];
 
   /**
-   * 覆盖默认表元素
+   * Override default table elements
    * @type object
    */
   components?: object;
 
   /**
-   * 默认初始展开所有行
+   * Expand all rows initially
    * @default false
    * @type boolean
    */
   defaultExpandAllRows?: boolean;
 
   /**
-   * 初始展开行key
+   * Initial expanded row keys
    * @type string[]
    */
   defaultExpandedRowKeys?: string[];
 
   /**
-   * 当前展开行key
+   * Current expanded row keys
    * @type string[]
    */
   expandedRowKeys?: string[];
 
   /**
-   * 扩展行的渲染
+   * Expanded container render for each row
    * @type Function
    */
   expandedRowRender?: (record?: ExpandedRowRenderRecord<T>) => VNodeChild | JSX.Element;
 
   /**
-   * 自定义行展开图标
+   * Customize row expand Icon.
    * @type Function | VNodeChild
    */
   expandIcon?: Function | VNodeChild | JSX.Element;
 
   /**
-   * 是否通过单击整行中的任意位置来展开行
+   * Whether to expand row by clicking anywhere in the whole row
    * @default false
    * @type boolean
    */
   expandRowByClick?: boolean;
 
   /**
-   * 当expandIconAsCell为假时，expandIcon的索引将插入哪一列。 默认0
+   * The index of `expandIcon` which column will be inserted when `expandIconAsCell` is false. default 0
    */
   expandIconColumnIndex?: number;
 
   /**
-   * 表格页脚渲染器
+   * Table footer renderer
    * @type Function | VNodeChild
    */
   footer?: Function | VNodeChild | JSX.Element;
 
   /**
-   * 缩进大小以像素为单位的树数据
+   * Indent size in pixels of tree data
    * @default 15
    * @type number
    */
   indentSize?: number;
 
   /**
-   * i18n文本，包括过滤器，排序，空文本等
+   * i18n text including filter, sort, empty text, etc
    * @default { filterConfirm: 'Ok', filterReset: 'Reset', emptyText: 'No Data' }
    * @type object
    */
   locale?: object;
 
   /**
-   * 行的className
+   * Row's className
    * @type Function
    */
   rowClassName?: (record: TableCustomRecord<T>) => string;
 
   /**
-   * 行选中配置
+   * Row selection config
    * @type object
    */
   rowSelection?: TableRowSelection;
 
   /**
-   * 设置水平或垂直滚动，也可以用于指定滚动区域的宽度和高度
-   * 建议为x设置一个数字，如果要将其设置为true，您需要添加样式 .ant-table td {white-space：nowrap; }
+   * Set horizontal or vertical scrolling, can also be used to specify the width and height of the scroll area.
+   * It is recommended to set a number for x, if you want to set it to true,
+   * you need to add style .ant-table td { white-space: nowrap; }.
    * @type object
    */
   scroll?: { x?: number | true; y?: number };
 
   /**
-   * 是否显示表头
+   * Whether to show table header
    * @default true
    * @type boolean
    */
   showHeader?: boolean;
 
   /**
-   * 表格尺寸
+   * Size of table
    * @default 'default'
    * @type string
    */
   size?: SizeType;
 
   /**
-   * 表格标题渲染器
+   * Table title renderer
    * @type Function | ScopedSlot
    */
   title?: VNodeChild | JSX.Element;
 
   /**
-   * 定制页眉行
+   * Set props on per header row
    * @type Function
    */
   customHeaderRow?: (column: ColumnProps, index: number) => object;
 
   /**
-   * 定制行
+   * Set props on per row
    * @type Function
    */
   customRow?: (record: T, index: number) => object;
 
   /**
-   * 表格元素的 table-layout 属性
-   * 固定标题/列时使用 fixed ，或使用 column.ellipsis
+   * `table-layout` attribute of table element
+   * `fixed` when header/columns are fixed, or using `column.ellipsis`
+   *
    * @see https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout
    * @version 1.5.0
    */
   tableLayout?: 'auto' | 'fixed' | string;
 
   /**
-   * 表中下拉菜单的渲染容器
+   * the render container of dropdowns in table
    * @param triggerNode
    * @version 1.5.0
    */
   getPopupContainer?: (triggerNode?: HTMLElement) => HTMLElement;
 
   /**
-   * 渲染之前可以再次更改数据。
-   * 常规用户空数据的默认配置。
-   * 您可以通过[ConfigProvider]（https://antdv.com/components/config-provider-cn/）进行全局配置
+   * Data can be changed again before rendering.
+   * The default configuration of general user empty data.
+   * You can configured globally through [ConfigProvider](https://antdv.com/components/config-provider-cn/)
    *
    * @version 1.5.4
    */
   transformCellText?: Function;
 
   /**
-   * 更改分页，过滤器或排序器时执行的回调
+   * Callback executed when pagination, filters or sorter is changed
    * @param pagination
    * @param filters
    * @param sorter
@@ -362,7 +364,7 @@ export interface BasicTableProps<T = any> {
   onChange?: (pagination: any, filters: any, sorter: any, extra: any) => void;
 
   /**
-   * 单击行扩展图标时执行回调
+   * Callback executed when the row expand icon is clicked
    *
    * @param expanded
    * @param record
@@ -370,7 +372,7 @@ export interface BasicTableProps<T = any> {
   onExpand?: (expande: boolean, record: T) => void;
 
   /**
-   * 扩展行更改时执行回调
+   * Callback executed when the expanded rows change
    * @param expandedRows
    */
   onExpandedRowsChange?: (expandedRows: string[] | number[]) => void;

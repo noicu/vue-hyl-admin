@@ -1,44 +1,56 @@
 import { createApp } from 'vue';
+import App from './App.vue';
 
 import router, { setupRouter } from '/@/router';
 import { setupStore } from '/@/store';
 import { setupAntd } from '/@/setup/ant-design-vue';
 import { setupErrorHandle } from '/@/setup/error-handle';
-import { setupDirectives } from '/@/setup/directives';
+import { setupGlobDirectives } from '/@/setup/directives';
+import { setupI18n } from '/@/setup/i18n';
+import { setupProdMockServer } from '../mock/_createProductionServer';
+import { setApp } from '/@/setup/App';
 
 import { isDevMode, isProdMode, isUseMock } from '/@/utils/env';
-import { setupProdMockServer } from '../mock/_createProductionServer';
-import { setApp } from './useApp';
 
-import App from './App.vue';
 import '/@/design/index.less';
+
+import '/@/locales/index';
 
 const app = createApp(App);
 
-// ui
+// Configure component library
 setupAntd(app);
-// 路由
+
+// Multilingual configuration
+setupI18n(app);
+
+// Configure routing
 setupRouter(app);
-// 状态
+
+// Configure vuex store
 setupStore(app);
 
-setupDirectives(app);
+// Register global directive
+setupGlobDirectives(app);
 
+// Configure global error handling
 setupErrorHandle(app);
 
+// Mount when the route is ready
 router.isReady().then(() => {
   app.mount('#app');
 });
 
+// The development environment takes effect
 if (isDevMode()) {
   app.config.performance = true;
   window.__APP__ = app;
 }
 
-// 如不需要在生产环境中使用模拟服务，则可以注释代码
+// If you do not need to setting the mock service in the production environment, you can comment the code
 if (isProdMode() && isUseMock()) {
   setupProdMockServer();
 }
 
-// 用于在其他模块中共享应用程序实例
+// Used to share app instances in other modules
 setApp(app);

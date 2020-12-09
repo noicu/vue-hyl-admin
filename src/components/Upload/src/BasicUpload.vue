@@ -1,16 +1,16 @@
 <template>
   <div>
     <a-button-group>
-      <a-button type="primary" @click="openUploadModal" preIcon="ant-design:cloud-upload-outlined">
-        上传
+      <a-button type="primary" @click="openUploadModal" preIcon="carbon:cloud-upload">
+        {{ t('component.upload.upload') }}
       </a-button>
       <Tooltip placement="bottom" v-if="showPreview">
         <template #title>
-          已上传
+          {{ t('component.upload.uploaded') }}
           <template v-if="fileListRef.length">{{ fileListRef.length }}</template>
         </template>
         <a-button @click="openPreviewModal">
-          <Icon icon="ant-design:eye-outlined" />
+          <Icon icon="bi:eye" />
           <template v-if="fileListRef.length && showPreviewNumber">
             {{ fileListRef.length }}
           </template>
@@ -39,11 +39,14 @@
 
   import { uploadContainerProps } from './props';
   import { omit } from 'lodash-es';
+  import { useI18n } from '/@/hooks/web/useI18n';
 
   export default defineComponent({
+    name: 'BasicUpload',
     components: { UploadModal, UploadPreviewModal, Icon, Tooltip },
     props: uploadContainerProps,
     setup(props, { emit, attrs }) {
+      const { t } = useI18n();
       // 上传modal
       const [registerUploadModal, { openModal: openUploadModal }] = useModal();
 
@@ -93,6 +96,7 @@
         fileListRef,
         showPreview,
         bindValue,
+        t,
       };
     },
   });

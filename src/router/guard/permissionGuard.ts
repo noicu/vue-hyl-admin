@@ -1,13 +1,13 @@
 import type { Router, RouteRecordRaw } from 'vue-router';
 
-import { userStore } from '/@/store/modules/user';
+import { appStore } from '/@/store/modules/app';
 import { permissionStore } from '/@/store/modules/permission';
 
 import { PageEnum } from '/@/enums/pageEnum';
 import { getToken } from '/@/utils/auth';
 
 import { PAGE_NOT_FOUND_ROUTE } from '/@/router/constant';
-import { RootRoute } from '../routes/index';
+// import { RootRoute } from '../routes/index';
 
 const LOGIN_PATH = PageEnum.BASE_LOGIN;
 
@@ -59,7 +59,8 @@ export function createPermissionGuard(router: Router) {
     }
     const routes = await permissionStore.buildRoutesAction();
     routes.forEach((route) => {
-      router.addRoute(RootRoute.name!, route as RouteRecordRaw);
+      // router.addRoute(RootRoute.name!, route as RouteRecordRaw);
+      router.addRoute(route as RouteRecordRaw);
     });
 
     const redirectPath = (from.query.redirect || to.path) as string;
@@ -72,7 +73,7 @@ export function createPermissionGuard(router: Router) {
   router.afterEach((to) => {
     // Just enter the login page and clear the authentication information
     if (to.path === LOGIN_PATH) {
-      userStore.resumeAllState();
+      appStore.resumeAllState();
     }
   });
 }

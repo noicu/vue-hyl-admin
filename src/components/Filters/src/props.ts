@@ -1,5 +1,5 @@
 import type { PropType } from 'vue';
-import type { Axis, ContextMenuItem, FilterMenuItem, FiltersConfig } from './types';
+import type { Axis, FiltersConfig } from './types';
 export const filterProps = {
   filtersConfig: {
     // 列表
