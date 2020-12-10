@@ -9,6 +9,8 @@
   import { isString, isArray } from '/@/utils/is';
   import { getSlot } from '/@/utils/helper/tsxHelper';
   import { propTypes } from '/@/utils/propTypes';
+  import { useDesign } from '/@/hooks/web/useDesign';
+
   export default defineComponent({
     name: 'BasicHelp',
     components: { Tooltip },
@@ -37,6 +39,8 @@
       },
     },
     setup(props, { slots }) {
+      const { prefixCls } = useDesign('basic-help');
+
       const getOverlayStyleRef = computed(
         (): CSSProperties => {
           return {
@@ -86,7 +90,7 @@
               },
               [renderTitle()]
             ),
-            overlayClassName: 'base-help__wrap',
+            overlayClassName: `${prefixCls}__wrap`,
             autoAdjustOverflow: true,
             overlayStyle: unref(getOverlayStyleRef),
             placement: props.placement,
@@ -97,7 +101,7 @@
               h(
                 'span',
                 {
-                  class: 'base-help',
+                  class: prefixCls,
                   style: unref(getMainStyleRef),
                 },
                 getSlot(slots) || h(InfoCircleOutlined)
@@ -110,8 +114,9 @@
 </script>
 <style lang="less">
   @import (reference) '../../../design/index.less';
+  @prefix-cls: ~'@{namespace}-basic-help';
 
-  .base-help {
+  .@{prefix-cls} {
     display: inline-block;
     margin-left: 6px;
     font-size: 14px;
