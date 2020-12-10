@@ -17,6 +17,7 @@ import { loginApi } from '/@/api/sys/user';
 import { setLocal, getLocal, getSession, setSession } from '/@/utils/helper/persistent';
 import { useProjectSetting } from '/@/hooks/setting';
 import { useI18n } from '/@/hooks/web/useI18n';
+import { ErrorMessageMode } from '/@/utils/http/axios/types';
 
 // export type UserInfo = Omit<GetUserInfoByUserIdModel, 'roles'>;
 
@@ -90,9 +91,16 @@ class User extends VuexModule {
    * @description: 登录 login
    */
   @Action
-  async login(params: LoginParams, goHome = true): Promise<UserInfo | null> {
+  // async login(params: LoginParams, goHome = true): Promise<UserInfo | null> {
+  async login(
+    params: LoginParams & {
+      goHome?: boolean;
+      mode?: ErrorMessageMode;
+    }
+  ): Promise<UserInfo | null> {
     try {
-      const data = await loginApi(params);
+      const { goHome = true, mode, ...loginParams } = params;
+      const data = await loginApi(loginParams, mode);
       const { jwt, user_info, is_admin, is_broker_admin } = data;
 
       const roleList = [];
@@ -115,7 +123,7 @@ class User extends VuexModule {
       // 保存 用户信息
       this.commitUserInfoState(user_info);
 
-      goHome && router.push(PageEnum.BASE_HOME);
+      goHome && router.replace(PageEnum.BASE_HOME);
       return user_info;
     } catch (error) {
       return null;

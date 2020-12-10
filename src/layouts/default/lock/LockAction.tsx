@@ -10,6 +10,7 @@ import headerImg from '/@/assets/images/header.jpg';
 import { appStore } from '/@/store/modules/app';
 import { userStore } from '/@/store/modules/user';
 import { useI18n } from '/@/hooks/web/useI18n';
+import { lockStore } from '/@/store/modules/lock';
 
 const prefixCls = 'lock-modal';
 export default defineComponent({
@@ -30,24 +31,16 @@ export default defineComponent({
       ],
     });
 
-    async function lock(valid = true) {
-      let password: string | undefined = '';
+    async function lock() {
+      const values = (await validateFields()) as any;
+      const password: string | undefined = values.password;
+      closeModal();
 
-      try {
-        if (!valid) {
-          password = undefined;
-        } else {
-          const values = (await validateFields()) as any;
-          password = values.password;
-        }
-        closeModal();
-
-        appStore.commitLockInfoState({
-          isLock: true,
-          pwd: password,
-        });
-        await resetFields();
-      } catch (error) {}
+      lockStore.commitLockInfoState({
+        isLock: true,
+        pwd: password,
+      });
+      await resetFields();
     }
 
     return () => (
@@ -62,7 +55,7 @@ export default defineComponent({
           <div class={`${prefixCls}__entry`}>
             <div class={`${prefixCls}__header`}>
               <img src={headerImg} class={`${prefixCls}__header-img`} />
-              <p class={`${prefixCls}__header-name`}>{userStore.getUserInfoState.realName}</p>
+              <p class={`${prefixCls}__header-name`}>{userStore.getUserInfoState.user_name}</p>
             </div>
 
             <BasicForm onRegister={registerForm} layout="vertical" />
@@ -70,9 +63,6 @@ export default defineComponent({
             <div class={`${prefixCls}__footer`}>
               <Button type="primary" block class="mt-2" onClick={lock}>
                 {() => t('layout.header.lockScreenBtn')}
-              </Button>
-              <Button block class="mt-2" onClick={lock.bind(null, false)}>
-                {() => t('layout.header.notLockScreenPassword')}
               </Button>
             </div>
           </div>
