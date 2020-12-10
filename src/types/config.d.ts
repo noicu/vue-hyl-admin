@@ -132,6 +132,7 @@ export interface GlobConfig {
   uploadUrl?: string;
   urlPrefix?: string;
   shortName: string;
+  wsUrl: string;
 }
 export interface GlobEnvConfig {
   // 网站标题
@@ -141,6 +142,7 @@ export interface GlobEnvConfig {
   VITE_GLOB_API_URL_PREFIX?: string;
   VITE_GLOB_APP_SHORT_NAME: string;
   VITE_GLOB_UPLOAD_URL?: string;
+  VITE_GLOB_WS_URL: string;
 }
 
 interface GlobWrap {

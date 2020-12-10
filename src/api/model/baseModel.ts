@@ -37,3 +37,7 @@ export interface WhereExpression {
   $lte?: number | string | Date; // 小于等于
   $in?: any;
 }
+/// 二级属性加点
+///  "where":{
+///      "info.uid":418
+///  },

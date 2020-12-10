@@ -21,10 +21,13 @@
 
   import { AppProvider } from '/@/components/Application';
 
+  import { initWs } from '/@/utils/http/ws'
+
   export default defineComponent({
     name: 'App',
     components: { ConfigProvider, AppProvider },
     setup() {
+      initWs()
       // Initialize vuex internal system configuration
       initAppConfigStore();
 
