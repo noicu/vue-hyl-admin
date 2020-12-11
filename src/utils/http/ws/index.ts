@@ -7,7 +7,7 @@ const WS_URL = useGlobSetting().wsUrl;
 let WS: WebSocket | null = null;
 
 export function initWs() {
-  let jwt = getToken();
+  const jwt = getToken();
   if (!WS && jwt) {
     WS = new WebSocket(WS_URL + '?jwt=' + jwt);
 
@@ -17,7 +17,7 @@ export function initWs() {
 
     WS.onmessage = function (this: WebSocket, ev: MessageEvent<any>) {
       if (isJSON(ev.data)) {
-        let { content, content_type } = JSON.parse(ev.data) as WSMsgData<Notify>;
+        const { content, content_type } = JSON.parse(ev.data) as WSMsgData<Notify>;
         console.log(content, content_type, '收到消息');
       } else {
         console.log(ev, '未知类型消息');
@@ -30,6 +30,12 @@ export function initWs() {
     };
 
     WS.onclose = function () {};
+  }
+}
+
+export function send(msg: string) {
+  if (WS) {
+    WS.send(JSON.stringify(msg));
   }
 }
 
