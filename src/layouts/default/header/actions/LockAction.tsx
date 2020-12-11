@@ -7,7 +7,6 @@ import { BasicForm, useForm } from '/@/components/Form/index';
 
 import headerImg from '/@/assets/images/header.jpg';
 
-import { appStore } from '/@/store/modules/app';
 import { userStore } from '/@/store/modules/user';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { lockStore } from '/@/store/modules/lock';

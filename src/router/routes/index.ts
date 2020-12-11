@@ -1,9 +1,10 @@
 import type { AppRouteRecordRaw, AppRouteModule } from '/@/router/types';
 
-import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE, LAYOUT } from '../constant';
-import { PageEnum } from '/@/enums/pageEnum';
+import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '../constant';
 
 import modules from 'globby!/@/router/routes/modules/**/*.@(ts)';
+import { PageEnum } from '/@/enums/pageEnum';
+
 import { t } from '/@/hooks/web/useI18n';
 
 const routeModuleList: AppRouteModule[] = [];
@@ -15,14 +16,12 @@ Object.keys(modules).forEach((key) => {
 
 export const asyncRoutes = [PAGE_NOT_FOUND_ROUTE, ...routeModuleList];
 
-const MainRoute: AppRouteModule = {
+export const RootRoute: AppRouteRecordRaw = {
   path: '/',
-  name: 'MainRoute',
-  component: LAYOUT,
+  name: 'Root',
   redirect: PageEnum.BASE_HOME,
   meta: {
-    icon: 'bx:bx-home',
-    title: t('routes.dashboard.dashboard'),
+    title: 'Root',
   },
 };
 
@@ -36,4 +35,4 @@ export const LoginRoute: AppRouteRecordRaw = {
 };
 
 // 基础路由 不用权限
-export const basicRoutes = [LoginRoute, MainRoute, REDIRECT_ROUTE];
+export const basicRoutes = [LoginRoute, RootRoute, REDIRECT_ROUTE];
