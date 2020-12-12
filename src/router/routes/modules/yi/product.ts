@@ -21,6 +21,15 @@ const product: AppRouteModule = {
         title: t('routes.yi.product.productList'),
       },
     },
+    {
+      path: '/productDesc/:id',
+      name: 'ProductDesc',
+      component: () => import('/@/views/product/desc/index.vue'),
+      meta: {
+        title: '详情',
+        carryParam: true,
+      },
+    },
   ],
 };
 
