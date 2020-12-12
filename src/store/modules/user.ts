@@ -123,7 +123,7 @@ class User extends VuexModule {
       // 保存 用户信息
       this.commitUserInfoState(user_info);
 
-      goHome && router.replace(PageEnum.BASE_HOME);
+      goHome && (await router.replace(PageEnum.BASE_HOME));
       return user_info;
     } catch (error) {
       return null;
