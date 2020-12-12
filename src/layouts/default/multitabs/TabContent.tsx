@@ -27,11 +27,21 @@ const ExtraContent: FunctionalComponent = () => {
 const TabContent: FunctionalComponent<{ tabItem: RouteLocationNormalized; handler: Fn }> = (
   props
 ) => {
-  const { tabItem: { meta } = {} } = props;
+  const { tabItem: { meta, params = {} } = {} } = props;
+  // TODO: tab显示参数内容待定
+  const title = params.title || params.id || false;
 
   return (
     <div class={`multiple-tabs-content__content `} onContextmenu={props.handler(props.tabItem)}>
       <span class="ml-1">{meta && titleT(meta.title)}</span>
+      {title ? (
+        <span
+          class="ml-1"
+          style="background: rgb(255 255 255 / 30%);border-radius: 5px;padding: 0 5px;"
+        >
+          {title}
+        </span>
+      ) : null}
     </div>
   );
 };
