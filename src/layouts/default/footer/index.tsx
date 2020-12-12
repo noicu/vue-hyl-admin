@@ -24,7 +24,7 @@ export default defineComponent({
                 <GithubFilled onClick={() => openWindow(GITHUB_URL)} class="github" />
                 <a onClick={() => openWindow(DOC_URL)}>{t('layout.footer.onlineDocument')}</a>
               </div>
-              <div>Copyright &copy;2020 Vben Admin</div>
+              <div>Copyright &copy;2020 鸿运来</div>
             </>
           )}
         </Layout.Footer>
