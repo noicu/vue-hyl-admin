@@ -48,8 +48,8 @@ export default defineComponent({
     const { getShowDoc } = useHeaderSetting();
 
     const getUserInfo = computed(() => {
-      const { realName = '', desc } = userStore.getUserInfoState || {};
-      return { realName, desc };
+      const { user_code = '' } = userStore.getUserInfoState || {};
+      return { realName: user_code };
     });
 
     //  login out

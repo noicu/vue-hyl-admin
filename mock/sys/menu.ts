@@ -172,6 +172,7 @@ export default [
       if (id === '2') {
         return resultSuccess([dashboardRoute, authRoute1, levelRoute]);
       }
+      return resultSuccess([dashboardRoute, authRoute, levelRoute]);
     },
   },
 ] as MockMethod[];

@@ -43,9 +43,9 @@ class Lock extends VuexModule {
   public async unLockAction({ password }: { password: string }) {
     const tryLogin = async () => {
       try {
-        const username = userStore.getUserInfoState.user_name;
+        const user_code = userStore.getUserInfoState.user_code;
         const res = await userStore.login({
-          user_code: username,
+          user_code,
           pwd: password,
           chart_key: '123',
           chart_value: '456',

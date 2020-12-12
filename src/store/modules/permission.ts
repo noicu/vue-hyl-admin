@@ -90,7 +90,7 @@ class Permission extends VuexModule {
 
     const { permissionMode } = appStore.getProjectConfig;
 
-    // role permissions
+    // 角色许可
     if (permissionMode === PermissionModeEnum.ROLE) {
       routes = filter(asyncRoutes, (route) => {
         const { meta } = route as AppRouteRecordRaw;
@@ -105,7 +105,7 @@ class Permission extends VuexModule {
         duration: 1,
       });
       // 这里获取后台路由菜单逻辑自行修改
-      const paramId = id || userStore.getUserInfoState.userId;
+      const paramId = id || userStore.getUserInfoState.id;
       if (!paramId) {
         throw new Error('paramId is undefined!');
       }
