@@ -102,7 +102,7 @@ export default defineComponent({
       (): CSSProperties => {
         const isHorizontal = unref(getIsHorizontal) || getSplit.value;
         return {
-          height: isHorizontal ? `calc(100%)` : `calc(100% - ${props.showLogo ? '48px' : '0px'})`,
+          height: isHorizontal ? '100%' : `calc(100% - ${props.showLogo ? '48px' : '0px'})`,
           overflowY: isHorizontal ? 'hidden' : 'auto',
         };
       }
