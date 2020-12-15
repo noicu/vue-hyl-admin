@@ -17,14 +17,16 @@
           </template>
         </TabPane>
       </template>
-      <template #tabBarExtraContent>
-        <QuickButton />
+
+      <template #tabBarExtraContent v-if="getShowRedo || getShowQuick">
+        <TabRedo v-if="getShowRedo" />
+        <QuickButton v-if="getShowQuick" />
       </template>
     </Tabs>
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent, watch, computed, unref, ref } from 'vue';
+  import { defineComponent, computed, unref, ref } from 'vue';
   import { Tabs } from 'ant-design-vue';
   import TabContent from './components/TabContent.vue';
   import { useGo } from '/@/hooks/web/usePage';
@@ -34,10 +36,13 @@
   import { REDIRECT_NAME } from '/@/router/constant';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
+  import { listenerLastChangeTab } from '/@/logics/mitt/tabChange';
+  import { useMultipleTabSetting } from '/@/hooks/setting/useMultipleTabSetting';
   export default defineComponent({
     name: 'MultipleTabs',
     components: {
       QuickButton: createAsyncComponent(() => import('./components/QuickButton.vue')),
+      TabRedo: createAsyncComponent(() => import('./components/TabRedo.vue')),
       Tabs,
       TabPane: Tabs.TabPane,
       TabContent,
@@ -48,37 +53,27 @@
       useTabsDrag(affixTextList);
       const { prefixCls } = useDesign('multiple-tabs');
       const go = useGo();
+      const { getShowQuick, getShowRedo } = useMultipleTabSetting();
       const getTabsState = computed(() => tabStore.getTabsState);
-      const unClose = computed(() => {
-        return getTabsState.value.length === 1;
-      });
+      const unClose = computed(() => unref(getTabsState).length === 1);
       const getWrapClass = computed(() => {
         return [
           prefixCls,
           {
-            [`${prefixCls}--hide-close`]: unClose,
+            [`${prefixCls}--hide-close`]: unref(unClose),
           },
         ];
       });
-      watch(
-        () => tabStore.getLastChangeRouteState?.path,
-        () => {
-          if (tabStore.getLastChangeRouteState?.name === REDIRECT_NAME) {
-            return;
-          }
-          const lastChangeRoute = unref(tabStore.getLastChangeRouteState);
-          if (!lastChangeRoute || !userStore.getTokenState) return;
-          const { path, fullPath } = lastChangeRoute;
-          const p = fullPath || path;
-          if (activeKeyRef.value !== p) {
-            activeKeyRef.value = p;
-          }
-          tabStore.addTabAction(lastChangeRoute);
-        },
-        {
-          immediate: true,
+      listenerLastChangeTab((route) => {
+        const { name } = route;
+        if (name === REDIRECT_NAME || !route || !userStore.getTokenState) return;
+        const { path, fullPath } = route;
+        const p = fullPath || path;
+        if (activeKeyRef.value !== p) {
+          activeKeyRef.value = p;
         }
-      );
+        tabStore.addTabAction(unref(route));
+      });
       function handleChange(activeKey: any) {
         activeKeyRef.value = activeKey;
         go(activeKey, false);
@@ -97,6 +92,8 @@
         handleChange,
         activeKeyRef,
         getTabsState,
+        getShowQuick,
+        getShowRedo,
       };
     },
   });

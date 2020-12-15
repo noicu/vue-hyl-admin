@@ -1,8 +1,8 @@
 <template>
-  <div class="layout-header__action-item notify-action">
-    <Popover title="" trigger="click" overlayClassName="layout-header__notify-action">
+  <div :class="prefixCls">
+    <Popover title="" trigger="click" :overlayClassName="`${prefixCls}__overlay`">
       <Badge :count="count" dot :numberStyle="numberStyle">
-        <BellOutlined class="layout-header__action-icon" />
+        <BellOutlined />
       </Badge>
       <template #content>
         <Tabs>
@@ -26,17 +26,17 @@
   import { BellOutlined } from '@ant-design/icons-vue';
   import { tabListData } from './data';
   import NoticeList from './NoticeList.vue';
-
+  import { useDesign } from '/@/hooks/web/useDesign';
   export default defineComponent({
     components: { Popover, BellOutlined, Tabs, TabPane: Tabs.TabPane, Badge, NoticeList },
     setup() {
+      const { prefixCls } = useDesign('header-notify');
       let count = 0;
-
       for (let i = 0; i < tabListData.length; i++) {
         count += tabListData[i].list.length;
       }
-
       return {
+        prefixCls,
         tabListData,
         count,
         numberStyle: {},
@@ -45,12 +45,14 @@
   });
 </script>
 <style lang="less">
-  .layout-header__notify-action {
-    max-width: 360px;
-  }
-
-  .notify-action {
+  @import (reference) '../../../../../design/index.less';
+  @prefix-cls: ~'@{namespace}-header-notify';
+  .@{prefix-cls} {
     padding-top: 2px;
+
+    &__overlay {
+      max-width: 360px;
+    }
 
     .ant-tabs-content {
       width: 300px;

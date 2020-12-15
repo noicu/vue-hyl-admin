@@ -46,6 +46,6 @@
   @import (reference) '../../../../design/index.less';
   @prefix-cls: ~'@{namespace}-app-search';
   .@{prefix-cls} {
-    padding: 0 10px;
+    padding: 2px;
   }
 </style>
