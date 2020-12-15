@@ -241,6 +241,7 @@ export default defineComponent({
           onOpenChange={handleOpenChange}
           class={unref(getMenuClass)}
           onClick={handleMenuClick}
+          subMenuOpenDelay={0.2}
           {...unref(getInlineCollapseOptions)}
         >
           {{
