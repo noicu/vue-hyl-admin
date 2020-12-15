@@ -8,7 +8,7 @@
     :class="[prefixCls, theme, { 'collapsed-show-title': getCollapsedShowTitle }]"
     @click="handleGoHome"
   >
-    <img src="/@/assets/images/logo.png" />
+    <img src="/@/assets/images/logo.png" alt="" />
     <div class="ml-2 ellipsis" :class="[`${prefixCls}__title`]" v-show="showTitle">
       {{ globSetting.title }}
     </div>
@@ -66,8 +66,9 @@
   .@{prefix-cls} {
     display: flex;
     align-items: center;
-    padding-left: 12px;
+    padding-left: 7px;
     cursor: pointer;
+    transition: all 0.2s ease;
 
     &.collapsed-show-title {
       padding-left: 20px;
