@@ -1,6 +1,6 @@
 {
-  "name": "vben-admin-2.0",
-  "version": "2.0.0-rc.12",
+  "name": "hyl-admin",
+  "version": "1.0.0-rc.1",
   "scripts": {
     "bootstrap": "yarn install",
     "serve": "esno ./build/script/preserve.ts && cross-env NODE_ENV=development vite",
@@ -110,19 +110,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/anncwb/vue-vben-admin.git"
+    "url": "git+https://github.com/tovi-cn/vue-hyl-admin.git"
   },
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/anncwb/vue-vben-admin/issues"
-  },
-  "homepage": "https://github.com/anncwb/vue-vben-admin",
-  "changelog": {
-    "bugsUrl": "https://github.com/anncwb/vue-vben-admin/issues",
-    "emojis": true,
-    "authorName": false,
-    "authorEmail": false
-  },
   "husky": {
     "hooks": {
       "pre-commit": "ls-lint && lint-staged",
