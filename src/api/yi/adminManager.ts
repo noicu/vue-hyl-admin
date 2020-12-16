@@ -18,12 +18,28 @@ export interface AdminInfo {
   user_code: string;
 }
 
+export interface SysAdminCh {
+  uid: number;
+  enabled: number;
+}
+
 /**
  * @description: 获取系统管理员列表
  */
 export function adminInfoList(params: GetListParams<AdminInfo>) {
   return defHttp.request<ResultList<AdminInfo>>({
     url: Api.SYS_ADMIN_PAGE,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 禁用/启用管理员
+ */
+export function adminCh(params: SysAdminCh) {
+  return defHttp.request<boolean>({
+    url: Api.SYS_ADMIN_CH,
     method: 'POST',
     params,
   });
