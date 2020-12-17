@@ -16,12 +16,12 @@ enum Api {
 }
 
 export interface ProductColor {
-  code: '淡黄';
-  price: 100;
+  code: string;
+  price: number;
 }
 export interface ProductImage {
-  path: 'pic14';
-  sort_no: 1;
+  path: string;
+  sort_no: number;
 }
 
 export interface ProductInfo {

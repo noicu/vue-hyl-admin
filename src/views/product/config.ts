@@ -1,4 +1,4 @@
-import { BasicColumn, FormProps } from '/@/components/Table';
+import { BasicColumn } from '/@/components/Table';
 
 export const Columns: BasicColumn[] = [
   {
@@ -23,7 +23,7 @@ export const Columns: BasicColumn[] = [
     slots: { customRender: 'images' },
   },
   {
-    title: '颜色',
+    title: '规格',
     // width: 300,
     dataIndex: 'colors',
     slots: { customRender: 'colors' },
@@ -34,28 +34,10 @@ export const Columns: BasicColumn[] = [
     dataIndex: 'enabled',
     slots: { customRender: 'enabled' },
   },
+  {
+    title: '操作',
+    width: 220,
+    dataIndex: 'ID',
+    slots: { customRender: 'action' },
+  },
 ];
-
-export const FormItem: Partial<FormProps> = {
-  labelWidth: 100,
-  schemas: [
-    {
-      field: `user_code`,
-      label: `用户名`,
-      component: 'Input',
-      colProps: {
-        xl: 12,
-        xxl: 8,
-      },
-    },
-    {
-      field: `nick`,
-      label: `昵称`,
-      component: 'Input',
-      colProps: {
-        xl: 12,
-        xxl: 8,
-      },
-    },
-  ],
-};

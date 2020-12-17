@@ -22,9 +22,9 @@ const product: AppRouteModule = {
       },
     },
     {
-      path: '/productDesc/:id',
-      name: 'ProductDesc',
-      component: () => import('/@/views/product/desc/index.vue'),
+      path: '/ProductFull/:id',
+      name: 'ProductFull',
+      component: () => import('/@/views/product/full/index.vue'),
       meta: {
         title: '详情',
         carryParam: true,

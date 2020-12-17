@@ -1,0 +1,95 @@
+<template>
+  <a-card title="商品列表">
+    <a-card-grid class="product product-card">
+      <div class="product-image-main">
+        <img src="https://img95.699pic.com/photo/50046/5562.jpg_wh300.jpg" alt="" />
+      </div>
+      <div class="product-image">
+        <img src="https://img95.699pic.com/photo/50046/5562.jpg_wh300.jpg" alt="" />
+        <img src="https://img95.699pic.com/photo/50046/5562.jpg_wh300.jpg" alt="" />
+        <img src="https://img95.699pic.com/photo/50046/5562.jpg_wh300.jpg" alt="" />
+        <img src="https://img95.699pic.com/photo/50046/5562.jpg_wh300.jpg" alt="" />
+      </div>
+      <div class="product-name">
+        我想用艺术感动人们的内心。我希望他们这样说到：他的感受深刻而温柔
+      </div>
+      <div class="product-keyword">
+        <div class="product-keyword--item">守望先锋</div>
+        <div class="product-keyword--item">守望先锋</div>
+      </div>
+      <div>
+
+      </div>
+    </a-card-grid>
+  </a-card>
+</template>
+<script lang="ts">
+  import { defineComponent } from 'vue';
+  import { Card } from 'ant-design-vue';
+  export default defineComponent({
+    components: { CardGrid: Card.Grid },
+    setup() {
+      return {};
+    },
+  });
+</script>
+<style lang="less" scoped>
+  @import (reference) '../../design/index.less';
+
+  .product {
+    &-card {
+      width: 25%;
+      // padding: 1px;
+    }
+
+    &-name {
+      font-size: 18px;
+    }
+
+    &-keyword {
+      &--item {
+        display: inline-block;
+        padding: 0 10px;
+        margin-right: 5px;
+        color: #fff;
+        background: rgb(129, 129, 129);
+        border-radius: 10px;
+      }
+    }
+
+    &-image {
+      img {
+        width: 25%;
+      }
+
+      &-main {
+        img {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .respond-to(xsmall-only,{
+    .product {
+      &-card {
+        width: 100%;
+
+      }
+    }
+  });
+  .respond-to(small-only,{
+    .product {
+      &-card {
+        width: 50%;
+      }
+    }
+  });
+  .respond-to(medium-only,{
+    .product {
+      &-card {
+        width: 33.33%;
+      }
+    }
+  });
+</style>

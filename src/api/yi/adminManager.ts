@@ -18,8 +18,11 @@ export interface AdminInfo {
   user_code: string;
 }
 
-export interface SysAdminCh {
+export interface AdminUID {
   uid: number;
+}
+
+export interface SysAdminCh extends AdminUID {
   enabled: number;
 }
 
@@ -40,6 +43,17 @@ export function adminInfoList(params: GetListParams<AdminInfo>) {
 export function adminCh(params: SysAdminCh) {
   return defHttp.request<boolean>({
     url: Api.SYS_ADMIN_CH,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 删除管理员
+ */
+export function adminDel(params: AdminUID) {
+  return defHttp.request<boolean>({
+    url: Api.SYS_ADMIN_RM,
     method: 'POST',
     params,
   });

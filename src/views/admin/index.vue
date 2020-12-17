@@ -5,14 +5,14 @@
         checked-children="开"
         un-checked-children="关"
         :loading="isLoading(record)"
-        :checked="record.enabled === 1 ? true : false"
+        :checked="nToB(record.enabled)"
         @change="enabledChange(record)"
       />
     </template>
     <template #action="{ record, column }">
       <Popconfirm :title="`确定要删除 ${record.user_code} 吗?`" @confirm="onDelete(record)">
         <template #icon><Icon icon="mdi:alert" style="color: red" /></template>
-        <a-button type="danger" size="small"> 删除 </a-button>
+        <a-button type="danger" size="small" :loading="isDelLoads(record)"> 删除 </a-button>
       </Popconfirm>
     </template>
   </BasicTable>
@@ -20,86 +20,71 @@
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
   import { Popconfirm } from 'ant-design-vue';
-  import { BasicColumn, BasicTable, useTable } from '/@/components/Table';
-  import Icon from '/@/components/Icon';
-
-  import { adminInfoList, adminCh } from '/@/api/yi/adminManager';
+  import { BasicTable, useTable } from '/@/components/Table';
+  import { adminInfoList, adminCh, adminDel } from '/@/api/yi/adminManager';
   import { AdminInfo } from '/@/api/yi/adminManager';
   import { FETCH_SETTING } from '/@/api/const';
-
-  const Columns: BasicColumn[] = [
-    {
-      title: 'UID',
-      width: 150,
-      dataIndex: 'uid',
-    },
-    {
-      title: '昵称',
-      dataIndex: 'nick',
-      width: 120,
-    },
-    {
-      title: '用户名',
-      dataIndex: 'user_code',
-    },
-    {
-      title: '状态',
-      width: 120,
-      dataIndex: 'enabled',
-      slots: { customRender: 'enabled' },
-    },
-    {
-      title: '操作',
-      width: 120,
-      slots: { customRender: 'action' },
-    },
-  ];
+  import { nToB, reN } from '/@/utils/conversion';
+  import { Columns } from './config';
+  import Icon from '/@/components/Icon';
 
   export default defineComponent({
     components: { BasicTable, Icon, Popconfirm },
     setup() {
-      const [registerTable] = useTable({
+      const [registerTable, methods] = useTable({
         title: '系统管理员列表',
         api: adminInfoList,
         fetchSetting: FETCH_SETTING,
         columns: Columns,
         showIndexColumn: false,
         showTableSetting: true,
+        showFilter: true,
       });
 
-      const loadings: any = reactive({});
+      const enableLoads: any = reactive({});
+      const delLoads: any = reactive({});
 
-      const isLoading = (e: AdminInfo) => loadings[e.uid];
+      const isLoading = (e: AdminInfo) => enableLoads[e.uid];
+      const isDelLoads = (e: AdminInfo) => delLoads[e.uid];
 
       // 开关切换时执行
-      // 请求后端API
+      // 禁用/启用管理员
       async function enabledChange(e: AdminInfo) {
         try {
-          e.enabled = e.enabled == 1 ? 0 : 1;
-          loadings[e.uid] = true;
+          e.enabled = reN(e.enabled);
+          enableLoads[e.uid] = true;
           await adminCh({
             uid: e.uid,
             enabled: e.enabled,
           });
-          loadings[e.uid] = false;
+          enableLoads[e.uid] = false;
         } catch (error) {
           console.log(error);
-          e.enabled = e.enabled == 1 ? 0 : 1;
-          loadings[e.uid] = false;
+          e.enabled = reN(e.enabled);
+          enableLoads[e.uid] = false;
         }
       }
 
+      // 删除管理员
       async function onDelete(e: AdminInfo) {
         try {
-          console.log(e);
-        } catch (error) {}
+          delLoads[e.uid] = true;
+          await adminDel({ uid: e.uid });
+          delLoads[e.uid] = false;
+          await methods.reload();
+        } catch (error) {
+          console.log(error);
+          delLoads[e.uid] = false;
+        }
       }
 
       return {
         registerTable,
         enabledChange,
         isLoading,
+        isDelLoads,
         onDelete,
+        nToB,
       };
     },
   });

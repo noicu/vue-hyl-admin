@@ -21,6 +21,15 @@ const master: AppRouteModule = {
         title: t('routes.yi.master.masterList'),
       },
     },
+    {
+      path: '/masterFull/:id',
+      name: 'MasterFull',
+      component: () => import('/@/views/master/full/index.vue'),
+      meta: {
+        title: '详情',
+        carryParam: true,
+      },
+    },
   ],
 };
 

@@ -30,12 +30,65 @@ export interface MasterInfo {
   ver: number;
 }
 
+export interface MasterInfoFull {
+  info: MasterInfo;
+  images: Images;
+  items: Items;
+}
+
+export interface Images {
+  id: number;
+  image_path: string;
+  sort_no: number;
+  uid: number;
+}
+
+export interface Items {
+  comment: string;
+  id: number;
+  price: number;
+  sort_no: number;
+  uid: number;
+  yi_cate_id: number;
+  yi_cate_name: string;
+}
+
+export interface MasterUID {
+  master_id: number;
+}
+
+export interface MasterCh extends MasterUID {
+  enabled: number;
+}
+
 /**
  * @description: 获取大师列表
  */
 export function masterInfoList(params: GetListParams<MasterInfo>) {
   return defHttp.request<ResultList<MasterInfo>>({
     url: Api.MASTER_INFO_PAGE,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 禁用/启用大师
+ */
+export function masterCh(params: MasterCh) {
+  return defHttp.request<boolean>({
+    url: Api.MASTER_SET_ENABLE,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 大师详情
+ */
+export function masterInfoFull(params: MasterUID) {
+  return defHttp.request<MasterInfoFull>({
+    url: Api.MASTER_INFO_FULL_GET,
     method: 'POST',
     params,
   });

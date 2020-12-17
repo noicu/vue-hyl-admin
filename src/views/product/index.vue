@@ -1,119 +1,96 @@
 <template>
-  <BasicTable @register="registerTable">
-    <template #images="{ record, column }">
-      <img
-        :src="img.path"
-        v-for="img in record.images"
-        :key="img.path"
-        class="mr-1 img"
-        @click="handleClick(img.path)"
-        :alt="img.path"
-      />
-    </template>
-    <template #colors="{ record, column }">
-      <div class="pcode" v-for="color in record.colors">
-        <Tag color="default">
-          <span>{{ color.code }}</span
-          >:
-          <span> {{ color.price }}</span>
-        </Tag>
-      </div>
-    </template>
-    <template #action="{ record, column }">
-      <TableAction :actions="createActions(record)" />
-    </template>
-    <template #enabled="{ record, column }">
-      <a-switch checked-children="开" un-checked-children="关" default-checked />
-    </template>
-  </BasicTable>
-  <UpImg />
+  <Row type="flex" style="flex-wrap: initial">
+    <Col flex="200px" style="border-right: 1px solid #ededed">
+      <div class="product-type product-type-title">分类</div>
+      <div class="product-type product-type-item" v-for="it in 100">测试测试</div>
+    </Col>
+    <Col flex="auto">
+      <BasicTable @register="registerTable">
+        <template #images="{ record, column }">
+          <a-popover title="图片" trigger="hover" placement="right">
+            <template #content>
+              <img
+                :src="img.path"
+                v-for="img in record.images"
+                :key="img.path"
+                class="mr-1 img"
+                @click="handleClick(img.path)"
+                :alt="img.path"
+              />
+            </template>
+            <a-button type="primary" size="small"> {{ record.images.length }} 张图片... </a-button>
+          </a-popover>
+        </template>
+        <template #colors="{ record, column }">
+          <a-popover :title="record.name + ' - 规格'" trigger="hover" placement="left">
+            <template #content>
+              <div class="pcode" v-for="color in record.colors">
+                <input type="text" v-model="color.code" />
+                <input type="text" v-model="color.price" />
+                <!-- <Tag color="default">
+              <span>{{ color.code }}</span
+              >:
+              <span> {{ color.price }}</span>
+            </Tag> -->
+              </div>
+            </template>
+            <a-button type="primary" size="small"> {{ record.colors.length }} 种规格... </a-button>
+          </a-popover>
+        </template>
+        <template #action="{ record, column }">
+          <a-button type="default" size="small" @click="handleFull(record)"> 详情 </a-button>
+        </template>
+        <template #enabled="{ record, column }">
+          <a-switch checked-children="开" un-checked-children="关" default-checked />
+        </template>
+      </BasicTable>
+    </Col>
+  </Row>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import {
-    BasicTable,
-    useTable,
-    TableAction,
-    EditRecordRow,
-    ActionItem,
-  } from '/@/components/Table';
-
-  import { UpImg } from '/@/components/UpImg';
+  import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { createImgPreview } from '/@/components/Preview/index';
   import { productInfoList } from '/@/api/yi/productManager';
-  import { Tag } from 'ant-design-vue';
+  import { FETCH_SETTING } from '/@/api/const';
+  import { Tag, Row, Col } from 'ant-design-vue';
   import router from '/@/router';
-  import { Columns, FormItem } from './config';
-  // import { upload } from '/@/api/img'
+  import { Columns } from './config';
 
   export default defineComponent({
-    components: { BasicTable, Tag, TableAction, UpImg },
+    components: { BasicTable, Tag, TableAction, Row, Col },
     setup() {
-      // const go = useGo();
-
       function handleClick(img: string) {
         createImgPreview({ imageList: [img] });
       }
 
-      function handleEdit(record: EditRecordRow) {
-        // currentEditKeyRef.value = record.key;
-        router.push({ name: 'ProductDesc', params: { id: record.id_of_es } });
-        // go({ name: 'ProductDesc', params: { id: record.id_of_es } }, false);
-        console.log(record.id_of_es);
-        record.editable = true;
+      function handleFull(record: EditRecordRow) {
+        router.push({ name: 'ProductFull', params: { id: record.id_of_es } });
       }
-
-      function createActions(record: EditRecordRow): ActionItem[] {
-        return [
-          {
-            label: '详情',
-            onClick: handleEdit.bind(null, record),
-          },
-        ];
-      }
-
-      // upload()
 
       const [registerTable] = useTable({
         title: '商品列表',
         api: productInfoList,
         showFilter: true,
-        fetchSetting: {
-          pageField: 'page_no',
-          sizeField: 'rows_per_page',
-          listField: 'data',
-          totalField: 'rows_count',
-        },
-        expandRowByClick: true,
+        fetchSetting: FETCH_SETTING,
         columns: Columns,
-        // useSearchForm: true,
-        formConfig: FormItem,
         showTableSetting: true,
         showIndexColumn: false,
-        actionColumn: {
-          width: 70,
-          title: '操作',
-          align: 'center',
-          dataIndex: 'action',
-          slots: { customRender: 'action' },
-        },
       });
-
-      console.log(registerTable, 81);
 
       return {
         registerTable,
         handleClick,
-        createActions,
+        handleFull,
       };
     },
   });
 </script>
 <style lang="less" scoped>
   .img {
-    width: 20px;
+    width: 40px;
     // height: 100px;
-    max-height: 20px;
+    max-height: 40px;
 
     &::after {
       // position: absolute;
@@ -128,7 +105,26 @@
     }
   }
 
+  .product {
+    &-type {
+      height: 32px;
+      padding-left: 10px;
+      line-height: 32px;
+      background: #fff;
+      border-bottom: 1px solid #ededed;
+
+      &-title {
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      &-item {
+        font-size: 14px;
+      }
+    }
+  }
+
   .pcode {
-    display: inline-block;
+    // display: inline-block;
   }
 </style>
