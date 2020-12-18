@@ -44,6 +44,13 @@ export interface ProductID {
   id_of_es: string;
 }
 
+export interface Category {
+  icon: string;
+  id: number;
+  name: string;
+  sort_no: number;
+}
+
 /**
  * @description: 获取商品列表
  */
@@ -63,5 +70,16 @@ export function productInfo(params: ProductID) {
     url: Api.PRODUCT_GET,
     method: 'POST',
     params,
+  });
+}
+
+/**
+ * @description: 获取商品分类列表
+ */
+export function productCategoryList() {
+  return defHttp.request<Category[]>({
+    url: Api.CATEGORY_LIST,
+    method: 'POST',
+    params: {},
   });
 }
