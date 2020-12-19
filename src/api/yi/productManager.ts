@@ -46,7 +46,7 @@ export interface ProductID {
 
 export interface Category {
   icon: string;
-  id: number;
+  id?: number;
   name: string;
   sort_no: number;
 }
@@ -81,5 +81,43 @@ export function productCategoryList() {
     url: Api.CATEGORY_LIST,
     method: 'POST',
     params: {},
+  });
+}
+
+/**
+ * @description: 修改商品分类
+ */
+export function categoryCh(params: Category, id: number) {
+  return defHttp.request<string>({
+    url: Api.CATEGORY_CH,
+    method: 'POST',
+    params: {
+      id,
+      M: params,
+    },
+  });
+}
+
+/**
+ * @description: 添加商品分类
+ */
+export function categoryAdd(params: Category) {
+  return defHttp.request<string>({
+    url: Api.CATEGORY_ADD,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 删除商品分类
+ */
+export function categoryRm(id: number) {
+  return defHttp.request<string>({
+    url: Api.CATEGORY_RM,
+    method: 'POST',
+    params: {
+      id,
+    },
   });
 }

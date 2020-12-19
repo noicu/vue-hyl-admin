@@ -25,6 +25,7 @@ export default (
       {showFilter && <Filter />}
       {
         <div class="basic-table-toolbar">
+          {slots.toolbar && <Divider type="vertical" />}
           {slots.toolbar && getSlot(slots, 'toolbar')}
           {showTableSetting && <TableSettingComp setting={tableSetting} />}
         </div>

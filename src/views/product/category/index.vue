@@ -2,13 +2,13 @@
   <ScrollContainer>
     <div class="product-category product-category-title">
       <div class="product-category-name">分类</div>
-      <div class="product-category-add" @click.stop="addCategory"
-        ><Icon icon="ic:baseline-add" size="24"
-      /></div>
+      <div class="product-category-add" @click.stop="addCategory">
+        <Icon icon="ic:baseline-add" size="24" />
+      </div>
     </div>
     <div
       class="product-category product-category-item"
-      v-for="it in category"
+      v-for="it in categorys"
       @click="onCategory(it)"
     >
       <div v-if="isUrl(it.icon)" class="product-category-icon"><img :src="it.icon" alt="" /></div>
@@ -21,11 +21,11 @@
       /></div>
     </div>
   </ScrollContainer>
-  <CategoryModal @register="register" />
+  <CategoryModal @register="register" @return="modalReturn" />
 </template>
 
 <script lang="ts">
-  import { defineComponent, reactive } from 'vue';
+  import { defineComponent, ref, unref } from 'vue';
   import { productCategoryList, Category } from '/@/api/yi/productManager';
   import Icon from '/@/components/Icon/index';
   import { ScrollContainer } from '/@/components/Container/index';
@@ -34,33 +34,45 @@
   import CategoryModal from './CategoryModal.vue';
 
   export default defineComponent({
+    emits: ['clickItem'],
     components: { ScrollContainer, Icon, CategoryModal },
-    setup() {
-      const category = reactive<Category[]>([]);
+    setup({}, { emit }) {
+      const categorys = ref<Category[]>([]);
       const [register, { openModal }] = useModal();
 
-      productCategoryList().then((res) => {
-        category.push(...res);
-      });
+      getCategory();
+
+      function getCategory() {
+        productCategoryList().then((res) => {
+          categorys.value = res;
+        });
+      }
 
       function addCategory() {
         openModal(true, {});
       }
 
       function onCategory(e: Category) {
-        console.log(e);
+        emit('clickItem', unref(e));
       }
 
       function onEditCategory(e: Category) {
         openModal(true, e);
       }
+
+      function modalReturn(e: Category) {
+        console.log(e);
+        getCategory();
+      }
+
       return {
-        category,
+        categorys,
         onCategory,
         onEditCategory,
         addCategory,
         register,
         isUrl,
+        modalReturn,
       };
     },
   });

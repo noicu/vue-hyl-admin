@@ -4,6 +4,9 @@
       <Col flex="200px" style="border-right: 1px solid #ededed"> </Col>
       <Col flex="auto">
         <BasicTable @register="registerTable">
+          <template #toolbar>
+            <Icon icon="ic:baseline-add" size="24" @click="handleFull()" />
+          </template>
           <template #images="{ record, column }">
             <a-popover title="图片" trigger="hover" placement="right">
               <template #content>
@@ -46,7 +49,7 @@
     <div
       style="position: fixed; top: 80px; width: 199px; height: calc(100% - 80px); background: #fff"
     >
-      <Category />
+      <CategoryPage @click-item="onCategoryItem" />
     </div>
   </div>
 </template>
@@ -60,18 +63,23 @@
   import { Tag, Row, Col } from 'ant-design-vue';
   import router from '/@/router';
   import { Columns } from './config';
+  import Icon from '/@/components/Icon/index';
 
-  export const Category = createAsyncComponent(() => import('./category/index.vue'));
+  export const CategoryPage = createAsyncComponent(() => import('./category/index.vue'));
 
   export default defineComponent({
-    components: { BasicTable, Tag, TableAction, Row, Col, Category },
+    components: { BasicTable, Tag, TableAction, Row, Col, CategoryPage, Icon },
     setup() {
       function handleClick(img: string) {
         createImgPreview({ imageList: [img] });
       }
 
-      function handleFull(record: EditRecordRow) {
-        router.push({ name: 'ProductFull', params: { id: record.id_of_es } });
+      function handleFull(record?: any) {
+        if (record) {
+          router.push({ name: 'ProductFull', params: { id: record.id_of_es } });
+        } else {
+          router.push({ name: 'ProductFull', params: { id: '添加商品' } });
+        }
       }
 
       const [registerTable] = useTable({
@@ -84,10 +92,15 @@
         showIndexColumn: false,
       });
 
+      function onCategoryItem(e: Category) {
+        console.log(e);
+      }
+
       return {
         registerTable,
         handleClick,
         handleFull,
+        onCategoryItem,
       };
     },
   });
