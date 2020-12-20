@@ -14,7 +14,7 @@
               </FormItem>
             </Col>
             <Col :xs="24" :sm="12" :lg="8">
-              <FormItem label="备注" style="margin-bottom: 0">
+              <FormItem label="Remark" style="margin-bottom: 0">
                 <Input v-model:value="form.remark" />
               </FormItem>
               <FormItem label="访问次数" style="margin-bottom: 0">
