@@ -3,8 +3,9 @@ import { BasicColumn } from '/@/components/Table';
 export const Columns: BasicColumn[] = [
   {
     title: 'ID',
-    // width: 200,
+    width: 50,
     dataIndex: 'id_of_es',
+    slots: { customRender: 'id' },
   },
   {
     title: '名称',
@@ -30,13 +31,13 @@ export const Columns: BasicColumn[] = [
   },
   {
     title: '状态',
-    width: 120,
+    width: 90,
     dataIndex: 'enabled',
     slots: { customRender: 'enabled' },
   },
   {
     title: '操作',
-    width: 220,
+    width: 160,
     dataIndex: 'ID',
     slots: { customRender: 'action' },
   },

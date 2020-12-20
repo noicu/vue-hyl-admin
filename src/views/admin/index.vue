@@ -70,10 +70,10 @@
         try {
           delLoads[e.uid] = true;
           await adminDel({ uid: e.uid });
-          delLoads[e.uid] = false;
           await methods.reload();
         } catch (error) {
           console.log(error);
+        } finally {
           delLoads[e.uid] = false;
         }
       }

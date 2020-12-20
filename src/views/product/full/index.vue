@@ -1,182 +1,125 @@
 <template>
   <div class="high-form">
-    <a-page-header title="商品详情" sub-title="ID：BXT5aHUBUEDNcUc8voXi" :ghost="false">
-    </a-page-header>
-
+    <PageHeader title="商品详情" sub-title="ID：BXT5aHUBUEDNcUc8voXi" :ghost="false" />
     <div class="main-content">
       <a-card title="基本信息" :bordered="false">
-        <BasicForm @register="register" layout="vertical" />
+        <Form layout="vertical" :model="form">
+          <Row :gutter="[16, 8]">
+            <Col :xs="24" :sm="12" :lg="8">
+              <FormItem label="名称" style="margin-bottom: 0">
+                <Input v-model:value="form.name" />
+              </FormItem>
+              <FormItem label="关键词" style="margin-bottom: 0">
+                <Input v-model:value="form.key_word" />
+              </FormItem>
+            </Col>
+            <Col :xs="24" :sm="12" :lg="8">
+              <FormItem label="备注" style="margin-bottom: 0">
+                <Input v-model:value="form.remark" />
+              </FormItem>
+              <FormItem label="访问次数" style="margin-bottom: 0">
+                <InputNumber v-model:value="form.visit_count" :min="0" style="width: 100%" />
+              </FormItem>
+            </Col>
+            <Col :xs="24" :sm="12" :lg="8">
+              <FormItem label="类别" style="margin-bottom: 0">
+                <a-select v-model:value="form.cate_id">
+                  <a-select-option value="jack"> Jack </a-select-option>
+                  <a-select-option value="lucy"> Lucy </a-select-option>
+                  <a-select-option value="disabled" disabled> Disabled </a-select-option>
+                  <a-select-option value="Yiminghe"> yiminghe </a-select-option>
+                </a-select>
+              </FormItem>
+              <FormItem label="状态" style="margin-bottom: 0">
+                <a-switch v-model:checked="form.enabled" />
+              </FormItem>
+            </Col>
+          </Row>
+        </Form>
       </a-card>
-      <a-card title="颜色管理" :bordered="false" class="mt-5">
-        <a-form layout="vertical">
-          <CardGrid v-for="it in 3" class="color-input-card">
-            <a-form-item label="名称" style="margin-bottom: 0">
-              <a-input placeholder="" />
-            </a-form-item>
-            <a-form-item label="价格" style="margin-bottom: 0">
-              <a-input placeholder="" />
-            </a-form-item>
-          </CardGrid>
-        </a-form>
-      </a-card>
-      <a-card title="图片管理" :bordered="false" class="mt-5">
-        <!-- <draggable
-          v-model="data2"
-          group="people"
-          @start="drag = true"
-          @end="drag = false"
-          item-key="id"
-        >
-          <template #item="{ element }">
-            <CardGrid class="img-input-card">
-              <img
-                :src="'http://p.0755yicai.com/63159644-5cbf-4345-8faa-a481be7b56a6?e=1919315383&token=gEpp05gnISRQeLZ6d5GCnAryXSFDnMfl_G5iG5p5:42Hi6nvqOEn3v3JAHaglMwusKoU='"
-                class="img"
-                @click="
-                  handleClick(
-                    'http://p.0755yicai.com/63159644-5cbf-4345-8faa-a481be7b56a6?e=1919315383&token=gEpp05gnISRQeLZ6d5GCnAryXSFDnMfl_G5iG5p5:42Hi6nvqOEn3v3JAHaglMwusKoU='
-                  )
-                "
-                :alt="'img'"
-              />
-            </CardGrid>
-          </template>
-        </draggable> -->
-
-        <!-- <CardGrid class="img-input-card">
-
-        </CardGrid> -->
-      </a-card>
+      <ProductNorm v-model:value="form.colors" class="mt-5" />
+      <ProductImage v-model:value="form.images" class="mt-5" />
     </div>
 
-    <app-footer>
-      <template #left> 最近更新时间：2020-10-27 15:34:31 </template>
+    <PageFooter>
+      <template #left> 最近更新时间：{{ form.last_updated }} </template>
       <template #right>
-        <a-button type="primary" @click="submitAll">提交</a-button>
+        <a-button type="primary" @click="submitAll">提交全部</a-button>
       </template>
-    </app-footer>
+    </PageFooter>
   </div>
 </template>
 <script lang="ts">
-  import { Card } from 'ant-design-vue';
-  import { BasicForm, useForm } from '/@/components/Form';
-  import { computed, defineComponent, ref, unref } from 'vue';
-  import PersonTable from './PersonTable.vue';
-  import { schemas } from './data';
+  import { computed, defineComponent, unref, reactive, watch } from 'vue';
+  import { Card, PageHeader, Input, Form, Row, Col, InputNumber } from 'ant-design-vue';
   import { useRouter } from 'vue-router';
-  import { createImgPreview } from '/@/components/Preview/index';
-  // import Draggable from 'vuedraggable';
+  import ProductNorm from './ProductNorm.vue';
+  import ProductImage from './ProductImage.vue';
+  import { PageFooter } from '/@/components/Page';
+  import { productInfo } from '/@/api/yi/productManager';
+  import type { ProductInfo } from '/@/api/yi/productManager';
 
   export default defineComponent({
-    components: { BasicForm, PersonTable, CardGrid: Card.Grid },
+    components: {
+      CardGrid: Card.Grid,
+      ProductNorm,
+      ProductImage,
+      PageFooter,
+      PageHeader,
+      Input,
+      InputNumber,
+      Form,
+      Row,
+      Col,
+      FormItem: Form.Item,
+    },
     setup() {
       const { currentRoute } = useRouter();
-      const tableRef = ref<{ getDataSource: () => any } | null>(null);
 
-      const [register, { validate }] = useForm({
-        baseColProps: {
-          span: 6,
-        },
-        model: {
-          cate_id: 16,
-          cate_name: '图书',
-          colors: [
-            {
-              code: '灰色',
-              price: 100,
-            },
-            {
-              code: '黄色',
-              price: 1000,
-            },
-            {
-              code: '金色',
-              price: 10000,
-            },
-          ],
-          created: '2020-10-27 15:37:41',
-          enabled: true,
-          id_of_es: 'B3T9aHUBUEDNcUc8voXM',
-          image_main: 'pic-main',
-          images: [
-            {
-              path: 'pic1',
-              sort_no: 1,
-            },
-          ],
-          key_word: '周易, 大荒',
-          last_updated: '2020-10-27 15:37:41',
-          name: '周易',
-          remark: '周易',
-          visit_count: 6,
-        },
-        schemas: schemas,
-        showActionButtonGroup: false,
+      const params = computed(() => {
+        return unref(currentRoute).params;
       });
 
-      // async function getProduct(){
-      //   try {
+      const isAdd = computed(() => unref(params).id == 'add');
 
-      //   } catch (error) {}
-      // }
+      const form = reactive<ProductInfo>({
+        colors: [],
+        images: [],
+      });
 
-      function handleClick(img: string) {
-        createImgPreview({ imageList: [img] });
-      }
+      getProductInfo();
 
-      async function submitAll() {
+      async function getProductInfo() {
         try {
-          if (tableRef.value) {
-            console.log('table data:', tableRef.value.getDataSource());
-          }
-
-          const [values, taskValues] = await Promise.all([validate()]);
-          console.log('form data:', values, taskValues);
-        } catch (error) {}
+          const res = await productInfo({ id_of_es: unref(params).id as string });
+          form.colors?.push(...(res.colors || []));
+          form.images?.push(...(res.images || []));
+          // for (let key in res) {
+          //   ;
+          // }
+          console.log(res);
+        } catch (error) {
+          console.log(error);
+        } finally {
+        }
       }
 
-      const data = [
-        {
-          title: 'Title 1',
-        },
-        {
-          title: 'Title 2',
-        },
-        {
-          title: 'Title 3',
-        },
-        {
-          title: 'Title 4',
-        },
-        {
-          title: 'Title 5',
-        },
-        {
-          title: 'Title 6',
-        },
-      ];
+      watch(form.colors, (v: any) => console.log(v));
 
-      const data2 = [
-        { name: 'John', id: 1 },
-        { name: 'Joao', id: 2 },
-        { name: 'Jean', id: 3 },
-        { name: 'Gerard', id: 4 },
-      ];
+      watch(form.images, (v: any) => console.log(v));
+
+      function submitAll() {}
 
       return {
-        handleClick,
-        register,
+        params,
+        isAdd,
+        form,
         submitAll,
-        tableRef,
-        data,
-        data2,
-        params: computed(() => {
-          return unref(currentRoute).params;
-        }),
       };
     },
   });
 </script>
+
 <style lang="less" scoped>
   @import (reference) '../../../design/index.less';
 
@@ -187,12 +130,11 @@
   .main-content {
     margin: 20px;
   }
-
-  .color-input {
-    &-card {
-      padding: 15px;
+  .respond-to(xsmall-only,{
+    .main-content{
+      margin:0;
     }
-  }
+  });
 
   .img-input {
     &-card {
@@ -206,29 +148,4 @@
   .img {
     width: 100%;
   }
-
-  .respond-to(xsmall-only,{
-    .color-input {
-      &-card {
-        width: 100%;
-      }
-    }
-    .main-content{
-      margin:0;
-    }
-  });
-  .respond-to(small-only,{
-    .color-input {
-      &-card {
-        width: 50%;
-      }
-    }
-  });
-  .respond-to(medium-only,{
-    .color-input{
-      &-card {
-        width: 50%;
-      }
-    }
-  });
 </style>

@@ -25,19 +25,19 @@ export interface ProductImage {
 }
 
 export interface ProductInfo {
-  cate_id: number;
-  cate_name: string;
-  colors: ProductColor[];
-  created: string;
-  enabled: true;
-  id_of_es: string;
-  image_main: string;
-  images: ProductImage[];
-  key_word: string;
-  last_updated: string;
-  name: string;
-  remark: string;
-  visit_count: number;
+  cate_id?: number;
+  cate_name?: string;
+  colors?: ProductColor[];
+  created?: string;
+  enabled?: boolean;
+  id_of_es?: string;
+  image_main?: string;
+  images?: ProductImage[];
+  key_word?: string;
+  last_updated?: string;
+  name?: string;
+  remark?: string;
+  visit_count?: number;
 }
 
 export interface ProductID {
@@ -66,8 +66,33 @@ export function productInfoList(params: GetListParams<ProductInfo>) {
  * @description: 根据ID获取商品
  */
 export function productInfo(params: ProductID) {
-  return defHttp.request<Result<ProductInfo>>({
+  return defHttp.request<ProductInfo>({
     url: Api.PRODUCT_GET,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 修改商品
+ */
+export function productCh(params: ProductInfo, id: string) {
+  return defHttp.request<Result<ProductInfo>>({
+    url: Api.PRODUCT_CH,
+    method: 'POST',
+    params: {
+      id_of_es: id,
+      M: params,
+    },
+  });
+}
+
+/**
+ * @description: 根据ID删除商品
+ */
+export function productRm(params: ProductID) {
+  return defHttp.request<Result<ProductInfo>>({
+    url: Api.PRODUCT_RM,
     method: 'POST',
     params,
   });

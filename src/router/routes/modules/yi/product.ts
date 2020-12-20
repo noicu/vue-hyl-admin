@@ -22,8 +22,8 @@ const product: AppRouteModule = {
       },
     },
     {
-      path: '/ProductFull/:id',
-      name: 'ProductFull',
+      path: 'productList/:id',
+      name: 'productList',
       component: () => import('/@/views/product/full/index.vue'),
       meta: {
         title: '详情',
