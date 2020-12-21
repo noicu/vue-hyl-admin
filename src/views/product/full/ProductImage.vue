@@ -9,7 +9,7 @@
 <script lang="ts">
   import { watch, defineComponent } from 'vue';
   import type { PropType } from 'vue';
-  import type { ProductImage } from '/@/api/yi/productManager';
+  import type { ProductImage } from '/@/api/yi/product';
   // import { createImgPreview } from '/@/components/Preview/index';
   import { Card, Form, Input } from 'ant-design-vue';
 

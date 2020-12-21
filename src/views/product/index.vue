@@ -109,8 +109,8 @@
   import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { createImgPreview } from '/@/components/Preview/index';
-  import { productInfoList, productRm, productCh } from '/@/api/yi/productManager';
-  import type { Category, ProductInfo } from '/@/api/yi/productManager';
+  import { productInfoList, productRm, productCh } from '/@/api/yi/product';
+  import type { Category, ProductInfo } from '/@/api/yi/product';
 
   import { FETCH_SETTING } from '/@/api/const';
   import { Tag, Row, Col, Popconfirm } from 'ant-design-vue';

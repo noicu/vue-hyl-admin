@@ -16,9 +16,9 @@
 </template>
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';
-  import { BasicTable, useTable } from '/@/components/Table';
+  import { BasicTable, useTable, EditRecordRow } from '/@/components/Table';
   import { FETCH_SETTING } from '/@/api/const';
-  import { masterInfoList, masterCh, MasterInfo } from '/@/api/yi/masterManager';
+  import { masterInfoList, masterCh, MasterInfo } from '/@/api/yi/master';
   import { Columns } from './config';
   import { nToB, reN } from '/@/utils/conversion';
   import router from '/@/router';

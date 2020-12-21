@@ -1,7 +1,4 @@
-import { GetListParams, ResultList } from '../model/baseModel';
-import { defHttp } from '/@/utils/http/axios';
-
-enum Api {
+export enum Api {
   BROKER_ADMIN_LIST_URL = '/yi/user/BrokerAdminList', // 获取代理管理员列表
   BROKER_ADMIN_ADD_URL = '/yi/user/BrokerAdminAdd', // 新增代理管理
   BROKER_ADMIN_RM_URL = '/yi/user/BrokerAdminRm', // 删除代理管理员
@@ -13,17 +10,27 @@ enum Api {
   BROKER_INFO_GET_URL = '/yi/user/BrokerInfoGet', // 通过id获取代理信息
   BROKER_USER_INFO_SEARCH_URL = '/yi/user/BrokerUserInfoSearch', // 按代理id搜索用户信息
   SERVICE_CODE_BIND_URL = '/yi/user/ServiceCodeBind', // 服务代码绑定
+  BROKER_SET_ENABLE = '/yi/user/BrokerSetEnable', // 启用停用代理-----S
+
+  BROKER_MODULE_CH = '/yi/user/BrokerModuleCh', // 修改运营商模块
+  BROKER_MODULE_LIST = '/yi/user/BrokerModuleList', // 获取运营商模块
+
+  BROKER_ADD = '/yi/user/BrokerAdd', // 管理员直接添加运营商------S
 }
 
-export interface BrokerInfo {
-  account_code: string;
-  account_type: number;
-  brief: string;
-  created_at: string;
+export interface BrokerModules {
   enable_mall: number;
   enable_master: number;
   enable_prize: number;
   enable_vie: number;
+}
+
+export interface BrokerInfo extends BrokerModules {
+  account_code: string;
+  account_type: number;
+  brief: string;
+  created_at: string;
+
   enabled: number;
   icon: string;
   id: number;
@@ -39,26 +46,4 @@ export interface BrokerInfo {
 
 export interface BrokerApply extends BrokerInfo {
   stat: number;
-}
-
-/**
- * @description: 获取运营商列表
- */
-export function brokerInfoList(params: GetListParams<BrokerInfo>) {
-  return defHttp.request<ResultList<BrokerInfo>>({
-    url: Api.BROKER_INFO_PAGE_URL,
-    method: 'POST',
-    params,
-  });
-}
-
-/**
- * @description: 获取申请运营商列表
- */
-export function brokerApplyList(params: GetListParams<BrokerApply>) {
-  return defHttp.request<ResultList<BrokerApply>>({
-    url: Api.BROKER_APPLY_PAGE_URL,
-    method: 'POST',
-    params,
-  });
 }

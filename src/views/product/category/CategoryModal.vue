@@ -35,7 +35,7 @@
   import { defineComponent, reactive, unref, computed } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { Form, Row, Col } from 'ant-design-vue';
-  import { categoryCh, categoryAdd, categoryRm, Category } from '/@/api/yi/productManager';
+  import { categoryCh, categoryAdd, categoryRm, Category } from '/@/api/yi/product';
   // import { useLoading } from '/@/components/Loading';
 
   export default defineComponent({

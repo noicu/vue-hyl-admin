@@ -56,8 +56,8 @@
   import ProductNorm from './ProductNorm.vue';
   import ProductImage from './ProductImage.vue';
   import { PageFooter } from '/@/components/Page';
-  import { productInfo } from '/@/api/yi/productManager';
-  import type { ProductInfo } from '/@/api/yi/productManager';
+  import { productInfo } from '/@/api/yi/product';
+  import type { ProductInfo } from '/@/api/yi/product';
 
   export default defineComponent({
     components: {

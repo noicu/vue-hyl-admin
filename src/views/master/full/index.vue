@@ -3,10 +3,14 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, ref, unref } from 'vue';
-  import { masterInfoFull } from '/@/api/yi/masterManager';
+  import { defineComponent } from 'vue';
+  import { masterInfoFull } from '/@/api/yi/master';
 
-  export default defineComponent({});
+  export default defineComponent({
+    setup() {
+      console.log(masterInfoFull);
+    },
+  });
 </script>
 
 <style></style>

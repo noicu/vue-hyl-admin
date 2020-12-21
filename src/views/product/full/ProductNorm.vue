@@ -16,7 +16,7 @@
 <script lang="ts">
   import { defineComponent, watch } from 'vue';
   import type { PropType } from 'vue';
-  import type { ProductColor } from '/@/api/yi/productManager';
+  import type { ProductColor } from '/@/api/yi/product';
   import { Card, Form, Input } from 'ant-design-vue';
 
   export default defineComponent({

@@ -26,7 +26,7 @@
 
 <script lang="ts">
   import { defineComponent, ref, unref } from 'vue';
-  import { productCategoryList, Category } from '/@/api/yi/productManager';
+  import { productCategoryList, Category } from '/@/api/yi/product';
   import Icon from '/@/components/Icon/index';
   import { ScrollContainer } from '/@/components/Container/index';
   import { isUrl } from '/@/utils/is';

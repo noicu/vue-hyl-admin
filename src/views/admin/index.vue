@@ -21,8 +21,8 @@
   import { defineComponent, reactive } from 'vue';
   import { Popconfirm } from 'ant-design-vue';
   import { BasicTable, useTable } from '/@/components/Table';
-  import { adminInfoList, adminCh, adminDel } from '/@/api/yi/adminManager';
-  import { AdminInfo } from '/@/api/yi/adminManager';
+  import { adminInfoList, adminCh, adminDel } from '/@/api/yi/admin';
+  import type { AdminInfo } from '/@/api/yi/admin';
   import { FETCH_SETTING } from '/@/api/const';
   import { nToB, reN } from '/@/utils/conversion';
   import { Columns } from './config';
