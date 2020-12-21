@@ -19,10 +19,10 @@ export enum Api {
 }
 
 export interface BrokerModules {
-  enable_mall: number;
-  enable_master: number;
-  enable_prize: number;
-  enable_vie: number;
+  enable_mall: number | boolean;
+  enable_master: number | boolean;
+  enable_prize: number | boolean;
+  enable_vie: number | boolean;
 }
 
 export interface BrokerInfo extends BrokerModules {

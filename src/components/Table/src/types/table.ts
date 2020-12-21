@@ -355,7 +355,7 @@ export interface BasicTableProps<T = any> {
   transformCellText?: Function;
 
   /**
-   * Callback executed when pagination, filters or sorter is changed
+   * 更改分页，过滤器或排序器时执行的回调
    * @param pagination
    * @param filters
    * @param sorter

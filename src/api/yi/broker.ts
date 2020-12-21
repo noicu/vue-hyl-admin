@@ -33,7 +33,7 @@ export function brokerModuleList(id: number) {
     url: Api.BROKER_MODULE_LIST,
     method: 'POST',
     params: {
-      break_id: id,
+      broker_id: id,
     },
   });
 }
@@ -46,8 +46,22 @@ export function brokerModuleCh(params: BrokerModules, id: number) {
     url: Api.BROKER_MODULE_CH,
     method: 'POST',
     params: {
-      break_id: id,
+      broker_id: id,
       m: params,
+    },
+  });
+}
+
+/**
+ * @description: 启用停用代理
+ */
+export function brokerSetEnable(params: number, id: number) {
+  return defHttp.request<boolean>({
+    url: Api.BROKER_SET_ENABLE,
+    method: 'POST',
+    params: {
+      broker_id: id,
+      enabled: params,
     },
   });
 }
