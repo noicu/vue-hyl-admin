@@ -129,9 +129,9 @@
 
       function handleFull(record?: any) {
         if (record) {
-          router.push({ name: 'productList', params: { id: record.id_of_es } });
+          router.push({ name: 'ProductFull', params: { id: record.id_of_es } });
         } else {
-          router.push({ name: 'productList', params: { id: '添加商品' } });
+          router.push({ name: 'ProductFull', params: { id: '添加商品' } });
         }
       }
 

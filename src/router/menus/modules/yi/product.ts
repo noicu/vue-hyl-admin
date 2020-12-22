@@ -6,12 +6,6 @@ const menu: MenuModule = {
   menu: {
     name: t('routes.yi.product.product'),
     path: '/product',
-    children: [
-      {
-        path: 'productList',
-        name: t('routes.yi.product.productList'),
-      },
-    ],
   },
 };
 export default menu;

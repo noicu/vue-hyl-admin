@@ -6,12 +6,6 @@ const menu: MenuModule = {
   menu: {
     name: t('routes.yi.broker.broker'),
     path: '/broker',
-    children: [
-      {
-        path: 'brokerList',
-        name: t('routes.yi.broker.brokerList'),
-      },
-    ],
   },
 };
 export default menu;

@@ -6,20 +6,26 @@
         @change="enabledChange(record, column.dataIndex)"
       />
     </template>
+    <template #action="{ index, record, column, text }">
+      <Button type="default" size="small" style="margin: 0 5px" @click="handleFull(record)">
+        详情
+      </Button>
+    </template>
   </BasicTable>
 </template>
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
-  import { Checkbox } from 'ant-design-vue';
+  import { Checkbox, Button } from 'ant-design-vue';
   import { BasicTable, useTable } from '/@/components/Table';
   import { FETCH_SETTING } from '/@/api/const';
   import { brokerInfoList, brokerSetEnable, brokerModuleCh } from '/@/api/yi/broker';
   import type { BrokerInfo } from '/@/api/yi/broker';
   import { Columns } from './config';
   import { nToB, bToN } from '/@/utils/conversion';
+  import router from '/@/router';
 
   export default defineComponent({
-    components: { BasicTable, Checkbox },
+    components: { BasicTable, Checkbox, Button },
     setup() {
       const brokerModules = ref<any[]>([]);
       const sw = ref({
@@ -56,26 +62,31 @@
 
       // 开关切换时执行
       // 禁用/启用
-      async function enabledChange(data: any, key: string) {
-        console.log(data);
+      async function enabledChange(it: any, key: string) {
+        console.log(it);
         try {
           if (key == 'enabled') {
-            await brokerSetEnable(bToN(data[key]), data.id);
+            await brokerSetEnable(bToN(it[key]), it.id);
           } else {
             await brokerModuleCh(
               {
-                enable_mall: bToN(data.enable_mall),
-                enable_master: bToN(data.enable_master),
-                enable_prize: bToN(data.enable_prize),
-                enable_vie: bToN(data.enable_vie),
+                enable_mall: bToN(it.enable_mall),
+                enable_master: bToN(it.enable_master),
+                enable_prize: bToN(it.enable_prize),
+                enable_vie: bToN(it.enable_vie),
               },
-              data.id
+              it.id
             );
           }
         } catch (error) {
           console.log(error);
-          data[key] = !data[key];
+          it[key] = !it[key];
         }
+      }
+
+      function handleFull(it: any) {
+        console.log(it);
+        router.push({ name: 'BrokerFull', params: { id: it.id } });
       }
 
       return {
@@ -84,6 +95,7 @@
         nToB,
         enabledChange,
         brokerModules,
+        handleFull,
       };
     },
   });

@@ -36,7 +36,7 @@ setupGlobDirectives(app);
 // Configure global error handling
 setupErrorHandle(app);
 
-// Mount when the route is ready
+// 路由准备好后挂载
 router.isReady().then(() => {
   app.mount('#app');
 });

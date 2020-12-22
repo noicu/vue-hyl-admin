@@ -99,3 +99,14 @@ export function categoryRm(id: number) {
     },
   });
 }
+
+/**
+ * @description: 获取运营商商品列表
+ */
+export function bProductPage(params: GetListParams<ProductInfo>) {
+  return defHttp.request<ResultList<ProductInfo>>({
+    url: Api.BROKER_PRODUCT_PAGE,
+    method: 'POST',
+    params,
+  });
+}

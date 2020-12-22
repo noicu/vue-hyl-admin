@@ -11,6 +11,7 @@ export const Columns: BasicColumn[] = [
   },
   {
     title: '拥有者',
+    width: 150,
     dataIndex: 'owner_nick',
   },
   {
@@ -47,5 +48,11 @@ export const Columns: BasicColumn[] = [
         slots: { customRender: 'enabled' },
       },
     ],
+  },
+  {
+    title: '操作',
+    width: 70,
+    dataIndex: 'action',
+    slots: { customRender: 'action' },
   },
 ];

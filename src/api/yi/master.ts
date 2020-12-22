@@ -1,5 +1,5 @@
 import { GetListParams, ResultList } from '../model/base';
-import { MasterInfo, MasterCh, MasterUID, MasterInfoFull, Api } from './model/master';
+import { MasterInfo, MasterCh, MasterUID, MasterInfoFull, Api, BMasterInfo } from './model/master';
 export * from './model/master';
 import { defHttp } from '/@/utils/http/axios';
 
@@ -31,6 +31,17 @@ export function masterCh(params: MasterCh) {
 export function masterInfoFull(params: MasterUID) {
   return defHttp.request<MasterInfoFull>({
     url: Api.MASTER_INFO_FULL_GET,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 获取运营商大师列表
+ */
+export function bMasterPage(params: GetListParams<BMasterInfo>) {
+  return defHttp.request<ResultList<BMasterInfo>>({
+    url: Api.B_MASTER_PAGE,
     method: 'POST',
     params,
   });

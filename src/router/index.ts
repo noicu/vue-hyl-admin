@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router';
 import type { App } from 'vue';
 
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 
 import { createGuard } from './guard/';
 
@@ -9,9 +9,9 @@ import { basicRoutes } from './routes/';
 import { scrollBehavior } from './scrollBehavior';
 import { REDIRECT_NAME } from './constant';
 
-export const hashRouter = createWebHashHistory();
+export const hashRouter = createWebHistory();
 
-// app router
+// 路由
 const router = createRouter({
   history: hashRouter,
   routes: basicRoutes as RouteRecordRaw[],
@@ -19,7 +19,7 @@ const router = createRouter({
   scrollBehavior: scrollBehavior,
 });
 
-// reset router
+// 复位路由
 export function resetRouter() {
   const resetWhiteNameList = ['Login', REDIRECT_NAME];
   router.getRoutes().forEach((route) => {
@@ -30,7 +30,7 @@ export function resetRouter() {
   });
 }
 
-// config router
+// 配置路由
 export function setupRouter(app: App<Element>) {
   app.use(router);
   createGuard(router);

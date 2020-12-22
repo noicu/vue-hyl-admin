@@ -14,6 +14,10 @@
         <TabPane :closable="!(item && item.meta && item.meta.affix)">
           <template #tab>
             <TabContent :tabItem="item" />
+            <TabExtra
+              v-if="item.params && (item.params.title || item.params.id)"
+              :data="item.params"
+            />
           </template>
         </TabPane>
       </template>
@@ -29,6 +33,7 @@
   import { defineComponent, computed, unref, ref } from 'vue';
   import { Tabs } from 'ant-design-vue';
   import TabContent from './components/TabContent.vue';
+  import TabExtra from './components/TabExtra.vue';
   import { useGo } from '/@/hooks/web/usePage';
   import { tabStore } from '/@/store/modules/tab';
   import { userStore } from '/@/store/modules/user';
@@ -46,6 +51,7 @@
       Tabs,
       TabPane: Tabs.TabPane,
       TabContent,
+      TabExtra,
     },
     setup() {
       const affixTextList = initAffixTabs();

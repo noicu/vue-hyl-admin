@@ -16,7 +16,7 @@ export enum Api {
   BROKER_CATE_RM = '/yi/user/BrokerCateRm', // 运营商商品类别批量删除------B+S
 
   BROKER_PRODUCT_ADD = '/yi/user/BrokerProductAdd', // 运营商商品批量添加-----B+S
-  BROKER_PRODUCT_PAGE = '/yi/user/BrokerProductAdd', // 运营商商品分页查询------B+S
+  BROKER_PRODUCT_PAGE = '/yi/user/BrokerProductPage', // 运营商商品分页查询------B+S
   BROKER_PRODUCT_PRICE_CH = '/yi/user/BrokerProductPriceCh', // 运营商商品批量价格修改------B+S
   BROKER_PRODUCT_RM = '/yi/user/BrokerProductRm', // 运营商商品批量删除------B+S
 }

@@ -2,30 +2,30 @@ import type { RouteRecordRaw } from 'vue-router';
 import { RoleEnum } from '/@/enums/roleEnum';
 import Component from '/@/components/types';
 export interface RouteMeta {
-  // title
+  // 名称
   title: string;
-  // Whether to ignore permissions
+  // 是否忽略权限
   ignoreAuth?: boolean;
-  // role info
+  // 角色信息
   roles?: RoleEnum[];
-  // Whether not to cache
+  // 是否不缓存
   ignoreKeepAlive?: boolean;
-  // Is it fixed on tab
+  // 它固定在选项卡上吗
   affix?: boolean;
-  // icon on tab
+  // 标签上的图标
   icon?: string;
-  // Jump address
+  // 跳转地址
   frameSrc?: string;
-  // current page transition
+  // 当前页面过渡
   transitionName?: string;
 
-  // Whether the route has been dynamically added
+  // 路由是否已动态添加
   hideBreadcrumb?: boolean;
 
-  // Carrying parameters
+  // 携带参数
   carryParam?: boolean;
 
-  // Used internally to mark single-level menus
+  // 在内部用于标记单级菜单
   single?: boolean;
 }
 

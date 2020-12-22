@@ -48,6 +48,12 @@ export interface MasterInfo {
   ver: number;
 }
 
+export interface BMasterInfo extends MasterInfo {
+  broker_name: string;
+  broker_id: number;
+  master_id: number;
+}
+
 export interface MasterInfoFull {
   info: MasterInfo;
   images: Images;
