@@ -51,7 +51,7 @@ export const Columns: BasicColumn[] = [
   },
   {
     title: '操作',
-    width: 70,
+    width: 140,
     dataIndex: 'action',
     slots: { customRender: 'action' },
   },

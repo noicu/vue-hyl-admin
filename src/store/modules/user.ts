@@ -41,13 +41,13 @@ function setCache(USER_INFO_KEY: string, info: any) {
 
 @Module({ namespaced: true, name: NAME, dynamic: true, store })
 class User extends VuexModule {
-  // user info
+  // 用户信息
   private userInfoState: UserInfo | null = null;
 
   // token
   private tokenState = '';
 
-  // roleList
+  // 角色列表
   private roleListState: RoleEnum[] = [];
 
   get getUserInfoState(): UserInfo {

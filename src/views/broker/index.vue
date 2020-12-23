@@ -4,17 +4,21 @@
       <Checkbox
         v-model:checked="record[column.dataIndex]"
         @change="enabledChange(record, column.dataIndex)"
+        :disabled="isSuper && column.dataIndex != 'enabled'"
       />
     </template>
     <template #action="{ index, record, column, text }">
       <Button type="default" size="small" style="margin: 0 5px" @click="handleFull(record)">
-        详情
+        大师
+      </Button>
+      <Button type="default" size="small" style="margin: 0 5px" @click="handleFull(record)">
+        商品
       </Button>
     </template>
   </BasicTable>
 </template>
 <script lang="ts">
-  import { defineComponent, ref } from 'vue';
+  import { defineComponent, ref, computed } from 'vue';
   import { Checkbox, Button } from 'ant-design-vue';
   import { BasicTable, useTable } from '/@/components/Table';
   import { FETCH_SETTING } from '/@/api/const';
@@ -23,6 +27,8 @@
   import { Columns } from './config';
   import { nToB, bToN } from '/@/utils/conversion';
   import router from '/@/router';
+  import { userStore } from '/@/store/modules/user';
+  import { RoleEnum } from '/@/enums/roleEnum';
 
   export default defineComponent({
     components: { BasicTable, Checkbox, Button },
@@ -96,6 +102,7 @@
         enabledChange,
         brokerModules,
         handleFull,
+        isSuper: computed(() => userStore.getRoleListState.includes(RoleEnum.SUPER)),
       };
     },
   });
