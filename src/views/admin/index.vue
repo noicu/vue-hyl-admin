@@ -21,11 +21,11 @@
   import { defineComponent, reactive } from 'vue';
   import { Popconfirm } from 'ant-design-vue';
   import { BasicTable, useTable } from '/@/components/Table';
-  import { adminInfoList, adminCh, adminDel } from '/@/api/yi/admin';
-  import type { AdminInfo } from '/@/api/yi/admin';
+  import { sysAdminPage, sysAdminCh, sysAdminRm } from '/@/api/user';
+  import type { AdminInfo } from '/@/api/model/admin';
   import { FETCH_SETTING } from '/@/api/const';
   import { nToB, reN } from '/@/utils/conversion';
-  import { Columns } from './config';
+  import { AdminColumns } from './config';
   import Icon from '/@/components/Icon';
 
   export default defineComponent({
@@ -33,9 +33,9 @@
     setup() {
       const [registerTable, methods] = useTable({
         title: '系统管理员列表',
-        api: adminInfoList,
+        api: sysAdminPage,
         fetchSetting: FETCH_SETTING,
-        columns: Columns,
+        columns: AdminColumns,
         showIndexColumn: false,
         showTableSetting: true,
         showFilter: true,
@@ -53,7 +53,7 @@
         try {
           e.enabled = reN(e.enabled);
           enableLoads[e.uid] = true;
-          await adminCh({
+          await sysAdminCh({
             uid: e.uid,
             enabled: e.enabled,
           });
@@ -69,7 +69,7 @@
       async function onDelete(e: AdminInfo) {
         try {
           delLoads[e.uid] = true;
-          await adminDel({ uid: e.uid });
+          await sysAdminRm({ uid: e.uid });
           await methods.reload();
         } catch (error) {
           console.log(error);

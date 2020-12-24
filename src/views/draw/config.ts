@@ -1,6 +1,6 @@
 import { BasicColumn } from '/@/components/Table';
 
-export const AdminColumns: BasicColumn[] = [
+export const Columns: BasicColumn[] = [
   {
     title: 'UID',
     width: 150,

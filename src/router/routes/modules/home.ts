@@ -16,7 +16,7 @@ const dashboard: AppRouteModule = {
     {
       path: 'welcome',
       name: 'Welcome',
-      component: () => import('/@/views/dashboard/welcome/index.vue'),
+      component: () => import('/@/views/dashboard/workbench/index.vue'),
       meta: {
         title: t('routes.dashboard.welcome'),
         affix: true,

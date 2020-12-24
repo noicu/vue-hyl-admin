@@ -10,9 +10,13 @@ export const Columns: BasicColumn[] = [
     dataIndex: 'service_code',
   },
   {
+    title: '拥有者昵称',
+    dataIndex: 'owner_nick',
+  },
+  {
     title: '拥有者',
     width: 150,
-    dataIndex: 'owner_nick',
+    dataIndex: 'owner_user_code',
   },
   {
     title: '状态',
