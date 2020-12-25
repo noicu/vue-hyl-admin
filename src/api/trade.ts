@@ -53,33 +53,66 @@ export enum TradeApi {
 }
 
 /**
- * 提现列表
+ * 运营商提现列表
  */
-export function drawMoneyPage(params: any, isBroker: boolean) {
+export function brokerDrawMoneyPage(params: any) {
   return defHttp.request<any>({
-    url: isBroker ? TradeApi.BrokerDrawMoneyPage : TradeApi.MasterDrawMoneyPage,
+    url: TradeApi.BrokerDrawMoneyPage,
     method: 'POST',
     params,
   });
 }
 
 /**
- * 提现处理
+ * 运营商提现处理
  */
-export function drawMoneyAudit(params: any, isBroker: boolean) {
+export function brokerDrawMoneyAudit(params: any) {
   return defHttp.request<any>({
-    url: isBroker ? TradeApi.BrokerDrawMoneyAudit : TradeApi.MasterDrawMoneyAudit,
+    url: TradeApi.BrokerDrawMoneyAudit,
     method: 'POST',
     params,
   });
 }
 
 /**
- * 提现历史
+ * 运营商提现历史
  */
-export function drawMoneyHis(params: any, isBroker: boolean) {
+export function brokerDrawMoneyHis(params: any) {
   return defHttp.request<any>({
-    url: isBroker ? TradeApi.BrokerDrawMoneyHisPage : TradeApi.MasterDrawMoneyHisPage,
+    url: TradeApi.BrokerDrawMoneyHisPage,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * 大师提现列表
+ */
+export function masterDrawMoneyPage(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.MasterDrawMoneyPage,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * 大师提现处理
+ */
+export function masterDrawMoneyAudit(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.MasterDrawMoneyAudit,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * 大师提现历史
+ */
+export function masterDrawMoneyHis(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.MasterDrawMoneyHisPage,
     method: 'POST',
     params,
   });

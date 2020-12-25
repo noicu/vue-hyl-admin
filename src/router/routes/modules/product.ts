@@ -2,6 +2,7 @@ import type { AppRouteModule } from '/@/router/types';
 
 import { LAYOUT } from '/@/router/constant';
 import { t } from '/@/hooks/web/useI18n';
+import { RoleEnum } from '/@/enums/roleEnum';
 
 const product: AppRouteModule = {
   path: '/product-manager',
@@ -20,6 +21,17 @@ const product: AppRouteModule = {
       meta: {
         icon: 'carbon:table-split',
         title: t('routes.yi.product.productList'),
+        roles: [RoleEnum.SUPER],
+      },
+    },
+    {
+      path: '/product',
+      name: 'Product',
+      component: () => import('/@/views/broker/full/Product.vue'),
+      meta: {
+        icon: 'carbon:table-split',
+        title: t('routes.yi.product.productList'),
+        roles: [RoleEnum.BROKER],
       },
     },
     {
@@ -30,6 +42,7 @@ const product: AppRouteModule = {
         title: '详情',
         icon: 'carbon:table-split',
         carryParam: true,
+        roles: [RoleEnum.SUPER],
       },
     },
     {
@@ -40,6 +53,7 @@ const product: AppRouteModule = {
         title: '添加',
         icon: 'carbon:table-split',
         carryParam: true,
+        roles: [RoleEnum.SUPER],
       },
     },
   ],

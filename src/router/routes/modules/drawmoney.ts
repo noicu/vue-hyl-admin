@@ -40,6 +40,14 @@ const draw: AppRouteModule = {
         roles: [RoleEnum.SUPER],
       },
     },
+    {
+      path: 'his/:role',
+      name: 'His',
+      component: () => import('/@/views/draw/DrawMoneyHis.vue'),
+      meta: {
+        title: '提现历史',
+      },
+    },
   ],
 };
 

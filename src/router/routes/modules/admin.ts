@@ -19,6 +19,7 @@ const admin: AppRouteModule = {
       name: 'Admin',
       component: () => import('/@/views/admin/index.vue'),
       meta: {
+        icon: 'carbon:table-split',
         title: t('routes.yi.admin.adminList'),
         roles: [RoleEnum.SUPER],
       },
@@ -28,6 +29,7 @@ const admin: AppRouteModule = {
       name: 'Admin',
       component: () => import('/@/views/broker/full/Admin.vue'),
       meta: {
+        icon: 'carbon:table-split',
         title: t('routes.yi.admin.adminList'),
         roles: [RoleEnum.BROKER],
       },
