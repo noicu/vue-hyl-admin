@@ -32,14 +32,19 @@
 
 { key:'key', key_text:'名称', val:'value', val_text:'值' } 展示 ['名称:值','名称',':','值'] 处理 ['key:value','key',':','value']
 
-
 管理员业务
-  - 增删改查运营商
-  - 增删改查大师
-  - 增删改查商品
-  - 系统设置
+
+- 增删改查运营商
+- 增删改查大师
+- 增删改查商品
+- 系统设置
 
 运营商业务
-  - 增删改查大师
-  - 增删改查商品
-  - 运营商设置
+
+- 增删改查大师
+- 增删改查商品
+- 运营商设置
+
+"amt": 0, "amt_start": 0, "b_type": "yi-order", "bill_no": "bil_no_0", "broker_id": 61, "broker_name": "", "created_at": "2020-11-23 17:00:49", "id": 1, "remark": "", "summary": "", "update_at": "2020-11-23 17:00:49", "ver": 1
+
+"AmtStart": 0, "amt": 50000, "b_type": "user-recharge", "bill_no": "name_1605862662826776209", "created_at": "2020-11-20 16:57:42", "id": 1, "remark": "", "summary": "", "update_at": "2020-11-20 16:57:42", "ver": 1

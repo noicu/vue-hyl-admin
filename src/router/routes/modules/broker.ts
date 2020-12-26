@@ -2,6 +2,7 @@ import type { AppRouteModule } from '/@/router/types';
 
 import { LAYOUT } from '/@/router/constant';
 import { t } from '/@/hooks/web/useI18n';
+import { RoleEnum } from '/@/enums/roleEnum';
 
 const broker: AppRouteModule = {
   path: '/broker-manager',
@@ -11,6 +12,7 @@ const broker: AppRouteModule = {
   meta: {
     icon: 'carbon:table-split',
     title: t('routes.yi.broker.broker'),
+    roles: [RoleEnum.SUPER],
   },
   children: [
     {
@@ -20,6 +22,7 @@ const broker: AppRouteModule = {
       meta: {
         icon: 'carbon:table-split',
         title: t('routes.yi.broker.brokerList'),
+        roles: [RoleEnum.SUPER],
       },
     },
     {
@@ -30,6 +33,7 @@ const broker: AppRouteModule = {
         title: '运营商',
         icon: 'carbon:table-split',
         carryParam: true,
+        roles: [RoleEnum.SUPER],
       },
     },
     {
@@ -40,6 +44,7 @@ const broker: AppRouteModule = {
         title: '添加',
         icon: 'carbon:table-split',
         carryParam: true,
+        roles: [RoleEnum.SUPER],
       },
     },
   ],

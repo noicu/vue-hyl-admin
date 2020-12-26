@@ -19,6 +19,8 @@ import { useProjectSetting } from '/@/hooks/setting';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { ErrorMessageMode } from '/@/utils/http/axios/types';
 
+import { getUser, setUser } from '/@/api/user';
+
 // export type UserInfo = Omit<GetUserInfoByUserIdModel, 'roles'>;
 
 const NAME = 'user';
@@ -125,6 +127,28 @@ class User extends VuexModule {
 
       goHome && (await router.replace(PageEnum.BASE_HOME));
       return user_info;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  @Action
+  async getUserInfo(): Promise<UserInfo | null> {
+    try {
+      const data = await getUser();
+      this.commitUserInfoState(data);
+      return data;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  @Action
+  async setUserInfo(params: any): Promise<UserInfo | null> {
+    try {
+      await setUser({ data: params });
+      const data = await this.getUserInfo();
+      return data;
     } catch (error) {
       return null;
     }

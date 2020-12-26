@@ -88,6 +88,35 @@ export enum UserApi {
    */
   BrokerInfoPage = '/yi/user/BrokerInfoPage', // 列表
   BrokerSetEnable = '/yi/user/BrokerSetEnable', // 启用/禁用
+
+  /**
+   * 用户信息
+   */
+  GetUser = '/yi/user/GetUser', // 获取当前登陆用户的信息
+  GetUserPublic = '/yi/user/GetUser', // 获取用户公开的信息
+  ChUserInfo = '/yi/user/ChUserInfo', // 修改用户信息
+}
+
+/**
+ * @description: 获取当前登陆用户的信息
+ */
+export function getUser() {
+  return defHttp.request<any>({
+    url: UserApi.GetUser,
+    method: 'POST',
+    params: {},
+  });
+}
+
+/**
+ * @description: 修改用户信息
+ */
+export function setUser(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.ChUserInfo,
+    method: 'POST',
+    params,
+  });
 }
 
 /**
