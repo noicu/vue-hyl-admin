@@ -5,25 +5,26 @@
   import { defineComponent } from 'vue';
   import { BasicTable, useTable } from '/@/components/Table';
   import { FETCH_SETTING } from '/@/api/const';
-  import { bProductPage } from '/@/api/yi/product';
+  import { productOrderHisPage } from '/@/api/trade';
   import { ProductColumns } from './config';
+  import { userStore } from '/@/store/modules/user';
+  import { RoleEnum } from '/@/enums/roleEnum';
 
   export default defineComponent({
     components: { BasicTable },
-    props: {
-      brokerId: Number,
-    },
-    setup({ brokerId }) {
+    props: {},
+    setup() {
       const [registerTable] = useTable({
         title: '商品订单历史',
-        api: bProductPage,
+        api: productOrderHisPage,
         fetchSetting: FETCH_SETTING,
         columns: ProductColumns,
         showIndexColumn: false,
         searchInfo: {
-          cate_id: 48,
           where: {
-            broker_id: brokerId,
+            broker_id: userStore.getRoleListState.includes(RoleEnum.BROKER)
+              ? userStore.getUserInfoState.broker_id
+              : null,
           },
         },
       });

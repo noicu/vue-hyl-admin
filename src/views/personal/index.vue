@@ -21,8 +21,8 @@
 
   import BaseSetting from './BaseSetting.vue';
   import SecureSetting from './SecureSetting.vue';
-  import AccountBind from './AccountBind.vue';
-  import MsgNotify from './MsgNotify.vue';
+  // import AccountBind from './AccountBind.vue';
+  // import MsgNotify from './MsgNotify.vue';
   import { userStore } from '/@/store/modules/user';
 
   export default defineComponent({
@@ -32,8 +32,8 @@
       TabPane: Tabs.TabPane,
       BaseSetting,
       SecureSetting,
-      AccountBind,
-      MsgNotify,
+      // AccountBind,
+      // MsgNotify,
     },
     setup() {
       console.log(userStore.getUserInfoState);

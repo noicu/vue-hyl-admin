@@ -19,16 +19,16 @@ export const settingList = [
     name: '安全设置',
     component: 'SecureSetting',
   },
-  {
-    key: '3',
-    name: '账号绑定',
-    component: 'AccountBind',
-  },
-  {
-    key: '4',
-    name: '新消息通知',
-    component: 'MsgNotify',
-  },
+  // {
+  //   key: '3',
+  //   name: '账号绑定',
+  //   component: 'AccountBind',
+  // },
+  // {
+  //   key: '4',
+  //   name: '新消息通知',
+  //   component: 'MsgNotify',
+  // },
 ];
 
 // 安全设置 list

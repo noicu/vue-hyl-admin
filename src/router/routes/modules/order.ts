@@ -20,7 +20,6 @@ const order: AppRouteModule = {
       meta: {
         icon: 'carbon:table-split',
         title: '商品订单',
-        roles: [RoleEnum.SUPER],
       },
     },
     {
@@ -34,16 +33,6 @@ const order: AppRouteModule = {
       },
     },
     {
-      path: 'product',
-      name: 'OrderProduct',
-      component: () => import('/@/views/order/ProductHis.vue'),
-      meta: {
-        icon: 'carbon:table-split',
-        title: '商品订单',
-        roles: [RoleEnum.BROKER],
-      },
-    },
-    {
       path: 'master',
       name: 'OrderMaster',
       component: () => import('/@/views/order/MasterHis.vue'),
@@ -51,6 +40,24 @@ const order: AppRouteModule = {
         icon: 'carbon:table-split',
         title: '大师订单',
         roles: [RoleEnum.BROKER],
+      },
+    },
+    {
+      path: 'product-his',
+      name: 'ProductHis',
+      component: () => import('/@/views/order/ProductHis.vue'),
+      meta: {
+        icon: 'carbon:table-split',
+        title: '商品历史订单',
+      },
+    },
+    {
+      path: 'master-his',
+      name: 'MasterHis',
+      component: () => import('/@/views/order/MasterHis.vue'),
+      meta: {
+        icon: 'carbon:table-split',
+        title: '大师历史订单',
       },
     },
   ],

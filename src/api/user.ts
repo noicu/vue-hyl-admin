@@ -95,6 +95,106 @@ export enum UserApi {
   GetUser = '/yi/user/GetUser', // 获取当前登陆用户的信息
   GetUserPublic = '/yi/user/GetUser', // 获取用户公开的信息
   ChUserInfo = '/yi/user/ChUserInfo', // 修改用户信息
+  ChUserPwd = '/yi/user/ChUserPwd', // 修改用户密码
+}
+
+/**
+ * @description: 新增运营商管理员
+ */
+export function brokerAdminAdd(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerAdminAdd,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 运营商用户
+ */
+export function brokerUserInfoPage(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerUserInfoPage,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 转为大师
+ */
+export function switchToMaster(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.SwitchToMaster,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 转为运营商
+ */
+export function switchToBroker(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.SwitchToBroker,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 大师申请
+ */
+export function masterInfoApplyPage(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.MasterInfoApplyPage,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 大师申请审批
+ */
+export function masterInfoApplyAudit(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.MasterInfoApplyAudit,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 运营商申请
+ */
+export function BrokerApplyPage(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerApplyPage,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 运营商申请审批
+ */
+export function BrokerApplyAudit(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerApplyAudit,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 修改用户密码
+ */
+export function chUserPwd(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.ChUserPwd,
+    method: 'POST',
+    params,
+  });
 }
 
 /**

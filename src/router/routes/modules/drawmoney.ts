@@ -16,7 +16,7 @@ const draw: AppRouteModule = {
     {
       path: 'bdm',
       name: 'Draw',
-      component: () => import('/@/views/draw/BrokerDrawMoney.vue'),
+      component: () => import('/@/views/draw/BrokerDrawMoneyPage.vue'),
       meta: {
         title: '提现',
         roles: [RoleEnum.BROKER],

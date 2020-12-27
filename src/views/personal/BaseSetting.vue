@@ -48,7 +48,9 @@
       </a-col>
     </a-row>
     <div style="text-align: center">
-      <Button class="m-5" type="primary" @click="handleSubmit">更新基本信息</Button>
+      <Button class="m-5" type="primary" @click="handleSubmit" :loading="loading"
+        >更新基本信息</Button
+      >
     </div>
   </CollapseContainer>
 </template>
@@ -83,6 +85,8 @@
         nick: '',
         icon: '',
       });
+
+      const loading = ref(false);
 
       const districts = ref<string[]>([]);
       const birth = ref('');
@@ -127,15 +131,19 @@
       }
 
       async function handleSubmit() {
+        loading.value = true;
         try {
           await userStore.setUserInfo(unref(form));
           createMessage.success('更新成功！');
         } catch (err) {
           createMessage.error('更新失败！');
+        } finally {
+          loading.value = false;
         }
       }
 
       return {
+        loading,
         headerImg,
         form,
         districts,

@@ -5,8 +5,8 @@
   import { defineComponent } from 'vue';
   import { BasicTable, useTable } from '/@/components/Table';
   import { FETCH_SETTING } from '/@/api/const';
-  import { bMasterPage } from '/@/api/yi/master';
-  import { MasterColumns } from './config';
+  import { businessBrokerPage } from '/@/api/trade';
+  import { BrokerColumns } from './config';
 
   export default defineComponent({
     components: { BasicTable },
@@ -16,9 +16,9 @@
     setup({ brokerId }) {
       const [registerTable] = useTable({
         title: '运营商账单',
-        api: bMasterPage,
+        api: businessBrokerPage,
         fetchSetting: FETCH_SETTING,
-        columns: MasterColumns,
+        columns: BrokerColumns,
         showIndexColumn: false,
         searchInfo: {
           where: {

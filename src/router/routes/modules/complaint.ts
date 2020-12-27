@@ -21,6 +21,15 @@ const complaint: AppRouteModule = {
         title: '投诉',
       },
     },
+    {
+      path: '/complaint-full/:id',
+      name: 'ComplaintFull',
+      component: () => import('/@/views/complaint/Full.vue'),
+      meta: {
+        icon: 'carbon:table-split',
+        title: '投诉详情',
+      },
+    },
   ],
 };
 

@@ -23,7 +23,7 @@
               <div class="description">{{ item.nick }}</div>
               <div class="info">
                 <div><span>状态</span>{{ nToB(item.enabled) ? '正常' : '禁用' }}</div>
-                <div><span>开始时间</span>{{ item.update_at }}</div>
+                <div><span>更新时间</span>{{ item.update_at }}</div>
               </div>
             </template>
           </a-list-item-meta>

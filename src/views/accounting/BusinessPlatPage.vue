@@ -5,26 +5,20 @@
   import { defineComponent } from 'vue';
   import { BasicTable, useTable } from '/@/components/Table';
   import { FETCH_SETTING } from '/@/api/const';
-  import { bMasterPage } from '/@/api/yi/master';
-  import { MasterColumns } from './config';
+  import { businessPlatPage } from '/@/api/trade';
+  import { AdminColumns } from './config';
 
   export default defineComponent({
     components: { BasicTable },
-    props: {
-      brokerId: [Number, String],
-    },
-    setup({ brokerId }) {
+    props: {},
+    setup() {
       const [registerTable] = useTable({
         title: '平台账单',
-        api: bMasterPage,
+        api: businessPlatPage,
         fetchSetting: FETCH_SETTING,
-        columns: MasterColumns,
+        columns: AdminColumns,
         showIndexColumn: false,
-        searchInfo: {
-          where: {
-            broker_id: brokerId,
-          },
-        },
+        searchInfo: {},
       });
 
       return {

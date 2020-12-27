@@ -1,117 +1,71 @@
 import { BasicColumn } from '/@/components/Table';
 
-export const ProductColumns: BasicColumn[] = [
+export const AdminColumns: BasicColumn[] = [
   {
-    title: 'ID',
-    width: 50,
-    dataIndex: 'id_of_es',
-    slots: { customRender: 'id' },
+    title: 'bill_no',
+    dataIndex: 'bill_no',
   },
   {
-    title: '名称',
-    width: 120,
-    dataIndex: 'name',
+    title: 'b_type',
+    dataIndex: 'b_type',
   },
   {
-    title: '类型',
-    width: 120,
-    dataIndex: 'cate_name',
+    title: 'amt',
+    dataIndex: 'amt',
   },
   {
-    title: '图片',
-    // width: 200,
-    dataIndex: 'images',
-    slots: { customRender: 'images' },
+    title: 'AmtStart',
+    dataIndex: 'AmtStart',
   },
   {
-    title: '规格',
-    // width: 300,
-    dataIndex: 'colors',
-    slots: { customRender: 'colors' },
+    title: 'remark',
+    dataIndex: 'remark',
   },
   {
-    title: '状态',
-    width: 90,
-    dataIndex: 'enabled',
-    slots: { customRender: 'enabled' },
+    title: 'summary',
+    dataIndex: 'summary',
   },
   {
-    title: '操作',
-    width: 160,
-    dataIndex: 'ID',
-    slots: { customRender: 'action' },
+    title: 'created_at',
+    dataIndex: 'created_at',
   },
 ];
 
-export const MasterColumns: BasicColumn[] = [
+export const BrokerColumns: BasicColumn[] = [
   {
-    title: 'UID',
-    width: 150,
-    dataIndex: 'uid',
+    title: 'bill_no',
+    dataIndex: 'bill_no',
   },
   {
-    title: '昵称',
-    dataIndex: 'nick',
-    width: 120,
-  },
-  {
-    title: '用户名',
-    dataIndex: 'user_code',
-  },
-  {
-    title: '状态',
-    width: 120,
-    dataIndex: 'enabled',
-    slots: { customRender: 'enabled' },
-  },
-  {
-    title: 'bad_rate',
-    dataIndex: 'bad_rate',
-  },
-  {
-    title: 'best_rate',
-    dataIndex: 'best_rate',
-  },
-  {
-    title: 'brief',
-    dataIndex: 'brief',
-  },
-  {
-    title: 'level',
-    dataIndex: 'level',
-  },
-  {
-    title: 'mid_rate',
-    dataIndex: 'mid_rate',
-  },
-  {
-    title: 'order_total',
-    dataIndex: 'order_total',
-  },
-  {
-    title: 'rate',
-    dataIndex: 'rate',
-  },
-  {
-    title: 'rebate',
-    dataIndex: 'rebate',
-  },
-  {
-    title: 'sign_date',
-    dataIndex: 'sign_date',
-  },
-  {
-    title: 'update_at',
-    dataIndex: 'update_at',
+    title: 'b_type',
+    dataIndex: 'b_type',
   },
   {
     title: 'broker_id',
     dataIndex: 'broker_id',
   },
   {
-    title: '操作',
-    width: 120,
-    dataIndex: 'ID',
-    slots: { customRender: 'action' },
+    title: 'broker_name',
+    dataIndex: 'broker_name',
+  },
+  {
+    title: 'amt',
+    dataIndex: 'amt',
+  },
+  {
+    title: 'amt_start',
+    dataIndex: 'amt_start',
+  },
+  {
+    title: 'remark',
+    dataIndex: 'remark',
+  },
+  {
+    title: 'summary',
+    dataIndex: 'summary',
+  },
+  {
+    title: 'created_at',
+    dataIndex: 'created_at',
   },
 ];

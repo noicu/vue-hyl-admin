@@ -17,7 +17,7 @@ export enum TradeApi {
   MasterDrawMoneyHisPage = '/yi/trade/MasterDrawMoneyHisPage', // 历史
 
   /**
-   * 运营商提现 [管理员] 大师发起提现->管理员审核
+   * 运营商提现 [管理员] 运营商发起提现->管理员审核
    */
   BrokerDrawMoneyPage = '/yi/trade/BrokerDrawMoneyPage', // 列表
   BrokerDrawMoneyAudit = '/yi/trade/BrokerDrawMoneyAudit', // 处理
@@ -35,6 +35,7 @@ export enum TradeApi {
   BOProductOrderPage = '/yi/trade/BOProductOrderPage', // [管理员] 订单列表
   ProductOrderDelivery = '/yi/trade/ProductOrderDelivery', // [管理员] 发货
   ProductOrderHisPage = '/yi/trade/ProductOrderHisPage', // 商品历史订单
+  BoYiOrderPage = '/yi/trade/BoYiOrderPage', // [管理员] 大师订单
   YiOrderHisPage = '/yi/trade/YiOrderHisPage', // 大师历史订单
 
   /**
@@ -43,13 +44,149 @@ export enum TradeApi {
   BusinessPlatPage = '/yi/trade/BusinessPlatPage', //[管理员] 对账单
   IncomePlatPage = '/yi/trade/IncomePlatPage', //[管理员] 收入
   IncomePlatMonthPage = '/yi/trade/IncomePlatMonthPage', //[管理员] 收入月度统计
-  BusinessBrokerPage = '/yi/trade/BusinessBrokerPage', // 收入月度统计
+  BusinessBrokerPage = '/yi/trade/BusinessBrokerPage', // [运营商] 对账单
   BusinessBrokerMonthPage = '/yi/trade/BusinessBrokerMonthPage', // 收入月度统计
 
   /**
    * 运营商余额
    */
   RemainderBrokerGet = '/yi/trade/RemainderBrokerGet',
+
+  /**
+   * 运营商发起提现申请
+   */
+  BrokerDrawMoneyAdd = '/yi/trade/BrokerDrawMoneyAdd',
+}
+
+/**
+ * 商城订单
+ */
+export function bOProductOrderPage(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.BOProductOrderPage,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * 大师订单
+ */
+export function boYiOrderPage(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.BoYiOrderPage,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * 商城订单发货
+ */
+export function productOrderDelivery(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.ProductOrderDelivery,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * 商城订单历史
+ */
+export function productOrderHisPage(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.ProductOrderHisPage,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * 大师订单历史
+ */
+export function yiOrderHisPage(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.YiOrderHisPage,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * 运营商发起提现申请
+ */
+export function brokerDrawMoneyAdd(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.BrokerDrawMoneyAdd,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * 退货列表
+ */
+export function refundOrderPage(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.RefundOrderPage,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * 退货处理 管理员
+ */
+export function refundOrderAudit(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.RefundOrderAudit,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * 退货处理 运营商
+ */
+export function refundOrderBAudit(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.RefundOrderBAudit,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * 退货历史
+ */
+export function refundOrderHisPage(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.RefundOrderHisPage,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * [运营商] 对账单
+ */
+export function businessBrokerPage(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.BusinessBrokerPage,
+    method: 'POST',
+    params,
+  });
+}
+/**
+ * [管理员] 对账单
+ */
+export function businessPlatPage(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.BusinessPlatPage,
+    method: 'POST',
+    params,
+  });
 }
 
 /**

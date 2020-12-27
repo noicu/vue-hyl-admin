@@ -6,7 +6,7 @@
           <template #title>
             账户密码
             <div class="extra">
-              <a-button type="primary" @click="openModal"> 修改 </a-button>
+              <a-button type="primary" @click="opm"> 修改 </a-button>
             </div>
           </template>
           <template #description>
@@ -40,8 +40,10 @@
   import { defineComponent, reactive, ref } from 'vue';
   import { CollapseContainer } from '/@/components/Container/index';
   import { BasicModal, useModal } from '/@/components/Modal';
+  import { chUserPwd } from '/@/api/user';
 
   import { secureSettingList } from './data';
+  import { useMessage } from '/@/hooks/web/useMessage';
 
   export default defineComponent({
     components: {
@@ -52,6 +54,7 @@
       BasicModal,
     },
     setup() {
+      const { createMessage } = useMessage();
       const [register, { openModal }] = useModal();
       const form = reactive({
         old_pwd: '',
@@ -59,13 +62,30 @@
       });
       const newPwd = ref('');
 
-      function ok(e: any) {
-        console.log(e);
+      function opm() {
+        form.old_pwd = '';
+        form.new_pwd = '';
+        newPwd.value = '';
+        openModal();
+      }
+
+      async function ok() {
+        try {
+          if (form.new_pwd == newPwd.value) {
+            await chUserPwd(form);
+            createMessage.success('登录密码修改成功！');
+            openModal(false);
+          } else {
+            createMessage.warning('两次输入的新密码不一样，请重新输入！');
+          }
+        } catch (error) {
+          console.log(error);
+        }
       }
 
       return {
         register,
-        openModal,
+        opm,
         list: secureSettingList,
         form,
         newPwd,
