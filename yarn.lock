@@ -3294,6 +3294,11 @@ dargs@^7.0.0:
   resolved "https://registry.npmjs.org/dargs/-/dargs-7.0.0.tgz#04015c41de0bcb69ec84050f3d9be0caf8d6d5cc"
   integrity sha512-2iy1EkLdlBzQGvbweYRFxmFath8+K7+AKB0TlhHWkNuH+TmovaMH/Wp7V7R4u7f4SnX3OgLsU9t1NI9ioDnUpg==
 
+date-format-parse@^0.2.5:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/date-format-parse/-/date-format-parse-0.2.6.tgz#7ed42817efb6ec39532169eada9670ae3c627aa7"
+  integrity sha512-sdxnYAWmLopeb+6Hmw+vo3or4OCJOnh4+YoJ9p+Id3o2EnNP0INpTqx7wr8UregfMpgaSZAH473R/ytiaB3gVg==
+
 dateformat@^3.0.0:
   version "3.0.3"
   resolved "https://registry.npmjs.org/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
@@ -8794,7 +8799,15 @@ vue-types@^3.0.0, vue-types@^3.0.1:
   dependencies:
     is-plain-object "3.0.1"
 
-vue@^3.0.3, vue@^3.0.4:
+vue2-datepicker@^4.0.0-beta.2:
+  version "4.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/vue2-datepicker/-/vue2-datepicker-4.0.0-beta.2.tgz#9b6d2e55cbf851a491a5edce891f3b2da87acc6d"
+  integrity sha512-khkA8W+KHFVqrQhE6jj3v1iBHifDycNUGubGvCamjTEOizc8FdaJkmQ/UYg61wa4lXYIF4/8Uw7LoamHo4sm5g==
+  dependencies:
+    date-format-parse "^0.2.5"
+    vue "^3.0.0"
+
+vue@^3.0.0, vue@^3.0.3, vue@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.0.4.tgz#872c65c143f5717bd5387c61613d9f55f4cc0f43"
   integrity sha512-2o+AiQF8sAupyhbyl3oxVCl3WCwC/n5NI7VMM+gVQ231qvSB8eI7sCBloloqDJK6yA367EEtmRSeSCf4sxCC+A==

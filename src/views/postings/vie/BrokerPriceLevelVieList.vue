@@ -1,0 +1,243 @@
+<template>
+  <div :class="prefixCls">
+    <a-page-header title="闪断贴标准" :ghost="false" :class="`${prefixCls}__header`">
+      <template #extra>
+        <a-button type="primary" @click="opaddm()"> 新增标准 </a-button>
+      </template>
+    </a-page-header>
+
+    <div :class="`${prefixCls}__container`">
+      <a-list>
+        <template v-for="item in list" :key="item.ID">
+          <a-list-item>
+            <a-list-item-meta>
+              <template #description>
+                <div :class="`${prefixCls}__content`">
+                  <span>加价：</span>
+                  <span>{{ item.offset_price }}</span>
+                </div>
+                <div :class="`${prefixCls}__content`">
+                  <span>平台报价：</span>
+                  <span>{{ item.old_price }}</span>
+                </div>
+                <div :class="`${prefixCls}__action`">
+                  <div :class="`${prefixCls}__action-item`">
+                    <a-button type="primary" size="small" @click="opm(item)"> 编辑 </a-button>
+                  </div>
+                  <div :class="`${prefixCls}__action-item`">
+                    <a-switch
+                      checked-children="开"
+                      un-checked-children="关"
+                      v-model:checked="item.enabled"
+                      :loading="isLoading(item)"
+                      @change="onEnabled(item)"
+                    />
+                  </div>
+                  <span :class="`${prefixCls}__time`">{{ item.update_at }}</span>
+                </div>
+              </template>
+              <template #title>
+                <p :class="`${prefixCls}__title`">
+                  <span>
+                    {{ item.level_name }}
+                  </span>
+                  <Tag class="mb-2" style="float: right">{{ item.price_level_id }}</Tag></p
+                >
+              </template>
+            </a-list-item-meta>
+          </a-list-item>
+        </template>
+      </a-list>
+    </div>
+
+    <BasicModal @register="register" title="新增标准" @ok="ok" width="300px">
+      <a-form
+        :model="form"
+        :label-col="{ span: 6 }"
+        :wrapper-col="{ span: 12 }"
+        layout="horizontal"
+      >
+        <a-form-item label="加价">
+          <InputNumber v-model:value="form.offset_price" :min="0" />
+        </a-form-item>
+      </a-form>
+    </BasicModal>
+  </div>
+</template>
+<script lang="ts">
+  import { Tag } from 'ant-design-vue';
+  import { defineComponent, ref, reactive, onMounted, unref } from 'vue';
+  import Icon from '/@/components/Icon/index';
+  import { BasicForm } from '/@/components/Form/index';
+  import {
+    brokerPriceLevelVieList,
+    brokerPriceLevelVieSetEnabled,
+    brokerPriceLevelVieAdd,
+    brokerPriceLevelVieCh,
+  } from '/@/api/user';
+  import { Popconfirm, InputNumber } from 'ant-design-vue';
+  import { BasicModal, useModal } from '/@/components/Modal';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import { nToB, bToN } from '/@/utils/conversion';
+
+  export default defineComponent({
+    components: { Icon, Tag, BasicForm, Popconfirm, BasicModal, InputNumber },
+    setup() {
+      const { createMessage } = useMessage();
+
+      const list = ref<any[]>([]);
+
+      const loading: any = reactive({});
+
+      const isLoading = (e: any) => loading[e.ID];
+
+      async function getData() {
+        try {
+          const dd = await brokerPriceLevelVieList({});
+          dd.sort(function (a: any, b: any) {
+            return a.sort_no - b.sort_no;
+          });
+          dd.map((it: any) => ({
+            ...it,
+            enabled: nToB(it.enabled),
+          }));
+          list.value = dd;
+        } catch (error) {}
+      }
+
+      onMounted(() => {
+        getData();
+      });
+
+      async function onEnabled(e: any) {
+        loading[e.ID] = true;
+        try {
+          await brokerPriceLevelVieSetEnabled({
+            id: e.ID,
+            enabled: bToN(!e.enabled),
+          });
+        } catch (error) {
+          e.enabled = !e.enabled;
+        } finally {
+          loading[e.ID] = false;
+        }
+      }
+
+      const [register, { openModal }] = useModal();
+      const [addRegister, { openModal: openAddModal }] = useModal();
+
+      const form = reactive({
+        id: 0,
+        offset_price: 0,
+      });
+
+      const addForm = reactive({
+        offset_price: 0,
+        price_level_id: 0,
+        broker_id: 0,
+      });
+
+      function opm(data: any = { ID: 0, offset_price: 0 }) {
+        form.id = data.ID;
+        form.offset_price = data.offset_price;
+
+        openModal();
+      }
+
+      function opaddm() {
+        addForm.price_level_id = 0;
+        addForm.offset_price = 0;
+        openAddModal();
+      }
+
+      async function ok() {
+        try {
+          await brokerPriceLevelVieCh(unref(form));
+          createMessage.success('修改成功！');
+          getData();
+          openModal(false);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      async function addOk() {
+        try {
+          await brokerPriceLevelVieAdd(unref(addForm));
+          createMessage.success('添加成功！');
+          getData();
+          openAddModal(false);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      return {
+        prefixCls: 'list-search',
+        list,
+        isLoading,
+        onEnabled,
+        register,
+        addRegister,
+        opm,
+        form,
+        ok,
+        addOk,
+        opaddm,
+      };
+    },
+  });
+</script>
+<style lang="less" scoped>
+  .list-search {
+    &__header {
+      &-form {
+        margin-bottom: -16px;
+      }
+    }
+
+    &__container {
+      padding: 12px;
+      margin: 24px;
+      background: #fff;
+    }
+
+    &__title {
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    &__content {
+      color: rgba(0, 0, 0, 0.65);
+    }
+
+    &__action {
+      margin-top: 10px;
+
+      &-item {
+        display: inline-block;
+        padding: 0 16px;
+        color: rgba(0, 0, 0, 0.45);
+
+        &:nth-child(1) {
+          padding-left: 0;
+        }
+
+        &:nth-child(1),
+        &:nth-child(2) {
+          border-right: 1px solid rgba(206, 206, 206, 0.4);
+        }
+      }
+
+      &-icon {
+        margin-right: 3px;
+      }
+    }
+
+    &__time {
+      position: absolute;
+      right: 20px;
+      color: rgba(0, 0, 0, 0.45);
+    }
+  }
+</style>

@@ -6,7 +6,7 @@ import { hotModuleUnregisterModule } from '/@/utils/helper/vuexHelper';
 
 import { PageEnum } from '/@/enums/pageEnum';
 import { RoleEnum } from '/@/enums/roleEnum';
-import { CacheTypeEnum, ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '/@/enums/cacheEnum';
+import { CacheTypeEnum, ROLES_KEY, TOKEN_KEY, USER_INFO_KEY, REMAINDER } from '/@/enums/cacheEnum';
 
 import { useMessage } from '/@/hooks/web/useMessage';
 
@@ -20,6 +20,7 @@ import { useI18n } from '/@/hooks/web/useI18n';
 import { ErrorMessageMode } from '/@/utils/http/axios/types';
 
 import { getUser, setUser } from '/@/api/user';
+import { remainderBrokerGet } from '/@/api/trade';
 
 // export type UserInfo = Omit<GetUserInfoByUserIdModel, 'roles'>;
 
@@ -46,6 +47,9 @@ class User extends VuexModule {
   // 用户信息
   private userInfoState: UserInfo | null = null;
 
+  // 余额
+  private remainder = 0;
+
   // token
   private tokenState = '';
 
@@ -54,6 +58,10 @@ class User extends VuexModule {
 
   get getUserInfoState(): UserInfo {
     return this.userInfoState || getCache<UserInfo>(USER_INFO_KEY) || {};
+  }
+
+  get getRemainderState(): number {
+    return this.remainder || getCache<number>(REMAINDER) || 0;
   }
 
   get getTokenState(): string {
@@ -69,6 +77,12 @@ class User extends VuexModule {
     this.userInfoState = null;
     this.tokenState = '';
     this.roleListState = [];
+  }
+
+  @Mutation
+  commitRemainderState(remainder: number): void {
+    this.remainder = remainder;
+    setCache(REMAINDER, remainder);
   }
 
   @Mutation
@@ -115,6 +129,10 @@ class User extends VuexModule {
         return null;
       }
 
+      if (is_broker_admin) {
+        await this.getRemainder();
+      }
+
       if (is_admin) roleList.push('super');
       if (is_broker_admin) roleList.push('broker');
 
@@ -140,6 +158,19 @@ class User extends VuexModule {
       return data;
     } catch (error) {
       return null;
+    }
+  }
+
+  @Action
+  async getRemainder(): Promise<number> {
+    try {
+      const data = await remainderBrokerGet({
+        broker_id: this.getUserInfoState.broker_id,
+      });
+      this.commitRemainderState(data.remainder);
+      return data.remainder;
+    } catch (error) {
+      return 0;
     }
   }
 

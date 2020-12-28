@@ -96,6 +96,242 @@ export enum UserApi {
   GetUserPublic = '/yi/user/GetUser', // 获取用户公开的信息
   ChUserInfo = '/yi/user/ChUserInfo', // 修改用户信息
   ChUserPwd = '/yi/user/ChUserPwd', // 修改用户密码
+
+  /**
+   * 平台闪段贴标准
+   */
+  PriceLevelVieList = '/yi/user/PriceLevelVieList', // 列表
+  PriceLevelVieAdd = '/yi/user/PriceLevelVieAdd', // 新增
+  PriceLevelVieCh = '/yi/user/PriceLevelVieCh', // 修改
+  PriceLevelVieRm = '/yi/user/PriceLevelVieRm', // 删除
+
+  /**
+   * 平台悬赏贴标准
+   */
+  PriceLevelPrizeList = '/yi/user/PriceLevelPrizeList', // 列表
+  PriceLevelPrizeAdd = '/yi/user/PriceLevelPrizeAdd', // 新增
+  PriceLevelPrizeCh = '/yi/user/PriceLevelPrizeCh', // 修改
+  PriceLevelPrizeRm = '/yi/user/PriceLevelPrizeRm', // 删除
+
+  /**
+   * 运营商闪段贴标准
+   */
+  BrokerPriceLevelVieList = '/yi/user/BrokerPriceLevelVieList', // 列表
+  BrokerPriceLevelVieAdd = '/yi/user/BrokerPriceLevelVieAdd', // 新增
+  BrokerPriceLevelVieCh = '/yi/user/BrokerPriceLevelVieCh', // 修改
+  BrokerPriceLevelVieSetEnabled = '/yi/user/BrokerPriceLevelVieSetEnabled', // 启用/禁用
+
+  /**
+   * 运营商悬赏贴标准
+   */
+  BrokerPriceLevelPrizeList = '/yi/user/BrokerPriceLevelPrizeList', // 列表
+  BrokerPriceLevelPrizeAdd = '/yi/user/BrokerPriceLevelPrizeAdd', // 新增
+  BrokerPriceLevelPrizeCh = '/yi/user/BrokerPriceLevelPrizeCh', // 修改
+  BrokerPriceLevelPrizeSetEnabled = '/yi/user/BrokerPriceLevelPrizeSetEnabled', // 启用/禁用
+}
+
+//-------------------------------------------------------------------------------
+
+/**
+ * @description: 平台闪段贴标准
+ */
+export function priceLevelVieList(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.PriceLevelVieList,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 平台闪段贴标准
+ */
+export function priceLevelVieAdd(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.PriceLevelVieAdd,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 平台闪段贴标准
+ */
+export function priceLevelVieCh(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.PriceLevelVieCh,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 平台闪段贴标准
+ */
+export function priceLevelVieRm(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.PriceLevelVieRm,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 平台悬赏贴标准
+ */
+export function priceLevelPrizeList(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.PriceLevelPrizeList,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 平台悬赏贴标准
+ */
+export function priceLevelPrizeAdd(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.PriceLevelPrizeAdd,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 平台悬赏贴标准
+ */
+export function priceLevelPrizeCh(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.PriceLevelPrizeCh,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 平台悬赏贴标准
+ */
+export function priceLevelPrizeRm(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.PriceLevelPrizeRm,
+    method: 'POST',
+    params,
+  });
+}
+
+//-------------------------------------------------------------------------------
+
+/**
+ * @description: 运营商闪段贴标准
+ */
+export function brokerPriceLevelVieList(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerPriceLevelVieList,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 运营商闪段贴标准
+ */
+export function brokerPriceLevelVieAdd(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerPriceLevelVieAdd,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 运营商闪段贴标准
+ */
+export function brokerPriceLevelVieCh(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerPriceLevelVieCh,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 运营商闪段贴标准
+ */
+export function brokerPriceLevelVieSetEnabled(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerPriceLevelVieSetEnabled,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 运营商悬赏贴标准
+ */
+export function brokerPriceLevelPrizeList(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerPriceLevelPrizeList,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 运营商悬赏贴标准
+ */
+export function brokerPriceLevelPrizeAdd(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerPriceLevelPrizeAdd,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 运营商悬赏贴标准
+ */
+export function brokerPriceLevelPrizeCh(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.PriceLevelPrizeCh,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 运营商悬赏贴标准
+ */
+export function brokerPriceLevelPrizeSetEnabled(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerPriceLevelPrizeSetEnabled,
+    method: 'POST',
+    params,
+  });
+}
+
+//-------------------------------------------------------------------------------
+
+/**
+ * @description: 统计用户注册数据
+ */
+export function regUserStats(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.RegUserStats,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 统计大师注册数据
+ */
+export function regMasterStats(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.RegMasterStats,
+    method: 'POST',
+    params,
+  });
 }
 
 /**

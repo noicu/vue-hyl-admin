@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router';
 import type { App } from 'vue';
 
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 import { createGuard } from './guard/';
 
@@ -9,7 +9,8 @@ import { basicRoutes } from './routes/';
 import { scrollBehavior } from './scrollBehavior';
 import { REDIRECT_NAME } from './constant';
 
-export const hashRouter = createWebHistory();
+// export const hashRouter = createWebHistory();
+export const hashRouter = createWebHashHistory();
 
 // 路由
 const router = createRouter({

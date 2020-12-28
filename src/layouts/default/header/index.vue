@@ -42,6 +42,8 @@
 
       <UserDropDown :theme="getHeaderTheme" />
 
+      <UserRemainder v-if="isBroker" :class="`${prefixCls}-action__item`" />
+
       <AppLocalePicker
         v-if="getShowLocale"
         :reload="true"
@@ -72,9 +74,14 @@
     Notify,
     LockItem,
     ErrorAction,
+    UserRemainder,
   } from './components';
   import { useAppInject } from '/@/hooks/web/useAppInject';
   import { useDesign } from '/@/hooks/web/useDesign';
+
+  import { userStore } from '/@/store/modules/user';
+  import { RoleEnum } from '/@/enums/roleEnum';
+
   export default defineComponent({
     name: 'LayoutHeader',
     components: {
@@ -82,6 +89,7 @@
       AppLogo,
       LayoutTrigger,
       LayoutBreadcrumb,
+      UserRemainder,
       LayoutMenu,
       UserDropDown,
       AppLocalePicker,
@@ -126,6 +134,7 @@
       const getMenuMode = computed(() => {
         return unref(getSplit) ? MenuModeEnum.HORIZONTAL : null;
       });
+      const isBroker = computed(() => userStore.getRoleListState.includes(RoleEnum.BROKER));
       return {
         prefixCls,
         getHeaderClass,
@@ -144,6 +153,7 @@
         getShowNotice,
         getUseLockPage,
         getUseErrorHandle,
+        isBroker,
       };
     },
   });

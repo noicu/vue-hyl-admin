@@ -9,7 +9,8 @@
 
     <template #overlay>
       <Menu @click="handleMenuClick">
-        <MenuItem key="doc" :text="t('layout.header.dropdownItemDoc')" icon="gg:loadbar-doc" />
+        <!-- <MenuItem key="doc" :text="t('layout.header.dropdownItemDoc')" icon="gg:loadbar-doc" /> -->
+        <MenuItem key="personal" text="个人资料" icon="gg:loadbar-doc" />
         <MenuDivider v-if="getShowDoc" />
         <MenuItem
           key="loginOut"
@@ -34,7 +35,8 @@
   import { useDesign } from '/@/hooks/web/useDesign';
   import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
   import { propTypes } from '/@/utils/propTypes';
-  type MenuEvent = 'loginOut' | 'doc';
+  import router from '/@/router';
+  type MenuEvent = 'loginOut' | 'doc' | 'personal';
   export default defineComponent({
     name: 'UserDropdown',
     components: {
@@ -59,6 +61,11 @@
       function handleLoginOut() {
         userStore.confirmLoginOut();
       }
+      // open personal
+      function openPersonal() {
+        router.push({ name: 'Personal' });
+      }
+
       // open doc
       function openDoc() {
         openWindow(DOC_URL);
@@ -70,6 +77,9 @@
             break;
           case 'doc':
             openDoc();
+            break;
+          case 'personal':
+            openPersonal();
             break;
         }
       }

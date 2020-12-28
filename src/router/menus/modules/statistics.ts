@@ -1,13 +1,10 @@
-/**
- * 投诉
- */
 import type { MenuModule } from '/@/router/types.d';
 
 const menu: MenuModule = {
-  orderNo: 9,
+  orderNo: 0,
   menu: {
-    name: '投诉',
-    path: '/complaint',
+    path: '/statistics',
+    name: '统计',
   },
 };
 export default menu;

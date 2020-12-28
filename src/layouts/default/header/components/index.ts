@@ -13,3 +13,5 @@ export const Notify = createAsyncComponent(() => import('./notify/index.vue'));
 export const LockItem = createAsyncComponent(() => import('./lock/index.vue'));
 
 export const ErrorAction = createAsyncComponent(() => import('./ErrorAction.vue'));
+
+export const UserRemainder = createAsyncComponent(() => import('./UserRemainder.vue'));

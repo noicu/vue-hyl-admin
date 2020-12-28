@@ -2,7 +2,7 @@ import { defHttp } from '/@/utils/http/axios';
 
 export enum TradeApi {
   /**
-   * 退货 [管理员][运营商] 发起退货->运营商审核->管理员审核
+   * 投诉 [管理员][运营商] 发起投诉->运营商审核->管理员审核
    */
   RefundOrderPage = '/yi/trade/RefundOrderPage', // 列表
   RefundOrderAudit = '/yi/trade/RefundOrderAudit', // [管理员] 处理
@@ -56,6 +56,24 @@ export enum TradeApi {
    * 运营商发起提现申请
    */
   BrokerDrawMoneyAdd = '/yi/trade/BrokerDrawMoneyAdd',
+
+  /**
+   * 账务调整 修改用户余额
+   * "c_1":"acc_type业务类型: user/master/broker/",
+   * "c_2":"multi_id:根据不同的类型为uid/master_id/broker_id"
+   */
+  accountAdjust = '/yi/trade/AccountAdjust',
+}
+
+/**
+ * 运营商余额
+ */
+export function remainderBrokerGet(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.RemainderBrokerGet,
+    method: 'POST',
+    params,
+  });
 }
 
 /**

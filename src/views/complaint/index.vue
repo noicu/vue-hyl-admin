@@ -26,7 +26,7 @@
     },
     setup({ brokerId }) {
       const [registerTable] = useTable({
-        title: '退货列表',
+        title: '投诉列表',
         api: refundOrderPage,
         fetchSetting: FETCH_SETTING,
         columns: Columns,

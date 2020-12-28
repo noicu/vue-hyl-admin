@@ -26,7 +26,7 @@
         layout="horizontal"
       >
         <a-form-item label="余额">
-          {{ 0 }}
+          {{ remainder }}
         </a-form-item>
         <a-form-item label="提现金额">
           <InputNumber v-model:value="form.amt" :min="0" />
@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, reactive, unref } from 'vue';
+  import { defineComponent, ref, reactive, unref, computed } from 'vue';
   import { InputNumber } from 'ant-design-vue';
   import { BasicTable, useTable } from '/@/components/Table';
   import { brokerDrawMoneyPage, brokerDrawMoneyAudit, brokerDrawMoneyAdd } from '/@/api/trade';
@@ -47,10 +47,12 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import router from '/@/router';
   import { BasicModal, useModal } from '/@/components/Modal';
+  import { userStore } from '/@/store/modules/user';
 
   export default defineComponent({
     components: { BasicTable, BasicModal, InputNumber },
     setup() {
+      const remainder = computed(() => userStore.getRemainderState);
       const { createMessage } = useMessage();
       const [registerTable, { getSelectRows, reload, clearSelectedRowKeys }] = useTable({
         title: '运营商提现列表',
@@ -60,7 +62,6 @@
         showIndexColumn: false,
         showTableSetting: true,
         showFilter: true,
-        titleHelpMessage: '使用useTable调用表格内方法',
         rowSelection: {
           type: 'checkbox',
         },
@@ -74,13 +75,14 @@
 
       function opm() {
         form.amt = 0;
+        userStore.getRemainder();
         openModal();
       }
 
       async function ok() {
         try {
           await brokerDrawMoneyAdd(unref(form));
-          createMessage.success('登录密码修改成功！');
+          createMessage.success('提现申请已提，请等待审核！');
           openModal(false);
         } catch (error) {
           console.log(error);
@@ -128,6 +130,7 @@
         opm,
         ok,
         register,
+        remainder,
       };
     },
   });

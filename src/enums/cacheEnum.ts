@@ -1,6 +1,9 @@
 // token key
 export const TOKEN_KEY = 'TOKEN';
 
+// 余额 key
+export const REMAINDER = 'REMAINDER';
+
 // user info key
 export const USER_INFO_KEY = 'USER__INFO__';
 
