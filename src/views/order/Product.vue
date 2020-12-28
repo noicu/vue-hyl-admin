@@ -51,7 +51,7 @@
           where: {
             broker_id: userStore.getRoleListState.includes(RoleEnum.BROKER)
               ? userStore.getUserInfoState.broker_id
-              : null,
+              : undefined,
           },
         },
       });
