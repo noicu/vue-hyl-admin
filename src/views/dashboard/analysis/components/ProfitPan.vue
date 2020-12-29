@@ -9,10 +9,10 @@
   import { basicProps } from './props';
 
   const m2R2Data = [
-    { value: 335, name: '移动设备', itemStyle: { color: '#1b65b9' } },
-    { value: 310, name: '网页端', itemStyle: { color: '#3ca0f6' } },
-    { value: 234, name: '手表', itemStyle: { color: '#2dc0c0' } },
-    { value: 234, name: '其他', itemStyle: { color: '#7dd9b9' } },
+    { value: 335, name: '悬赏帖', itemStyle: { color: '#1b65b9' } },
+    { value: 310, name: '闪断帖', itemStyle: { color: '#3ca0f6' } },
+    { value: 234, name: '商城', itemStyle: { color: '#2dc0c0' } },
+    { value: 234, name: '大师', itemStyle: { color: '#7dd9b9' } },
   ];
   export default defineComponent({
     name: 'AnalysisLine',
@@ -25,7 +25,7 @@
         setOptions({
           title: [
             {
-              text: '总设备',
+              text: '总利润',
               subtext: '1,430',
               textStyle: {
                 fontSize: 12,
@@ -60,12 +60,12 @@
           },
           series: [
             {
-              name: '成交额',
+              name: '利润',
               type: 'pie',
               center: ['35%', '50%'],
               radius: ['45%', '65%'],
               label: {
-                show: false,
+                show: true,
               },
               data: m2R2Data,
               animationDuration: 3000,

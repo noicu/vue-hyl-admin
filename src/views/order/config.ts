@@ -2,41 +2,39 @@ import { BasicColumn } from '/@/components/Table';
 
 export const ProductColumns: BasicColumn[] = [
   {
-    title: 'amt',
+    title: '金额',
     dataIndex: 'amt',
     width: 120,
   },
   {
-    title: 'bill_no',
-    dataIndex: 'bill_no',
-  },
-  {
-    title: 'broker_name',
+    title: '运营商名称',
     dataIndex: 'broker_name',
   },
+  // {
+  //   title: '联系人',
+  //   dataIndex: 'contact',
+  // },
+  // {
+  //   title: '发货处理人',
+  //   dataIndex: 'deliver',
+  // },
   {
-    title: 'contact',
-    dataIndex: 'contact',
-  },
-  {
-    title: 'deliver',
-    dataIndex: 'deliver',
-  },
-  {
-    title: 'delivery_time',
+    title: '发货时间',
     dataIndex: 'delivery_time',
   },
   {
-    title: 'nick',
+    title: '用户昵称',
     dataIndex: 'nick',
   },
   {
-    title: 'pay_type',
-    dataIndex: 'pay_type',
+    title: '商品',
+    dataIndex: 'items',
+    slots: { customRender: 'items' },
   },
   {
-    title: 'stat',
+    title: '状态',
     dataIndex: 'stat',
+    slots: { customRender: 'stat' },
   },
   {
     title: '操作',
@@ -46,14 +44,39 @@ export const ProductColumns: BasicColumn[] = [
   },
 ];
 
-export const MasterColumns: BasicColumn[] = [
+export const ProductHisColumns: BasicColumn[] = [
   {
-    title: 'amt',
+    title: '金额',
     dataIndex: 'amt',
     width: 120,
   },
   {
-    title: 'broker_name',
+    title: '运营商名称',
+    dataIndex: 'broker_name',
+  },
+  {
+    title: '发货时间',
+    dataIndex: 'delivery_time',
+  },
+  {
+    title: '用户昵称',
+    dataIndex: 'nick',
+  },
+  {
+    title: '状态',
+    dataIndex: 'stat',
+    slots: { customRender: 'stat' },
+  },
+];
+
+export const MasterColumns: BasicColumn[] = [
+  {
+    title: '金额',
+    dataIndex: 'amt',
+    width: 120,
+  },
+  {
+    title: '运营商名称',
     dataIndex: 'broker_name',
   },
   {
@@ -61,23 +84,19 @@ export const MasterColumns: BasicColumn[] = [
     dataIndex: 'comment',
   },
   {
-    title: 'create_date',
-    dataIndex: 'create_date',
-  },
-  {
-    title: 'diagnose',
+    title: '诊断',
     dataIndex: 'diagnose',
   },
   {
-    title: 'master_nick_ref',
+    title: '大师昵称',
     dataIndex: 'master_nick_ref',
   },
   {
-    title: 'master_user_code_ref',
+    title: '大师手机号',
     dataIndex: 'master_user_code_ref',
   },
   {
-    title: 'nick_ref',
+    title: '昵称',
     dataIndex: 'nick_ref',
   },
   {
@@ -85,33 +104,12 @@ export const MasterColumns: BasicColumn[] = [
     dataIndex: 'order_type',
   },
   {
-    title: 'pay_amt',
-    dataIndex: 'pay_amt',
-  },
-  {
-    title: 'pay_type',
-    dataIndex: 'pay_type',
-  },
-  {
     title: 'stat',
     dataIndex: 'stat',
+    slots: { customRender: 'stat' },
   },
   {
-    title: 'trade_no',
-    dataIndex: 'trade_no',
-  },
-  {
-    title: 'user_code',
+    title: '用户手机号',
     dataIndex: 'user_code',
-  },
-  {
-    title: 'yi_cate_id',
-    dataIndex: 'yi_cate_id',
-  },
-  {
-    title: '操作',
-    width: 120,
-    dataIndex: 'ID',
-    slots: { customRender: 'action' },
   },
 ];

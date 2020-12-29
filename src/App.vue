@@ -21,13 +21,25 @@
 
   import { AppProvider } from '/@/components/Application';
 
-  import { initWs } from '/@/utils/http/ws'
+  import { initWs, closeWS } from '/@/utils/http/ws';
+
+  import { userStore } from '/@/store/modules/user';
+  import { RoleEnum } from '/@/enums/roleEnum';
 
   export default defineComponent({
     name: 'App',
     components: { ConfigProvider, AppProvider },
     setup() {
-      initWs()
+      if (userStore.getTokenState && userStore.getRoleListState.includes(RoleEnum.BROKER)) {
+        userStore.getRemainder();
+      }
+
+      if (userStore.getTokenState && userStore.getRoleListState.includes(RoleEnum.SUPER)) {
+        initWs();
+      } else {
+        closeWS();
+      }
+
       // Initialize vuex internal system configuration
       initAppConfigStore();
 

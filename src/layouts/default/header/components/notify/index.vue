@@ -1,43 +1,75 @@
 <template>
   <div :class="prefixCls">
     <Popover title="" trigger="click" :overlayClassName="`${prefixCls}__overlay`">
-      <Badge :count="count" dot :numberStyle="numberStyle">
+      <Badge :count="count" :numberStyle="numberStyle" :offset="[-10, 10]">
         <BellOutlined />
       </Badge>
       <template #content>
         <Tabs>
-          <template v-for="item in tabListData" :key="item.key">
-            <TabPane>
-              <template #tab>
-                {{ item.name }}
-                <span v-if="item.list.length !== 0">({{ item.list.length }})</span>
-              </template>
-              <NoticeList :list="item.list" />
-            </TabPane>
-          </template>
+          <TabPane key="1">
+            <template #tab>
+              运营商申请
+              <span v-if="brokerApply.rows_count">({{ brokerApply.rows_count }})</span>
+            </template>
+            <NoticeList v-model:list="brokerApply.data" />
+            <div style="text-align: center">
+              <Pagination simple :default-current="2" :total="50" />
+            </div>
+          </TabPane>
+          <TabPane key="2">
+            <template #tab>
+              大师申请
+              <span v-if="brokerApply.rows_count">({{ brokerApply.rows_count }})</span>
+            </template>
+            <NoticeList v-model:list="masterApply.data" />
+          </TabPane>
         </Tabs>
       </template>
     </Popover>
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, ref, onMounted } from 'vue';
   import { Popover, Tabs, Badge } from 'ant-design-vue';
   import { BellOutlined } from '@ant-design/icons-vue';
-  import { tabListData } from './data';
   import NoticeList from './NoticeList.vue';
   import { useDesign } from '/@/hooks/web/useDesign';
+  import { notifyMsgPage } from '/@/api/msg';
+
   export default defineComponent({
     components: { Popover, BellOutlined, Tabs, TabPane: Tabs.TabPane, Badge, NoticeList },
     setup() {
       const { prefixCls } = useDesign('header-notify');
-      let count = 0;
-      for (let i = 0; i < tabListData.length; i++) {
-        count += tabListData[i].list.length;
+      let count = 1;
+
+      const brokerApply = ref<any>({
+        data: [],
+        page_no: 1,
+        pages_count: 10,
+        rows_count: 0,
+        rows_per_page: 10,
+      });
+
+      const masterApply = ref<any>({});
+
+      async function getBrokerApply() {
+        try {
+          const { data, rows_count } = await notifyMsgPage({});
+          brokerApply.data = data;
+          brokerApply.rows_count = rows_count;
+        } catch (error) {}
       }
+      async function getMasterApply() {}
+
+      onMounted(() => {
+        getBrokerApply();
+        getMasterApply();
+      });
+
       return {
         prefixCls,
-        tabListData,
+        brokerApply,
+        masterApply,
         count,
         numberStyle: {},
       };

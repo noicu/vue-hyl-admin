@@ -40,16 +40,16 @@
 
       <FullScreen v-if="getShowFullScreen" :class="`${prefixCls}-action__item fullscreen-item`" />
 
-      <UserDropDown :theme="getHeaderTheme" />
-
       <UserRemainder v-if="isBroker" :class="`${prefixCls}-action__item`" />
 
-      <AppLocalePicker
+      <UserDropDown :theme="getHeaderTheme" />
+
+      <!-- <AppLocalePicker
         v-if="getShowLocale"
         :reload="true"
         :showText="false"
         :class="`${prefixCls}-action__item`"
-      />
+      /> -->
     </div>
   </Header>
 </template>

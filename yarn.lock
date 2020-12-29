@@ -1571,6 +1571,11 @@
   resolved "https://registry.npmjs.org/@types/range-parser/-/range-parser-1.2.3.tgz#7ee330ba7caafb98090bece86a5ee44115904c2c"
   integrity sha512-ewFXqrQHlFsgc09MK5jP5iR7vumV/BYayNC6PgJO2LPe8vrnNFyjQjSppfEngITi0qvfKtzFvgKymGheFM9UOA==
 
+"@types/reconnectingwebsocket@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@types/reconnectingwebsocket/-/reconnectingwebsocket-1.0.5.tgz#b0da11fe42a94ea05cd9ed3eca099e2e51ae3a09"
+  integrity sha512-9pPCtWpG3FCqIgDOjCnds16M9ZBZb4iA9YUOQbJQxyR75njxtPSi8iY/Na65i1BhXDxV+Yq5j//jn8LQbIzUIw==
+
 "@types/resolve@0.0.8":
   version "0.0.8"
   resolved "https://registry.npmjs.org/@types/resolve/-/resolve-0.0.8.tgz#f26074d238e02659e323ce1a13d041eee280e194"
@@ -7042,6 +7047,11 @@ rechoir@^0.6.2:
   integrity sha1-hSBLVNuoLVdC4oyWdW70OvUOM4Q=
   dependencies:
     resolve "^1.1.6"
+
+reconnectingwebsocket@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/reconnectingwebsocket/-/reconnectingwebsocket-1.0.0.tgz#0b825babb37b670445c65aa7d3ed978300205444"
+  integrity sha1-C4Jbq7N7ZwRFxlqn0+2XgwAgVEQ=
 
 redent@^1.0.0:
   version "1.0.0"

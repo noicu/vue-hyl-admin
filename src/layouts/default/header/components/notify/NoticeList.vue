@@ -34,7 +34,10 @@
   import { defineComponent, PropType } from 'vue';
   import { ListItem } from './data';
   import { useDesign } from '/@/hooks/web/useDesign';
+  import { Pagination } from 'ant-design-vue';
+
   export default defineComponent({
+    components: { Pagination },
     props: {
       list: {
         type: Array as PropType<ListItem[]>,

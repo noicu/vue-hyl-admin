@@ -129,10 +129,6 @@ class User extends VuexModule {
         return null;
       }
 
-      if (is_broker_admin) {
-        await this.getRemainder();
-      }
-
       if (is_admin) roleList.push('super');
       if (is_broker_admin) roleList.push('broker');
 
@@ -142,6 +138,10 @@ class User extends VuexModule {
       this.commitRoleListState(roleList as RoleEnum[]);
       // 保存 用户信息
       this.commitUserInfoState(user_info);
+
+      if (is_broker_admin) {
+        await this.getRemainder();
+      }
 
       goHome && (await router.replace(PageEnum.BASE_HOME));
       return user_info;

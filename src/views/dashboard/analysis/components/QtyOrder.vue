@@ -27,7 +27,7 @@
           legend: {
             itemWidth: 15,
             right: 10,
-            data: ['产品一', '产品二', '产品三'],
+            data: ['订单量', '退单量'],
           },
           grid: {
             left: '3%',
@@ -41,7 +41,7 @@
               axisTick: {
                 inside: true, // 刻度朝内
               },
-              data: ['付费用户', '免费用户', '自主'],
+              data: ['大师订单', '商城订单'],
             },
           ],
           yAxis: [
@@ -54,31 +54,21 @@
           ],
           series: [
             {
-              name: '产品一',
+              name: '订单量',
               type: 'bar',
               itemStyle: {
                 color: '#3ca0f6',
               },
-              data: [3200, 3320, 3010],
+              data: [100, 150],
               animationDuration: 4000,
             },
             {
-              name: '产品二',
+              name: '退单量',
               type: 'bar',
               itemStyle: {
                 color: '#7dd9b9',
               },
-              data: [1200, 2600, 1010],
-              animationDuration: 4000,
-            },
-
-            {
-              name: '产品三',
-              type: 'bar',
-              itemStyle: {
-                color: '#e6a23c',
-              },
-              data: [862, 2500, 964],
+              data: [10, 50],
               animationDuration: 4000,
             },
           ],

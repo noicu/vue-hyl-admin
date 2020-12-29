@@ -2,10 +2,32 @@
   <div class="p-4">
     <div class="mb-4">
       <a-button class="mr-2" @click="opHis">商品订单历史</a-button>
+      <a-radio-group button-style="solid" v-model:value="stat">
+        <a-radio-button :value="1"> 已付款 </a-radio-button>
+        <a-radio-button :value="2"> 待收货 </a-radio-button>
+        <a-radio-button :value="0"> 待付款 </a-radio-button>
+      </a-radio-group>
     </div>
     <BasicTable @register="registerTable">
       <template #action="{ record, column }">
-        <a-button type="primary" size="small" @click="opm(record)"> 发货 </a-button>
+        <a-button
+          class="mr-2"
+          v-if="record.stat == 1"
+          type="primary"
+          size="small"
+          @click="opm(record)"
+        >
+          发货
+        </a-button>
+        <a-button size="small" @click="opm(record)"> 详情 </a-button>
+      </template>
+      <template #stat="{ record, column }">
+        <a-tag v-if="record.stat == 0"> 待付款 </a-tag>
+        <a-tag color="green" v-if="record.stat == 1"> 已付款 </a-tag>
+        <a-tag color="cyan" v-if="record.stat == 2"> 待收货 </a-tag>
+      </template>
+      <template #items="{ record, column }">
+        <a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
       </template>
     </BasicTable>
     <BasicModal @register="register" title="发货" @ok="ok" width="300px">
@@ -23,7 +45,7 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent, reactive, unref } from 'vue';
+  import { defineComponent, reactive, unref, ref, watch, computed } from 'vue';
   import { BasicTable, useTable } from '/@/components/Table';
   import { FETCH_SETTING } from '/@/api/const';
   import { bOProductOrderPage, productOrderDelivery } from '/@/api/trade';
@@ -41,19 +63,26 @@
       if (userStore.getRoleListState.includes(RoleEnum.BROKER))
         Columns.splice(Columns.length - 1, 1);
 
+      const stat = ref(1);
+
+      const where = computed(() => ({
+        where: {
+          stat: stat.value,
+          broker_id: userStore.getRoleListState.includes(RoleEnum.BROKER)
+            ? userStore.getUserInfoState.broker_id
+            : undefined,
+        },
+      }));
+
+      watch(stat, () => reload({ page: 1 }));
+
       const [registerTable, { reload }] = useTable({
         title: '商品订单',
         api: bOProductOrderPage,
         fetchSetting: FETCH_SETTING,
         columns: Columns,
         showIndexColumn: false,
-        searchInfo: {
-          where: {
-            broker_id: userStore.getRoleListState.includes(RoleEnum.BROKER)
-              ? userStore.getUserInfoState.broker_id
-              : undefined,
-          },
-        },
+        searchInfo: () => unref(where),
       });
 
       const [register, { openModal }] = useModal();
@@ -94,6 +123,7 @@
         form,
         opm,
         ok,
+        stat,
       };
     },
   });

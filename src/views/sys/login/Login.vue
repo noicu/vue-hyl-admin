@@ -12,14 +12,14 @@
 
           <a-form class="mx-auto mt-10" :model="formData" :rules="formRules" ref="formRef">
             <a-form-item name="account">
-              <a-input size="large" v-model:value="formData.account" placeholder="username: vben" />
+              <a-input size="large" v-model:value="formData.account" placeholder="请输入手机号" />
             </a-form-item>
             <a-form-item name="password">
               <a-input-password
                 size="large"
                 visibilityToggle
                 v-model:value="formData.password"
-                placeholder="password: 123456"
+                placeholder="请输入密码"
               />
             </a-form-item>
 

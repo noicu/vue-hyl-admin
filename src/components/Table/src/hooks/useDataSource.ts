@@ -100,7 +100,7 @@ export function useDataSource(
       let params: any = {
         ...pageParams,
         ...(useSearchForm ? getFieldsValue() : {}),
-        ...searchInfo,
+        ...(isFunction(searchInfo) ? searchInfo() : searchInfo),
         ...(opt ? opt.searchInfo : {}),
         ...(opt ? opt.sortInfo : {}),
         ...(opt ? opt.filterInfo : {}),
