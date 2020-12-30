@@ -1,6 +1,7 @@
 import type { AppRouteModule } from '/@/router/types';
 
 import { LAYOUT } from '/@/router/constant';
+import { RoleEnum } from '/@/enums/roleEnum';
 
 const statistics: AppRouteModule = {
   path: '/statistics-manager',
@@ -10,6 +11,7 @@ const statistics: AppRouteModule = {
   meta: {
     icon: 'carbon:table-split',
     title: '统计',
+    roles: [RoleEnum.TEST],
   },
   children: [
     {
@@ -19,6 +21,7 @@ const statistics: AppRouteModule = {
       meta: {
         icon: 'carbon:table-split',
         title: '统计',
+        roles: [RoleEnum.TEST],
       },
     },
   ],

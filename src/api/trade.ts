@@ -66,6 +66,17 @@ export enum TradeApi {
 }
 
 /**
+ * 平台收入月度统计
+ */
+export function incomePlatMonthPage(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.IncomePlatMonthPage,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
  * 运营商余额
  */
 export function remainderBrokerGet(params: any) {

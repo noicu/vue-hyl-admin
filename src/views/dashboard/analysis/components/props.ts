@@ -13,4 +13,8 @@ export const basicProps = {
     type: String as PropType<string>,
     default: '280px',
   },
+  data: {
+    type: Array as PropType<Array<number>>,
+    default: () => [0, 0, 0, 0],
+  },
 };
