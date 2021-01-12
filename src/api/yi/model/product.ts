@@ -8,7 +8,6 @@ export enum Api {
   PRODUCT_GET = '/yi/user/ProductGet', // 通过id获取商品----B+S
   PRODUCT_ADD = '/yi/user/ProductAdd', // 新增商品信息------S
   PRODUCT_CH = '/yi/user/ProductCh', // 修改商品信息------S
-  PRODUCT_RM = '/yi/user/ProductRm', // 通过id删除商品------S
   PRODUCT_SET_ENABLED = '/yi/user/ProductSetEnabled', // 通过id启用或停用商品------S
 
   BROKER_CATE_ADD = '/yi/user/BrokerCateAdd', // 运营商商品类别批量增加

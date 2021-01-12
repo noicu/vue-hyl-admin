@@ -7,7 +7,7 @@
     </a-page-header>
 
     <div :class="`${prefixCls}__container`">
-      <a-list>
+      <a-list :loading="loadingRef">
         <template v-for="item in list" :key="item.ID">
           <a-list-item>
             <a-list-item-meta>
@@ -91,7 +91,10 @@
 
       const isLoading = (e: any) => loading[e.ID];
 
+      const loadingRef = ref(false);
+
       async function getData() {
+        loadingRef.value = true;
         try {
           const dd = await brokerPriceLevelVieList({});
           dd.sort(function (a: any, b: any) {
@@ -102,7 +105,10 @@
             enabled: nToB(it.enabled),
           }));
           list.value = dd;
-        } catch (error) {}
+        } catch (error) {
+        } finally {
+          loadingRef.value = false;
+        }
       }
 
       onMounted(() => {
@@ -184,6 +190,7 @@
         ok,
         addOk,
         opaddm,
+        loadingRef,
       };
     },
   });

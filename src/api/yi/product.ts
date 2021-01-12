@@ -41,17 +41,6 @@ export function productCh(params: ProductInfo, id: string) {
 }
 
 /**
- * @description: 根据ID删除商品
- */
-export function productRm(params: ProductID) {
-  return defHttp.request<Result<ProductInfo>>({
-    url: Api.PRODUCT_RM,
-    method: 'POST',
-    params,
-  });
-}
-
-/**
  * @description: 获取商品分类列表
  */
 export function productCategoryList() {

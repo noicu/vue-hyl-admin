@@ -1,5 +1,5 @@
 <template>
-  <ScrollContainer>
+  <ScrollContainer v-loading="loadingRef" loading-tip="加载中...">
     <div class="product-category product-category-title">
       <div class="product-category-name">分类</div>
       <div class="product-category-add" @click.stop="addCategory">
@@ -39,13 +39,19 @@
     setup({}, { emit }) {
       const categorys = ref<Category[]>([]);
       const [register, { openModal }] = useModal();
+      const loadingRef = ref(false);
 
       getCategory();
 
       function getCategory() {
-        productCategoryList().then((res) => {
-          categorys.value = res;
-        });
+        loadingRef.value = true;
+        productCategoryList()
+          .then((res) => {
+            categorys.value = res;
+          })
+          .finally(() => {
+            loadingRef.value = false;
+          });
       }
 
       function addCategory() {
@@ -73,6 +79,7 @@
         register,
         isUrl,
         modalReturn,
+        loadingRef,
       };
     },
   });

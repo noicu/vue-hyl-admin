@@ -1,21 +1,26 @@
 <template>
-  <BasicTable @register="registerTable">
-    <template #enabled="{ record, column }">
-      <a-switch
-        checked-children="开"
-        un-checked-children="关"
-        :loading="isLoading(record)"
-        :checked="nToB(record.enabled)"
-        @change="enabledChange(record)"
-      />
-    </template>
-    <template #action="{ record, column }">
-      <Popconfirm :title="`确定要删除 ${record.user_code} 吗?`" @confirm="onDelete(record)">
-        <template #icon><Icon icon="mdi:alert" style="color: red" /></template>
-        <a-button type="danger" size="small" :loading="isDelLoads(record)"> 删除 </a-button>
-      </Popconfirm>
-    </template>
-  </BasicTable>
+  <div class="p-4">
+    <div class="mb-4">
+      <a-button class="mr-2" type="primary" @click="() => {}">新增管理员</a-button>
+    </div>
+    <BasicTable @register="registerTable">
+      <template #enabled="{ record, column }">
+        <a-switch
+          checked-children="开"
+          un-checked-children="关"
+          :loading="isLoading(record)"
+          :checked="nToB(record.enabled)"
+          @change="enabledChange(record)"
+        />
+      </template>
+      <template #action="{ record, column }">
+        <Popconfirm :title="`确定要删除 ${record.user_code} 吗?`" @confirm="onDelete(record)">
+          <template #icon><Icon icon="mdi:alert" style="color: red" /></template>
+          <a-button type="danger" size="small" :loading="isDelLoads(record)"> 删除 </a-button>
+        </Popconfirm>
+      </template>
+    </BasicTable>
+  </div>
 </template>
 <script lang="ts">
   import { defineComponent, reactive } from 'vue';

@@ -39,7 +39,7 @@
         legend: {
           itemWidth: 15,
           right: 10,
-          data: ['订单量', '退单量'],
+          data: ['订单金额', '退单金额'],
         },
         grid: {
           left: '3%',

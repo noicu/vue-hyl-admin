@@ -1,13 +1,13 @@
 <template>
   <div :class="prefixCls">
-    <a-page-header title="闪断贴标准" :ghost="false" :class="`${prefixCls}__header`">
+    <a-page-header title="悬赏贴标准" :ghost="false" :class="`${prefixCls}__header`">
       <template #extra>
         <a-button type="primary" @click="opm()"> 新增标准 </a-button>
       </template>
     </a-page-header>
 
     <div :class="`${prefixCls}__container`">
-      <a-list>
+      <a-list :loading="loadingRef">
         <template v-for="item in list" :key="item.ID">
           <a-list-item>
             <a-list-item-meta>
@@ -91,14 +91,20 @@
 
       const isLoading = (e: any) => loading[e.ID];
 
+      const loadingRef = ref(false);
+
       async function getData() {
+        loadingRef.value = true;
         try {
           const dd = await brokerPriceLevelPrizeList({});
           dd.sort(function (a: any, b: any) {
             return a.sort_no - b.sort_no;
           });
           list.value = dd;
-        } catch (error) {}
+        } catch (error) {
+        } finally {
+          loadingRef.value = false;
+        }
       }
 
       onMounted(() => {
@@ -170,6 +176,7 @@
         opm,
         form,
         ok,
+        loadingRef,
       };
     },
   });

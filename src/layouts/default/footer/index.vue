@@ -1,10 +1,10 @@
 <template>
   <Footer :class="prefixCls" v-if="getShowLayoutFooter">
-    <div :class="`${prefixCls}__links`">
+    <!-- <div :class="`${prefixCls}__links`">
       <a @click="openWindow(SITE_URL)">{{ t('layout.footer.onlinePreview') }}</a>
       <GithubFilled @click="openWindow(GITHUB_URL)" :class="`${prefixCls}__github`" />
       <a @click="openWindow(DOC_URL)">{{ t('layout.footer.onlineDocument') }}</a>
-    </div>
+    </div> -->
     <div>Copyright &copy;2020 HYL Admin</div>
   </Footer>
 </template>

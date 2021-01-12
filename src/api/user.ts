@@ -130,6 +130,17 @@ export enum UserApi {
   BrokerPriceLevelPrizeSetEnabled = '/yi/user/BrokerPriceLevelPrizeSetEnabled', // 启用/禁用
 }
 
+/**
+ * @description: 商品启用/禁用
+ */
+export function productSetEnabled(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.ProductSetEnabled,
+    method: 'POST',
+    params,
+  });
+}
+
 //-------------------------------------------------------------------------------
 
 /**

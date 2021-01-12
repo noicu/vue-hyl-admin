@@ -69,23 +69,8 @@
             <a-button type="default" size="small" style="margin: 0 5px" @click="handleFull(record)">
               详情
             </a-button>
-            <Popconfirm
-              :title="`确定要删除 ${record.name} 吗?`"
-              @confirm="onDelete(record.id_of_es)"
-            >
-              <template #icon><Icon icon="mdi:alert" style="color: red" /></template>
-              <a-button
-                type="danger"
-                size="small"
-                style="margin: 0 5px"
-                :loading="isDelLoads(record.id_of_es)"
-              >
-                🐛 删除
-              </a-button>
-            </Popconfirm>
           </template>
           <template #enabled="{ record, column }">
-            🐛
             <a-switch
               checked-children="开"
               un-checked-children="关"
@@ -109,14 +94,18 @@
   import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { createImgPreview } from '/@/components/Preview/index';
-  import { productInfoList, productRm, productCh } from '/@/api/yi/product';
+  import { productInfoList } from '/@/api/yi/product';
   import type { Category, ProductInfo } from '/@/api/yi/product';
+
+  import { productSetEnabled } from '/@/api/user';
 
   import { FETCH_SETTING } from '/@/api/const';
   import { Tag, Row, Col, Popconfirm } from 'ant-design-vue';
   import router from '/@/router';
   import { Columns } from './config';
   import Icon from '/@/components/Icon/index';
+
+  import { bToN } from '/@/utils/conversion';
 
   export const CategoryPage = createAsyncComponent(() => import('./category/index.vue'));
 
@@ -135,7 +124,7 @@
         }
       }
 
-      const [registerTable, { reload }] = useTable({
+      const [registerTable] = useTable({
         title: '商品列表',
         api: productInfoList,
         showFilter: true,
@@ -162,12 +151,10 @@
         try {
           e.enabled = !e.enabled;
           enableLoads[e.id_of_es] = true;
-          await productCh(
-            {
-              enabled: e.enabled,
-            },
-            e.id_of_es
-          );
+          await productSetEnabled({
+            enabled: bToN(e.enabled),
+            id_of_es: e.id_of_es,
+          });
         } catch (error) {
           console.log(error);
           e.enabled = !e.enabled;
@@ -176,23 +163,10 @@
         }
       }
 
-      async function onDelete(id: string) {
-        delLoads[id] = true;
-        try {
-          await productRm({ id_of_es: id });
-          await reload();
-        } catch (error) {
-          console.log(error);
-        } finally {
-          delLoads[id] = false;
-        }
-      }
-
       return {
         registerTable,
         handleClick,
         handleFull,
-        onDelete,
         onCategoryItem,
         isLoading,
         isDelLoads,
