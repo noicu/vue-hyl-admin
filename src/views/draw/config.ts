@@ -11,7 +11,7 @@ export const BrokerColumns: BasicColumn[] = [
     dataIndex: 'card.card_code',
   },
   {
-    title: '收款人帐户名称',
+    title: '收款人',
     dataIndex: 'card.full_name',
   },
   {
@@ -53,7 +53,7 @@ export const MasterColumns: BasicColumn[] = [
     dataIndex: 'card.card_code',
   },
   {
-    title: '收款人帐户名称',
+    title: '收款人',
     dataIndex: 'card.full_name',
   },
   {
@@ -95,7 +95,7 @@ export const BrokerHisColumns: BasicColumn[] = [
     dataIndex: 'card.card_code',
   },
   {
-    title: '收款人帐户名称',
+    title: '收款人',
     dataIndex: 'card.full_name',
   },
   {
@@ -131,7 +131,7 @@ export const MasterHisColumns: BasicColumn[] = [
     dataIndex: 'card.card_code',
   },
   {
-    title: '收款人帐户名称',
+    title: '收款人',
     dataIndex: 'card.full_name',
   },
   {
@@ -162,7 +162,7 @@ export const ExBrokerColumns: BasicColumn[] = [
     dataIndex: 'card.card_code',
   },
   {
-    title: '收款人帐户名称',
+    title: '收款人',
     dataIndex: 'card.full_name',
   },
   {

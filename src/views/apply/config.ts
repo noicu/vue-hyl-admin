@@ -6,11 +6,11 @@ export const BrokerColumns: BasicColumn[] = [
     dataIndex: 'created_at',
   },
   {
-    title: 'name',
+    title: '名称',
     dataIndex: 'name',
   },
   {
-    title: 'service_code',
+    title: '服务码',
     dataIndex: 'service_code',
   },
   {
@@ -32,7 +32,7 @@ export const MasterColumns: BasicColumn[] = [
     dataIndex: 'create_date',
   },
   {
-    title: 'user_code',
+    title: '手机号',
     dataIndex: 'info.user_code',
   },
   {

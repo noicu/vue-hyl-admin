@@ -11,16 +11,16 @@ export const AdminColumns: BasicColumn[] = [
     slots: { customRender: 'type' },
   },
   {
-    title: '变动金额',
+    title: '发生额',
     dataIndex: 'amt',
     slots: { customRender: 'amt' },
   },
   {
-    title: '起始金额',
+    title: '期初',
     dataIndex: 'AmtStart',
   },
   {
-    title: '结束金额',
+    title: '期末',
     dataIndex: 'AmtStart',
     slots: { customRender: 'amtend' },
   },
@@ -29,7 +29,7 @@ export const AdminColumns: BasicColumn[] = [
     dataIndex: 'remark',
   },
   {
-    title: '业务摘要',
+    title: '摘要',
     dataIndex: 'summary',
   },
   {

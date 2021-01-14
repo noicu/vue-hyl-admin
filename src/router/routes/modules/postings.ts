@@ -10,7 +10,7 @@ const master: AppRouteModule = {
   redirect: '/postings/prize',
   meta: {
     icon: 'carbon:table-split',
-    title: '贴子',
+    title: '收费标准',
   },
   children: [
     {
@@ -19,7 +19,7 @@ const master: AppRouteModule = {
       component: () => import('/@/views/postings/prize/PriceLevelPrizeList.vue'),
       meta: {
         icon: 'carbon:table-split',
-        title: '悬赏贴标准',
+        title: '悬赏贴收费标准',
         roles: [RoleEnum.SUPER],
       },
     },
@@ -29,7 +29,7 @@ const master: AppRouteModule = {
       component: () => import('/@/views/postings/vie/PriceLevelVieList.vue'),
       meta: {
         icon: 'carbon:table-split',
-        title: '闪断贴标准',
+        title: '闪断贴收费标准',
         roles: [RoleEnum.SUPER],
       },
     },
@@ -39,7 +39,7 @@ const master: AppRouteModule = {
       component: () => import('/@/views/postings/prize/BrokerPriceLevelPrizeList.vue'),
       meta: {
         icon: 'carbon:table-split',
-        title: '悬赏贴标准',
+        title: '悬赏贴收费标准',
         roles: [RoleEnum.BROKER],
       },
     },
@@ -49,7 +49,7 @@ const master: AppRouteModule = {
       component: () => import('/@/views/postings/vie/BrokerPriceLevelVieList.vue'),
       meta: {
         icon: 'carbon:table-split',
-        title: '闪断贴标准',
+        title: '闪断贴收费标准',
         roles: [RoleEnum.BROKER],
       },
     },

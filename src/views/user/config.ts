@@ -2,19 +2,23 @@ import { BasicColumn } from '/@/components/Table';
 
 export const Columns: BasicColumn[] = [
   {
+    title: 'ID',
+    dataIndex: 'id',
+  },
+  {
     title: 'nick',
     dataIndex: 'nick',
   },
   {
-    title: 'user_code',
+    title: '手机号',
     dataIndex: 'user_code',
   },
   {
-    title: 'user_name',
+    title: '用户名',
     dataIndex: 'user_name',
   },
   {
-    title: 'sex',
+    title: '性别',
     dataIndex: 'sex',
   },
   {

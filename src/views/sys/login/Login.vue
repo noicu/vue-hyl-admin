@@ -1,9 +1,9 @@
 <template>
   <div class="login">
-    <div class="login-mask" />
+    <!-- <div class="login-mask" /> -->
     <div class="login-form-wrap">
       <div class="login-form mx-6">
-        <AppLocalePicker v-if="showLocale" class="login-form__locale" />
+        <!-- <AppLocalePicker v-if="showLocale" class="login-form__locale" /> -->
         <div class="login-form__content px-2 py-10">
           <header>
             <img :src="logo" class="mr-4" />
@@ -176,7 +176,8 @@
   .login {
     position: relative;
     height: 100vh;
-    background: url(../../../assets/images/login/login-bg.png) no-repeat;
+    background: url(../../../assets/svg/background.svg) no-repeat;
+    background-color: currentColor;
     background-size: 100% 100%;
 
     &-mask {
@@ -198,7 +199,7 @@
       border-width: 8px;
       border-radius: 4px;
       background-clip: padding-box;
-      .respond-to(xlarge, { margin: 0 120px 0 50px});
+      // .respond-to(xlarge, { margin: 0 120px 0 50px});
 
       &-wrap {
         position: absolute;
@@ -210,9 +211,9 @@
         // height: 90%;
         justify-content: center;
         align-items: center;
-        .respond-to(xlarge, {
-        justify-content: flex-end;
-          });
+        // .respond-to(xlarge, {
+        // justify-content: flex-end;
+        //   });
       }
 
       &__content {
@@ -220,7 +221,7 @@
         width: 100%;
         height: 100%;
         padding: 60px 0 40px 0;
-        border: 1px solid #999;
+        // border: 1px solid #999;
         border-radius: 2px;
 
         header {
