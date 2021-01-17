@@ -5,6 +5,8 @@ export enum TradeApi {
    * 投诉 [管理员][运营商] 发起投诉->运营商审核->管理员审核
    */
   RefundOrderPage = '/yi/trade/RefundOrderPage', // 列表
+  RefundOrderGet = '/yi/trade/RefundOrderGet', // 根据ID获取
+  RefundOrderHisGet = '/yi/trade/RefundOrderHisGet', // 根据ID获取历史
   RefundOrderAudit = '/yi/trade/RefundOrderAudit', // [管理员] 处理
   RefundOrderBAudit = '/yi/trade/RefundOrderBAudit', // [运营商] 处理
   RefundOrderHisPage = '/yi/trade/RefundOrderHisPage', // 历史
@@ -154,7 +156,7 @@ export function brokerDrawMoneyAdd(params: any) {
 }
 
 /**
- * 退货列表
+ * 投诉列表
  */
 export function refundOrderPage(params: any) {
   return defHttp.request<any>({
@@ -165,7 +167,20 @@ export function refundOrderPage(params: any) {
 }
 
 /**
- * 退货处理 管理员
+ * 投诉单
+ */
+export function refundOrderGet(id: string, his = false) {
+  return defHttp.request<any>({
+    url: his ? TradeApi.RefundOrderHisGet : TradeApi.RefundOrderGet,
+    method: 'POST',
+    params: {
+      id,
+    },
+  });
+}
+
+/**
+ * 投诉处理 管理员
  */
 export function refundOrderAudit(params: any) {
   return defHttp.request<any>({
@@ -176,7 +191,7 @@ export function refundOrderAudit(params: any) {
 }
 
 /**
- * 退货处理 运营商
+ * 投诉处理 运营商
  */
 export function refundOrderBAudit(params: any) {
   return defHttp.request<any>({
@@ -187,7 +202,7 @@ export function refundOrderBAudit(params: any) {
 }
 
 /**
- * 退货历史
+ * 投诉历史
  */
 export function refundOrderHisPage(params: any) {
   return defHttp.request<any>({

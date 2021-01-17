@@ -1,7 +1,7 @@
 <template>
   <div class="p-4">
     <div class="mb-4">
-      <a-button class="mr-2" type="primary" @click="() => {}">新增管理员</a-button>
+      <a-button class="mr-2" type="primary" @click="opm">新增管理员</a-button>
     </div>
     <BasicTable @register="registerTable">
       <template #enabled="{ record, column }">
@@ -18,8 +18,12 @@
           <template #icon><Icon icon="mdi:alert" style="color: red" /></template>
           <a-button type="danger" size="small" :loading="isDelLoads(record)"> 删除 </a-button>
         </Popconfirm>
+        <a-button class="ml-2" type="primary" size="small"> 详情 </a-button>
       </template>
     </BasicTable>
+    <BasicModal @register="register" title="添加管理员" width="800px">
+      <a-table :columns="columns" :customRow="customRow" :data-source="data" size="small" />
+    </BasicModal>
   </div>
 </template>
 <script lang="ts">
@@ -32,9 +36,10 @@
   import { nToB, reN } from '/@/utils/conversion';
   import { AdminColumns } from './config';
   import Icon from '/@/components/Icon';
+  import { BasicModal, useModal } from '/@/components/Modal';
 
   export default defineComponent({
-    components: { BasicTable, Icon, Popconfirm },
+    components: { BasicTable, Icon, Popconfirm, BasicModal },
     setup() {
       const [registerTable, methods] = useTable({
         title: '系统管理员列表',
@@ -46,11 +51,58 @@
         showFilter: true,
       });
 
+      const columns = [
+        {
+          title: 'Name',
+          dataIndex: 'name',
+        },
+        {
+          title: 'Age',
+          dataIndex: 'age',
+        },
+        {
+          title: 'Address',
+          dataIndex: 'address',
+        },
+      ];
+      const data = [
+        {
+          key: '1',
+          name: 'John Brown',
+          age: 32,
+          address: 'New York No. 1 Lake Park',
+        },
+        {
+          key: '2',
+          name: 'Jim Green',
+          age: 42,
+          address: 'London No. 1 Lake Park',
+        },
+        {
+          key: '3',
+          name: 'Joe Black',
+          age: 32,
+          address: 'Sidney No. 1 Lake Park',
+        },
+      ];
+
+      const [register, { openModal }] = useModal();
+
       const enableLoads: any = reactive({});
       const delLoads: any = reactive({});
 
       const isLoading = (e: AdminInfo) => enableLoads[e.uid];
       const isDelLoads = (e: AdminInfo) => delLoads[e.uid];
+
+      const customRow = (record: any) => ({
+        onClick: (event: any) => {
+          console.log(event, record);
+        },
+      });
+
+      function opm() {
+        openModal();
+      }
 
       // 开关切换时执行
       // 禁用/启用管理员
@@ -90,6 +142,11 @@
         isDelLoads,
         onDelete,
         nToB,
+        register,
+        opm,
+        columns,
+        data,
+        customRow,
       };
     },
   });

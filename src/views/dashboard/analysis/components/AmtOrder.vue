@@ -71,7 +71,7 @@
             itemStyle: {
               color: '#3ca0f6',
             },
-            data: [data.value[0], data.value[2]],
+            data: [Math.abs(data.value[0]), Math.abs(data.value[2])],
             animationDuration: 4000,
           },
           {
@@ -80,7 +80,7 @@
             itemStyle: {
               color: '#7dd9b9',
             },
-            data: [data.value[1], data.value[3]],
+            data: [Math.abs(data.value[1]), Math.abs(data.value[3])],
             animationDuration: 4000,
           },
         ],

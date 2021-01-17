@@ -88,6 +88,7 @@ export enum UserApi {
    */
   BrokerInfoPage = '/yi/user/BrokerInfoPage', // 列表
   BrokerSetEnable = '/yi/user/BrokerSetEnable', // 启用/禁用
+  BrokerInfoGet = '/yi/user/BrokerInfoGet', // 通过id获取代理信息
 
   /**
    * 用户信息
@@ -128,6 +129,19 @@ export enum UserApi {
   BrokerPriceLevelPrizeAdd = '/yi/user/BrokerPriceLevelPrizeAdd', // 新增
   BrokerPriceLevelPrizeCh = '/yi/user/BrokerPriceLevelPrizeCh', // 修改
   BrokerPriceLevelPrizeSetEnabled = '/yi/user/BrokerPriceLevelPrizeSetEnabled', // 启用/禁用
+}
+
+/**
+ * @description: 根据ID获取运营商信息
+ */
+export function brokerInfoGet(broker_id: number) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerInfoGet,
+    method: 'POST',
+    params: {
+      broker_id,
+    },
+  });
 }
 
 /**

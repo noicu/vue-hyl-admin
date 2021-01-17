@@ -12,7 +12,7 @@ export const AdminColumns: BasicColumn[] = [
     width: 120,
   },
   {
-    title: '用户名',
+    title: '手机号',
     dataIndex: 'user_code',
   },
   {

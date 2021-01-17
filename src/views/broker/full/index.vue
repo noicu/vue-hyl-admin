@@ -1,41 +1,63 @@
 <template>
-  <div>
-    <a-page-header title="单号：234231029431" class="high-desc">
-      <!-- <template #extra>
+  <div :loading="loading">
+    <a-page-header :title="data.name" class="high-desc">
+      <template #extra>
         <a-button key="3"> 操作一 </a-button>
         <a-button key="2"> 操作二 </a-button>
         <a-button key="1" type="primary"> 主操作 </a-button>
-      </template> -->
+      </template>
       <template #footer>
-        <div :style="{ marginBottom: '16px' }">
+        <!-- <div :style="{ marginBottom: '16px' }">
           <a-button @click=""> 添加商品分类 </a-button>
-        </div>
-        <a-tabs default-active-key="1">
-          <a-tab-pane key="1" tab="详情" />
-          <a-tab-pane key="2" tab="规则" />
+        </div> -->
+        <a-tabs v-model:active-key="active">
+          <a-tab-pane :key="1" tab="管理员" />
+          <a-tab-pane :key="2" tab="大师" />
+          <a-tab-pane :key="3" tab="商品" />
+          <a-tab-pane :key="4" tab="会员" />
         </a-tabs>
       </template>
       <a-descriptions size="small" :column="2">
-        <a-descriptions-item label="创建人"> 曲丽丽 </a-descriptions-item>
-        <a-descriptions-item label="订购产品"> XX 服务 </a-descriptions-item>
-        <a-descriptions-item label="创建时间"> 2017-01-10 </a-descriptions-item>
-        <a-descriptions-item label="关联单据"> <a>12421</a> </a-descriptions-item>
-        <a-descriptions-item label="生效日期"> 2017-07-07 ~ 2017-08-08 </a-descriptions-item>
-        <a-descriptions-item label="备注"> 请于两个工作日内确认 </a-descriptions-item>
+        <a-descriptions-item label="拥有者"> {{ data.owner_nick }} </a-descriptions-item>
+        <a-descriptions-item label="摘要"> {{ data.brief }} </a-descriptions-item>
+        <a-descriptions-item label="创建时间"> {{ data.created_at }} </a-descriptions-item>
+        <a-descriptions-item label="服务码"
+          ><a> {{ data.service_code }}</a>
+        </a-descriptions-item>
+        <a-descriptions-item label="更新时间"> {{ data.update_at }} </a-descriptions-item>
+        <a-descriptions-item label="状态">
+          {{ data.enabled ? '正常' : '禁止' }}
+        </a-descriptions-item>
+        <a-descriptions-item label="模块状态">
+          <a-checkbox-group
+            v-model:value="models"
+            disabled
+            :options="[
+              { label: '大师', value: 'enable_master' },
+              { label: '商城', value: 'enable_mall' },
+              { label: '悬赏贴', value: 'enable_prize' },
+              { label: '闪断贴', value: 'enable_vie' },
+            ]"
+          />
+        </a-descriptions-item>
       </a-descriptions>
     </a-page-header>
 
-    <div class="m-5 desc-wrap">
-      <Master :broker-id="params.id" />
+    <div class="m-2 desc-wrap">
+      <Master v-if="active == 1" :broker-id="params.id" />
+      <Master v-if="active == 2" :broker-id="params.id" />
+      <Product v-if="active == 3" :broker-id="params.id" />
+      <Master v-if="active == 4" :broker-id="params.id" />
     </div>
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent, computed, unref } from 'vue';
+  import { defineComponent, computed, unref, onMounted, ref } from 'vue';
   import { Description } from '/@/components/Description/index';
   import Master from './Master.vue';
   import Product from './Product.vue';
   import { useRouter } from 'vue-router';
+  import { brokerInfoGet } from '/@/api/user';
 
   export default defineComponent({
     components: { Description, Master, Product },
@@ -46,8 +68,42 @@
         return unref(currentRoute).params;
       });
 
+      const loading = ref(false);
+
+      const data = ref<any>({});
+
+      const active = ref(1);
+
+      const models = computed(() => {
+        let arr = [];
+        if (unref(data).enable_mall) arr.push('enable_mall');
+        if (unref(data).enable_master) arr.push('enable_master');
+        if (unref(data).enable_prize) arr.push('enable_prize');
+        if (unref(data).enable_vie) arr.push('enable_vie');
+        return arr;
+      });
+
+      onMounted(() => {
+        getData();
+      });
+
+      async function getData() {
+        loading.value = true;
+        try {
+          data.value = await brokerInfoGet(Number(unref(params).id));
+        } catch (error) {
+          console.log(error);
+        } finally {
+          loading.value = false;
+        }
+      }
+
       return {
         params,
+        loading,
+        data,
+        models,
+        active,
       };
     },
   });

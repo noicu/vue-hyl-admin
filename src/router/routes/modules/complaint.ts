@@ -22,9 +22,28 @@ const complaint: AppRouteModule = {
       },
     },
     {
-      path: '/complaint-full/:id',
+      path: '/complaint-his',
+      name: 'ComplaintHis',
+      component: () => import('/@/views/complaint/ComplaintHis.vue'),
+      meta: {
+        icon: 'carbon:table-split',
+        title: '投诉历史',
+      },
+    },
+    {
+      path: '/complaint/:id',
       name: 'ComplaintFull',
       component: () => import('/@/views/complaint/Full.vue'),
+      meta: {
+        icon: 'carbon:table-split',
+        title: '投诉详情',
+      },
+    },
+    {
+      path: '/complaint-his/:id',
+      name: 'ComplaintFullHis',
+      component: () => import('/@/views/complaint/Full.vue'),
+      props: { his: true },
       meta: {
         icon: 'carbon:table-split',
         title: '投诉详情',

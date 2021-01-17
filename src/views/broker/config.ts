@@ -10,11 +10,11 @@ export const Columns: BasicColumn[] = [
     dataIndex: 'service_code',
   },
   {
-    title: '拥有者昵称',
+    title: '拥有者',
     dataIndex: 'owner_nick',
   },
   {
-    title: '拥有者',
+    title: '拥有者手机号',
     width: 150,
     dataIndex: 'owner_user_code',
   },
@@ -55,7 +55,7 @@ export const Columns: BasicColumn[] = [
   },
   {
     title: '操作',
-    width: 140,
+    width: 80,
     dataIndex: 'action',
     slots: { customRender: 'action' },
   },

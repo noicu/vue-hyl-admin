@@ -1,146 +1,199 @@
 <template>
-  <div class="p-4">
-    <Description
-      class="mt-4"
-      title="投诉信息"
-      layout="vertical"
-      :collapseOptions="{ canExpand: true, helpMessage: 'help me' }"
-      :column="2"
-      :data="mockData"
-      :schema="schema"
-    />
-    <Description
-      class="mt-4"
-      title="运营商处理信息"
-      layout="vertical"
-      :collapseOptions="{ canExpand: true, helpMessage: 'help me' }"
-      :column="2"
-      :data="mockData"
-      :schema="schemaB"
-    />
-    <Description
-      class="mt-4"
-      title="平台处理信息"
-      layout="vertical"
-      :collapseOptions="{ canExpand: true, helpMessage: 'help me' }"
-      :column="2"
-      :data="mockData"
-      :schema="schemaP"
-    />
+  <div class="high-form" v-loading="loading">
+    <div class="p-4">
+      <Description
+        class="mt-4"
+        title="投诉信息"
+        layout="vertical"
+        :collapseOptions="{ canExpand: true }"
+        :column="2"
+        :data="data"
+        :schema="schema"
+      />
+    </div>
+    <PageFooter v-if="data.id">
+      <template #left>
+        <div class="pt-4 pb-4">
+          <ComplaintSteps v-if="!loading" :record="data" />
+        </div>
+      </template>
+      <template #right v-if="getAuditStatus">
+        <a-button class="mr-2" type="danger" @click="onAudit(false)" :loading="loadingAudit"
+          >驳回</a-button
+        >
+        <a-button type="primary" @click="onAudit(true)" :loading="loadingAudit">通过</a-button>
+      </template>
+    </PageFooter>
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent, h } from 'vue';
-  import { Alert, Tag } from 'ant-design-vue';
-  import { Description, DescItem } from '/@/components/Description/index';
-  const mockData: any = {
-    CreateDate: '2020-11-23 17:13:31',
-    amt: 0,
-    audit_date: '0001-01-01 00:00:00',
-    auditor_icon: '',
-    auditor_id: 0,
-    auditor_nick: '',
-    b_audit_date: '0001-01-01 00:00:00',
-    b_auditor_icon: '',
-    b_auditor_id: 0,
-    b_auditor_nick: '',
-    b_type: 'mall',
-    brief: '搓要-简单说明',
-    broker_id: 61,
-    broker_name: '',
-    create_time_int: 1606122811349370400,
-    detail: '详情',
-    draw_back: true,
-    icon:
-      'http://p.0755yicai.com/09ef3a05-c020-40a8-9301-6da957defe89?e=1921136738&token=gEpp05gnISRQeLZ6d5GCnAryXSFDnMfl_G5iG5p5:q1cbhTeFrEbspWm_ZA_z1OiHBOE=',
-    id: '000000000000000000000000',
-    images: ['http://abc.a/a.jpeg', 'b.jpeg'],
-    last_updated: '2020-11-23 17:13:31',
-    master_icon: '',
-    master_id: 10,
-    master_nick: '',
-    nick: '会员349',
-    order_id: '5fb4caad4067695383928af2',
-    stat: 0,
-    uid: 349,
-  };
-  const schema: DescItem[] = [
-    {
-      field: 'nick',
-      label: 'nick',
-    },
-    {
-      field: 'order_id',
-      label: 'order_id',
-    },
-    {
-      field: 'draw_back',
-      label: '是否退款',
-      render(val) {
-        if (val) {
-          return h(
-            Tag,
-            {
-              color: 'blue',
-            },
-            '是'
-          );
-        } else {
-          return h(Tag, '否');
-        }
-      },
-    },
-    {
-      field: 'b_type',
-      label: '类型',
-    },
-    {
-      field: 'detail',
-      label: '描述',
-      span: 2,
-    },
-    {
-      field: 'images',
-      label: '图片',
-      render(val) {
-        if (val) {
-          return h(
-            Tag,
-            {
-              color: 'blue',
-            },
-            '是'
-          );
-        } else {
-          return h(Tag, '否');
-        }
-      },
-    },
-  ];
-  const schemaP: DescItem[] = [
-    {
-      field: 'auditor_nick',
-      label: '昵称',
-    },
-    {
-      field: 'audit_date',
-      label: '处理时间',
-    },
-  ];
-  const schemaB: DescItem[] = [
-    {
-      field: 'b_auditor_nick',
-      label: '昵称',
-    },
-    {
-      field: 'b_audit_date',
-      label: '处理时间',
-    },
-  ];
+  import { defineComponent, ref, h, computed, unref, onMounted } from 'vue';
+  import { CollapseContainer } from '/@/components/Container/index';
+  import { Description } from '/@/components/Description/index';
+  import ComplaintSteps from './ComplaintSteps.vue';
+  import { useRouter } from 'vue-router';
+  import { refundOrderGet, refundOrderBAudit, refundOrderAudit } from '/@/api/trade';
+  import { DescItem } from '/@/components/Description/index';
+  import { Alert, Tag, Image } from 'ant-design-vue';
+  import { PageFooter } from '/@/components/Page';
+  import { userStore } from '/@/store/modules/user';
+  import { RoleEnum } from '/@/enums/roleEnum';
+  import router from '/@/router';
+  import { useTabs } from '/@/hooks/web/useTabs';
+
   export default defineComponent({
-    components: { Description, Alert },
-    setup() {
-      return { mockData, schema, schemaB, schemaP };
+    components: { Description, Alert, CollapseContainer, ComplaintSteps, Image, PageFooter },
+    props: { his: { type: Boolean, default: () => false } },
+    setup({ his }) {
+      const { closeCurrent } = useTabs();
+      const { currentRoute } = useRouter();
+      const loading = ref(false);
+      const loadingAudit = ref(false);
+
+      const params = computed(() => {
+        return unref(currentRoute).params;
+      });
+
+      const data = ref<any>({});
+
+      onMounted(() => {
+        getData();
+      });
+
+      async function getData() {
+        loading.value = true;
+        try {
+          const res = await refundOrderGet(unref(params).id as string, his);
+          data.value = res;
+        } catch (e) {
+          console.log(e);
+        } finally {
+          loading.value = false;
+        }
+      }
+
+      const schema: DescItem[] = [
+        {
+          field: 'nick',
+          label: '投诉人',
+        },
+        {
+          field: 'order_id',
+          label: '订单号',
+        },
+        {
+          field: 'draw_back',
+          label: '退款',
+          render(val, { amt }) {
+            if (val) {
+              return h(
+                Tag,
+                {
+                  color: 'blue',
+                },
+                () => '¥' + amt
+              );
+            } else {
+              return h(Tag, () => '否');
+            }
+          },
+        },
+        {
+          field: 'b_type',
+          label: '订单类型',
+          render(val) {
+            if (!val) return '无';
+            switch (val) {
+              case 'yi-order':
+                return '大师订单';
+              case 'mall':
+                return '商城订单';
+              default:
+                return val;
+            }
+          },
+        },
+        {
+          field: 'detail',
+          label: '描述',
+          span: 2,
+        },
+        {
+          field: 'images',
+          label: '图片',
+          render(val: any) {
+            if (!val) return '无';
+            return h(Image.PreviewGroup, () =>
+              val.map((it: any) =>
+                h(Image, {
+                  style: {
+                    marginRight: '10px',
+                  },
+                  width: 100,
+                  src: it,
+                })
+              )
+            );
+          },
+        },
+      ];
+
+      const role = ref({
+        broker: userStore.getRoleListState.includes(RoleEnum.BROKER),
+        super: userStore.getRoleListState.includes(RoleEnum.SUPER),
+      });
+
+      async function onAudit(ok: boolean) {
+        if (!data.value.id) return;
+        loadingAudit.value = true;
+        try {
+          let aud = false;
+          if (unref(role).broker) {
+            await refundOrderBAudit({
+              id: data.value.id,
+              ok,
+            });
+            if (!ok) {
+              aud = true;
+            } else {
+              aud = false;
+              getData();
+            }
+          }
+          if (unref(role).super) {
+            await refundOrderAudit({
+              id: data.value.id,
+              ok,
+            });
+            aud = true;
+          }
+          if (aud) {
+            closeCurrent();
+            router.push({ name: 'ComplaintFullHis', params: { id: data.value.id } });
+          }
+        } catch (error) {
+          console.log(error);
+        } finally {
+          loadingAudit.value = false;
+        }
+      }
+
+      const getAuditStatus = computed(() => {
+        if (data.value.stat == -1) return false;
+        if (role.value.broker) {
+          return data.value.stat != 1;
+        }
+        if (role.value.super) {
+          return data.value.stat != 4;
+        }
+      });
+
+      return { data, schema, loading, loadingAudit, onAudit, role, getAuditStatus };
     },
   });
 </script>
+<style lang="less" scoped>
+  .high-form {
+    padding-bottom: 24px;
+  }
+</style>

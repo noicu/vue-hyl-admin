@@ -8,12 +8,7 @@
       />
     </template>
     <template #action="{ index, record, column, text }">
-      <Button type="default" size="small" style="margin: 0 5px" @click="handleFull(record)">
-        大师
-      </Button>
-      <Button type="default" size="small" style="margin: 0 5px" @click="handleFull(record)">
-        商品
-      </Button>
+      <Button type="primary" size="small" @click="handleFull(record)"> 详情 </Button>
     </template>
   </BasicTable>
 </template>
