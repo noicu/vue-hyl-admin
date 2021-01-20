@@ -114,6 +114,7 @@
     unref,
     watch,
     onMounted,
+    toRaw,
   } from 'vue';
 
   import Fmenu from './fmenu';
@@ -124,12 +125,14 @@
 
   export default defineComponent({
     components: { Icon },
+    emits: ['change'],
     props,
-    setup({ filtersConfig, dataSource: data, placeholder }) {
+    setup({ filtersConfig, dataSource: data, placeholder }, { emit }) {
       const innerText = ref('');
       const filterInput = ref<Nullable<HTMLElement>>(null);
       const focus = ref<boolean>(false);
       const filterData = reactive<FilterDataRT[]>([]);
+
       onMounted(() => {
         createOptionsMenu();
       });
@@ -145,7 +148,10 @@
         return str;
       });
 
-      watch(filterData, () => toOrm());
+      watch(filterData, () => {
+        emit('change', toRaw(filterData));
+        toOrm();
+      });
 
       function addFilterData(fd: Omit<FilterDataRT, 'id'>) {
         let fds: FilterDataRT = { ...fd, id: buildUUID() };
@@ -190,7 +196,7 @@
           });
         }
 
-        console.log(_and);
+        // console.log(unref(filterData));
       }
 
       function handleInput(event: any) {
@@ -223,7 +229,7 @@
           show: focus.value,
           onFinished,
           val: textArray.value,
-          schemas: filtersConfig, // 可用查询的key 及配置
+          schemas: filtersConfig.schemas, // 可用查询的key 及配置
           data, // 当前表格数据，用于分析推荐值
           items: [
             {
@@ -259,7 +265,7 @@
             let a = el.innerText.split(ta[2]);
             a[1] = e.label;
             el.innerText = a.join(ta[2]);
-            let kbj = findKey(filtersConfig, ta[1]);
+            let kbj = findKey(filtersConfig.schemas || [], ta[1]);
             addFilterData({
               field: kbj.field,
               label: ta[1],

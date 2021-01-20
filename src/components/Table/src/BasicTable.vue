@@ -125,7 +125,7 @@
           showSummary,
           showTableSetting,
           tableSetting,
-          showFilter,
+          filtersConfig,
         } = unref(getMergeProps);
         const hideTitle = !slots.tableTitle && !title && !slots.toolbar && !showTableSetting;
         const titleData: any =
@@ -140,7 +140,7 @@
                       titleHelpMessage,
                       slots,
                       showTableSetting,
-                      showFilter,
+                      filtersConfig,
                       tableSetting
                     ),
               };

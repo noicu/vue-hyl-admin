@@ -127,7 +127,7 @@
       const [registerTable] = useTable({
         title: '商品列表',
         api: productInfoList,
-        showFilter: true,
+        filtersConfig: { schemas: [] },
         fetchSetting: FETCH_SETTING,
         columns: Columns,
         showTableSetting: true,

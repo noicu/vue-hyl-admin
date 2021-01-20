@@ -33,7 +33,9 @@
         columns: Columns,
         showIndexColumn: false,
         searchInfo: {
-          broker_id: brokerId,
+          where: {
+            broker_id: Number(brokerId),
+          },
         },
       });
 

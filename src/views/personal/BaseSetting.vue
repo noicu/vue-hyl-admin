@@ -1,5 +1,5 @@
 <template>
-  <CollapseContainer title="基本设置" :canExpan="false">
+  <CollapseContainer title="基本设置" :canExpan="false" :loading="loadingRef">
     <a-row :gutter="24">
       <a-col :span="14">
         <a-form
@@ -87,6 +87,7 @@
       });
 
       const loading = ref(false);
+      const loadingRef = ref(false);
 
       const districts = ref<string[]>([]);
       const birth = ref('');
@@ -96,21 +97,30 @@
       });
 
       async function getData() {
-        let src = await userStore.getUserInfo();
-        if (!src) return;
-        const data = src as any;
-        const birthA: number[] = [];
+        loadingRef.value = true;
+        try {
+          const src = await userStore.getUserInfo();
 
-        Object.keys(unref(form)).forEach((key) => {
-          if (key != 'country') form[key] = data[key];
-          if (key == 'birth_year') birthA[0] = data[key] || 1990;
-          if (key == 'birth_month') birthA[1] = data[key] || 1;
-          if (key == 'birth_day') birthA[2] = data[key] || 1;
-          if (key == 'province') districts.value[0] = data[key];
-          if (key == 'city') districts.value[1] = data[key];
-          if (key == 'area') districts.value[2] = data[key];
-        });
-        birth.value = birthA.join('-');
+          if (!src) return;
+
+          const data = src as any;
+          const birthA: number[] = [];
+
+          Object.keys(unref(form)).forEach((key) => {
+            if (key != 'country') form[key] = data[key];
+            if (key == 'birth_year') birthA[0] = data[key] || 1990;
+            if (key == 'birth_month') birthA[1] = data[key] || 1;
+            if (key == 'birth_day') birthA[2] = data[key] || 1;
+            if (key == 'province') districts.value[0] = data[key];
+            if (key == 'city') districts.value[1] = data[key];
+            if (key == 'area') districts.value[2] = data[key];
+          });
+          birth.value = birthA.join('-');
+        } catch (error) {
+          console.log(error);
+        } finally {
+          loadingRef.value = false;
+        }
       }
 
       function chBirth(e: any) {
@@ -144,6 +154,7 @@
 
       return {
         loading,
+        loadingRef,
         headerImg,
         form,
         districts,

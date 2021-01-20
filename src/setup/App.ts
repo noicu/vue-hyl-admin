@@ -1,5 +1,5 @@
 /**
- * Application configuration
+ * 应用配置
  */
 
 import type { ProjectConfig } from '/@/types/config';
@@ -48,7 +48,7 @@ export function useThemeMode(mode: ThemeModeEnum) {
   };
 }
 
-// Initial project configuration
+// 初始化应用配置
 export function initAppConfigStore() {
   let projCfg: ProjectConfig = getLocal(PROJ_CFG_KEY) as ProjectConfig;
   projCfg = deepMerge(projectSetting, projCfg || {});

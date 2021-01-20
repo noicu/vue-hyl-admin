@@ -6,13 +6,14 @@ import { Divider } from 'ant-design-vue';
 import Filter from './TableFilter.vue';
 
 import type { TableSetting } from '../types/table';
+import { FiltersConfig } from '/@/components/Filters';
 
 export default (
   title: any,
   titleHelpMessage: string | string[],
   slots: Slots,
   showTableSetting: boolean,
-  showFilter: boolean,
+  filtersConfig: FiltersConfig,
   tableSetting: TableSetting
 ) => {
   return (
@@ -22,7 +23,7 @@ export default (
           <span>&nbsp;</span>
         )}
       <Divider type="vertical" />
-      {showFilter && <Filter />}
+      {filtersConfig && <Filter filters-config={filtersConfig} />}
       {
         <div class="basic-table-toolbar">
           {slots.toolbar && <Divider type="vertical" />}

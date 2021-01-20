@@ -2,9 +2,9 @@ export const SIDE_BAR_MINI_WIDTH = 48;
 export const SIDE_BAR_SHOW_TIT_MINI_WIDTH = 80;
 
 export enum ContentEnum {
-  // auto width
+  // 自动宽度
   FULL = 'full',
-  // fixed width
+  // 固定宽度
   FIXED = 'fixed',
 }
 

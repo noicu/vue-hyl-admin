@@ -56,7 +56,7 @@
         columns: MasterColumns,
         showIndexColumn: false,
         showTableSetting: true,
-        showFilter: true,
+        filtersConfig: { schemas: [] },
         titleHelpMessage: '使用useTable调用表格内方法',
         rowSelection: {
           type: 'checkbox',

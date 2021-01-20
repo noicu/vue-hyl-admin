@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loadingRef" loading-tip="加载中...">
     <a-page-header :ghost="false">
       <template #title>
         <Space align="center">
@@ -20,7 +20,7 @@
       </template>
     </a-page-header>
 
-    <div class="analysis p-4" v-loading="loadingRef" loading-tip="加载中...">
+    <div class="analysis p-4">
       <a-row class="pl-2">
         <template v-for="item in growCardList" :key="item.title">
           <ACol :sm="24" :md="12" :lg="6">

@@ -48,7 +48,7 @@
         columns: AdminColumns,
         showIndexColumn: false,
         showTableSetting: true,
-        showFilter: true,
+        filtersConfig: { schemas: [] },
       });
 
       const columns = [

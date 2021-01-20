@@ -29,13 +29,13 @@
     components: { BasicTable, Checkbox, Button },
     setup() {
       const brokerModules = ref<any[]>([]);
-      const sw = ref({
-        checkedChildren: '开',
-        unCheckedChildren: '关',
-        loading: 'isLoading(record)',
-        checked: 'nToB(record.enabled)',
-        onChange: 'enabledChange(record)',
-      });
+      // const sw = ref({
+      //   checkedChildren: '开',
+      //   unCheckedChildren: '关',
+      //   loading: 'isLoading(record)',
+      //   checked: 'nToB(record.enabled)',
+      //   onChange: 'enabledChange(record)',
+      // });
 
       const [registerTable] = useTable({
         title: '运营商列表',
@@ -44,7 +44,14 @@
         columns: Columns,
         showTableSetting: true,
         showIndexColumn: false,
-        showFilter: true,
+        filtersConfig: {
+          schemas: [
+            {
+              field: 'name',
+              label: '名称',
+            },
+          ],
+        },
         bordered: true,
         afterFetch,
       });
@@ -92,7 +99,7 @@
 
       return {
         registerTable,
-        sw,
+        // sw,
         nToB,
         enabledChange,
         brokerModules,

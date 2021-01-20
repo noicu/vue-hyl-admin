@@ -32,7 +32,7 @@
         fetchSetting: FETCH_SETTING,
         columns: Columns,
         showTableSetting: true,
-        showFilter: true,
+        filtersConfig: { schemas: [] },
       });
 
       const enableLoads: any = reactive({});

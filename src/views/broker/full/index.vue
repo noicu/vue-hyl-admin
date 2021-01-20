@@ -11,18 +11,17 @@
           <a-button @click=""> 添加商品分类 </a-button>
         </div> -->
         <a-tabs v-model:active-key="active">
-          <a-tab-pane :key="1" tab="管理员" />
-          <a-tab-pane :key="2" tab="大师" />
-          <a-tab-pane :key="3" tab="商品" />
-          <a-tab-pane :key="4" tab="会员" />
+          <a-tab-pane key="user" tab="会员" />
+          <a-tab-pane key="master" tab="大师" />
+          <a-tab-pane key="mall" tab="商品" />
         </a-tabs>
       </template>
       <a-descriptions size="small" :column="2">
         <a-descriptions-item label="拥有者"> {{ data.owner_nick }} </a-descriptions-item>
         <a-descriptions-item label="摘要"> {{ data.brief }} </a-descriptions-item>
         <a-descriptions-item label="创建时间"> {{ data.created_at }} </a-descriptions-item>
-        <a-descriptions-item label="服务码"
-          ><a> {{ data.service_code }}</a>
+        <a-descriptions-item label="服务码">
+          <a> {{ data.service_code }}</a>
         </a-descriptions-item>
         <a-descriptions-item label="更新时间"> {{ data.update_at }} </a-descriptions-item>
         <a-descriptions-item label="状态">
@@ -44,10 +43,9 @@
     </a-page-header>
 
     <div class="m-2 desc-wrap">
-      <Master v-if="active == 1" :broker-id="params.id" />
-      <Master v-if="active == 2" :broker-id="params.id" />
-      <Product v-if="active == 3" :broker-id="params.id" />
-      <Master v-if="active == 4" :broker-id="params.id" />
+      <Master v-if="active == 'master'" :broker-id="params.id" />
+      <Product v-if="active == 'mall'" :broker-id="params.id" />
+      <User v-if="active == 'user'" :broker-id="params.id" />
     </div>
   </div>
 </template>
@@ -58,9 +56,10 @@
   import Product from './Product.vue';
   import { useRouter } from 'vue-router';
   import { brokerInfoGet } from '/@/api/user';
+  import User from '/@/views/user/index.vue';
 
   export default defineComponent({
-    components: { Description, Master, Product },
+    components: { Description, Master, Product, User },
     setup() {
       const { currentRoute } = useRouter();
 
@@ -72,7 +71,7 @@
 
       const data = ref<any>({});
 
-      const active = ref(1);
+      const active = ref('user');
 
       const models = computed(() => {
         let arr = [];

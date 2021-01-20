@@ -10,7 +10,6 @@ import { unique } from '/@/utils';
 const prefixCls = 'filter-menu';
 
 export default defineComponent({
-  name: 'ContextMenu',
   props,
   emits: ['finished'],
   setup(props, { emit }) {
@@ -67,6 +66,8 @@ export default defineComponent({
       return [];
     });
 
+    // TODO label 可能为数字类型 不存在indexOf (只有字符串和数组存在)
+    // 在预制值里寻找输入值，在预制值里的位置并生成标记
     function searchValue(): FilterMenuItem[] {
       const { schemas, val, data } = unref(props);
       const field: any = findKey(schemas, val[1])?.field;
@@ -97,6 +98,9 @@ export default defineComponent({
         // 判断 位置加组件宽度 是否大于屏幕宽度
         left: (body.clientWidth < x + menuWidth ? x - menuWidth : x) + 'px',
         top: (body.clientHeight < y + menuHeight ? y - menuHeight : y) + 'px',
+        maxHeight: '200px',
+        maxWidth: '200px',
+        overflowY: 'scroll',
       };
     });
 
@@ -164,11 +168,13 @@ export default defineComponent({
       // if (!items.value.filter((it) => it.type !== FMIT.title).length) return null;
       return (
         <Transition name="slide-fade">
-          {!items.value.filter((it) => it.type !== FMIT.title).length || !show ? null : (
-            <div class={[prefixCls]} ref={wrapRef} style={unref(getStyle)}>
-              {renderMenuItem()}
-            </div>
-          )}
+          {() =>
+            !items.value.filter((it) => it.type !== FMIT.title).length || !show ? null : (
+              <div class={[prefixCls]} ref={wrapRef} style={unref(getStyle) as any}>
+                {renderMenuItem()}
+              </div>
+            )
+          }
         </Transition>
       );
     };

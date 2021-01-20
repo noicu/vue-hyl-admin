@@ -1,11 +1,10 @@
 import type { PropType } from 'vue';
-import type { Axis, FiltersConfig } from './types';
+import type { Axis, FiltersConfig, FilterSchema } from './types';
 export const filterProps = {
   filtersConfig: {
-    // 列表
-    type: Array as PropType<FiltersConfig[]>,
+    type: Object as PropType<FiltersConfig>,
     default() {
-      return [];
+      return {};
     },
   },
   dataSource: {
@@ -36,7 +35,7 @@ export const fmenuProps = {
   },
   schemas: {
     // 列表
-    type: Array as PropType<FiltersConfig[]>,
+    type: Array as PropType<FilterSchema[]>,
     default() {
       return [];
     },

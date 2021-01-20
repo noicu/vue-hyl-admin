@@ -41,7 +41,7 @@
         fetchSetting: FETCH_SETTING,
         columns: unref(cdata)?.columns,
         showTableSetting: true,
-        showFilter: true,
+        filtersConfig: { schemas: [] },
       });
 
       console.log(unref(params).role);

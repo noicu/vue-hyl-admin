@@ -61,7 +61,7 @@
         columns: BrokerColumns,
         showIndexColumn: false,
         showTableSetting: true,
-        showFilter: true,
+        filtersConfig: { schemas: [] },
         rowSelection: {
           type: 'checkbox',
         },

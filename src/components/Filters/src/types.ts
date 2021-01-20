@@ -30,13 +30,12 @@ export type Props = {
 };
 
 export interface FilterDataRT {
-  id: string;
+  id?: string;
   field: string;
   label?: string;
   linq: string; //'>' | '<' | '>=' | '<=' | '='
   value: string;
   placeholder?: string;
-  unclosable?: boolean; // 无法关闭
 }
 
 export enum FMIT {
@@ -53,14 +52,27 @@ export interface FilterMenuItem {
 }
 
 export interface FiltersConfig {
-  field: string;
-  label: string;
-  type?: string;
-  linq?: boolean;
-  option?: FiltersConfigOption[];
+  // 过滤项结构
+  schemas?: FilterSchema[];
 }
 
-export interface FiltersConfigOption {
+export interface FilterSchema {
+  field: string;
   label: string;
-  value: any;
+  subLabel?: string;
+  type?: FST;
+  linq?: boolean;
+  option?: FilterSchemaOption[];
+}
+
+export enum FST {
+  number,
+  string,
+  boolean,
+}
+
+export interface FilterSchemaOption {
+  label: string;
+  subLabel?: string;
+  value: number | string | boolean;
 }
