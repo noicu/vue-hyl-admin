@@ -118,20 +118,22 @@
   } from 'vue';
 
   import Fmenu from './fmenu';
-  import { FilterDataRT, FilterMenuItem, FMIT } from './types';
+  import { FilterDataRT, FilterMenuItem, FMIT, FilterActionType, FilterProps } from './types';
   import { findKey } from './utils';
   import { filterProps as props } from './props';
   import { buildUUID } from '/@/utils/uuid';
+  import { deepMerge } from '/@/utils';
 
   export default defineComponent({
     components: { Icon },
-    emits: ['change'],
+    emits: ['change', 'register'],
     props,
     setup({ filtersConfig, dataSource: data, placeholder }, { emit }) {
       const innerText = ref('');
       const filterInput = ref<Nullable<HTMLElement>>(null);
       const focus = ref<boolean>(false);
       const filterData = reactive<FilterDataRT[]>([]);
+      const propsRef = ref<Partial<FilterProps>>({});
 
       onMounted(() => {
         createOptionsMenu();
@@ -325,9 +327,27 @@
         }
         return offset;
       }
+
       function handleChange(pagination: any, filters: any, sorter: any) {
         console.log('Various parameters', pagination, filters, sorter);
       }
+
+      function setProps(filterProps: Partial<FilterProps>): void {
+        const mergeProps = deepMerge(unref(propsRef) || {}, filterProps);
+        propsRef.value = mergeProps;
+      }
+
+      const filterActionType: Partial<FilterActionType> = {
+        setProps,
+        getFilterValue: () => {
+          return toRaw(filterData);
+        },
+      };
+
+      onMounted(() => {
+        emit('register', filterActionType);
+      });
+
       return {
         handleAdd,
         handleChange,

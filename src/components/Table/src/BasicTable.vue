@@ -70,6 +70,8 @@
   import { ROW_KEY } from './const';
   import './style/index.less';
   import { useExpose } from '/@/hooks/core/useExpose';
+  import { useFilters } from '/@/components/Filters';
+
   export default defineComponent({
     props: basicProps,
     components: { Table, BasicForm },
@@ -79,6 +81,7 @@
       const wrapRef = ref<Nullable<HTMLDivElement>>(null);
       const innerPropsRef = ref<Partial<BasicTableProps>>();
       const [registerForm, { getFieldsValue }] = useForm();
+      const [registerFilter, { getFilterValue }] = useFilters();
 
       const getMergeProps = computed(
         (): BasicTableProps => {
@@ -98,6 +101,7 @@
           loadingRef,
           setPagination,
           getFieldsValue,
+          getFilterValue,
         },
         emit
       );
@@ -141,9 +145,11 @@
                       slots,
                       showTableSetting,
                       filtersConfig,
-                      tableSetting
+                      tableSetting,
+                      registerFilter
                     ),
               };
+
         const pagination = unref(getPaginationRef);
         const rowSelection = unref(getRowSelectionRef);
         const scroll = unref(getScrollRef);

@@ -50,6 +50,24 @@
               field: 'name',
               label: '名称',
             },
+            {
+              field: 'service_code',
+              label: '服务码',
+            },
+            {
+              field: 'enabled',
+              label: '状态',
+              option: [
+                {
+                  label: '启用',
+                  value: 1,
+                },
+                {
+                  label: '禁用',
+                  value: 0,
+                },
+              ],
+            },
           ],
         },
         bordered: true,

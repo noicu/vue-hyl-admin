@@ -12,6 +12,10 @@ import { get } from 'lodash-es';
 import { useProps } from './useProps';
 
 import { FETCH_SETTING, ROW_KEY } from '../const';
+
+import { deepMerge } from '/@/utils';
+import { FilterDataRT } from '/@/components/Filters';
+
 interface ActionType {
   getPaginationRef: ComputedRef<false | PaginationProps>;
   setPagination: (info: Partial<PaginationProps>) => void;
@@ -19,10 +23,14 @@ interface ActionType {
   getFieldsValue: () => {
     [field: string]: any;
   };
+  getFilterValue: () => {
+    [field: string]: any;
+  };
 }
+
 export function useDataSource(
   refProps: ComputedRef<BasicTableProps>,
-  { getPaginationRef, setPagination, loadingRef, getFieldsValue }: ActionType,
+  { getPaginationRef, setPagination, loadingRef, getFieldsValue, getFilterValue }: ActionType,
   emit: EmitType
 ) {
   const { propsRef } = useProps(refProps);
@@ -81,14 +89,23 @@ export function useDataSource(
   });
 
   async function fetch(opt?: FetchParams) {
-    const { api, searchInfo, fetchSetting, beforeFetch, afterFetch, useSearchForm } = unref(
-      propsRef
-    );
+    const {
+      api,
+      searchInfo,
+      fetchSetting,
+      beforeFetch,
+      afterFetch,
+      useSearchForm,
+      filtersConfig,
+    } = unref(propsRef);
+
     if (!api || !isFunction(api)) return;
+
     try {
       loadingRef.value = true;
       const { pageField, sizeField, listField, totalField } = fetchSetting || FETCH_SETTING;
       let pageParams: any = {};
+
       if (isBoolean(getPaginationRef)) {
         pageParams = {};
       } else {
@@ -97,14 +114,33 @@ export function useDataSource(
         pageParams[sizeField] = pageSize;
       }
 
+      function cFV() {
+        const where: any = {};
+        getFilterValue().forEach((it: FilterDataRT) => {
+          where[it.field] = it.value;
+          console.log(it);
+        });
+        return where;
+      }
+
       let params: any = {
         ...pageParams,
+        ...deepMerge(
+          {
+            where: {
+              ...(filtersConfig ? cFV() : {}),
+            },
+          },
+          {}
+        ),
+
         ...(useSearchForm ? getFieldsValue() : {}),
         ...(isFunction(searchInfo) ? searchInfo() : searchInfo),
         ...(opt ? opt.searchInfo : {}),
         ...(opt ? opt.sortInfo : {}),
         ...(opt ? opt.filterInfo : {}),
       };
+
       if (beforeFetch && isFunction(beforeFetch)) {
         params = beforeFetch(params) || params;
       }

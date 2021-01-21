@@ -76,3 +76,17 @@ export interface FilterSchemaOption {
   subLabel?: string;
   value: number | string | boolean;
 }
+
+export interface FilterProps {
+  filtersConfig?: any;
+  dataSource?: any;
+  placeholder?: any;
+}
+
+export interface FilterActionType {
+  setProps: (formProps: Partial<FilterProps>) => void;
+  getFilterValue: () => any;
+}
+
+export type RegisterFn = (filterInstance: FilterActionType) => void;
+export type UseFilterReturnType = [RegisterFn, FilterActionType];

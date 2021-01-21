@@ -90,6 +90,7 @@
           };
         }
       );
+
       const getSchema = computed((): FormSchema[] => {
         const schemas: FormSchema[] = unref(schemaRef) || (unref(getProps).schemas as any);
         for (const schema of schemas) {
@@ -126,6 +127,7 @@
         getSchema,
         formModel,
       });
+
       const {
         // handleSubmit,
         setFieldsValue,
@@ -148,6 +150,7 @@
         handleFormValues,
         actionState,
       });
+
       watch(
         () => unref(getMergePropsRef).model,
         () => {
@@ -158,6 +161,7 @@
           immediate: true,
         }
       );
+
       const stopWatch: WatchStopHandle = watch(
         () => getSchema.value,
         (schema) => {
@@ -170,10 +174,12 @@
           }
         }
       );
+
       function setProps(formProps: Partial<FormProps>): void {
         const mergeProps = deepMerge(unref(propsRef) || {}, formProps);
         propsRef.value = mergeProps;
       }
+
       const formActionType: Partial<FormActionType> = {
         getFieldsValue,
         setFieldsValue,
@@ -186,10 +192,12 @@
         validateFields: validateFields as ValidateFields,
         validate: validate as ValidateFields,
       };
+
       onMounted(() => {
         initDefault();
         emit('register', formActionType);
       });
+
       return {
         handleToggleAdvanced,
         formModel,

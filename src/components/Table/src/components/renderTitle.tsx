@@ -14,7 +14,8 @@ export default (
   slots: Slots,
   showTableSetting: boolean,
   filtersConfig: FiltersConfig,
-  tableSetting: TableSetting
+  tableSetting: TableSetting,
+  register: any
 ) => {
   return (
     <>
@@ -23,7 +24,7 @@ export default (
           <span>&nbsp;</span>
         )}
       <Divider type="vertical" />
-      {filtersConfig && <Filter filters-config={filtersConfig} />}
+      {filtersConfig && <Filter filters-config={filtersConfig} register={register} />}
       {
         <div class="basic-table-toolbar">
           {slots.toolbar && <Divider type="vertical" />}

@@ -3,7 +3,8 @@
 </template>
 
 <script lang="ts">
-  import { Filters, FiltersConfig } from '/@/components/Filters';
+  import { Filters } from '/@/components/Filters';
+  import type { FiltersConfig, RegisterFn } from '/@/components/Filters';
   import { defineComponent, computed, watch, reactive } from 'vue';
   import type { PropType } from 'vue';
   import { injectTable } from '../hooks/useProvinceTable';
@@ -15,19 +16,24 @@
         type: Object as PropType<FiltersConfig>,
         default: () => {},
       },
+      register: {
+        type: Object as PropType<RegisterFn>,
+        default: () => {},
+      },
     },
-    setup({ filtersConfig }) {
+    setup({ filtersConfig, register }) {
       const table = injectTable();
       console.log(table.getDataSource);
       let dataSource = reactive<any[]>([]);
+
+      // const [onRegister, { getFilterValue }] = useFilters();
 
       watch(table.getDataSource, (v) => {
         dataSource.push(...v);
       });
 
-      const onChange = (e: any) => {
+      const onChange = () => {
         table.reload();
-        console.log(e);
       };
 
       // table.getColumns({ ignoreIndex: true, ignoreAction: true }).forEach((item) => {
@@ -41,6 +47,7 @@
         filtersConfig,
         dataSource,
         onChange,
+        onRegister: register,
       }));
       return {
         getProps,
