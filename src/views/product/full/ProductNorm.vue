@@ -6,7 +6,7 @@
           <Input v-model:value="it.code" placeholder="" />
         </FormItem>
         <FormItem label="价格" style="margin-bottom: 0">
-          <Input v-model:value="it.price" placeholder="" />
+          <InputNumber style="width: 100%" v-model:value="it.price" placeholder="" />
         </FormItem>
       </CardGrid>
     </Form>
@@ -17,10 +17,10 @@
   import { defineComponent, watch } from 'vue';
   import type { PropType } from 'vue';
   import type { ProductColor } from '/@/api/yi/product';
-  import { Card, Form, Input } from 'ant-design-vue';
+  import { Card, Form, Input, InputNumber } from 'ant-design-vue';
 
   export default defineComponent({
-    components: { Card, CardGrid: Card.Grid, Form, FormItem: Form.Item, Input },
+    components: { Card, CardGrid: Card.Grid, Form, FormItem: Form.Item, Input, InputNumber },
     props: {
       value: {
         type: Array as PropType<ProductColor[]>,
@@ -31,7 +31,6 @@
     setup({ value }, { emit }) {
       watch(value, (v) => {
         emit('change', v);
-        console.log(v);
       });
       return {
         value,

@@ -23,19 +23,20 @@
             </a-popover>
           </template>
           <template #toolbar>
-            <Icon icon="ic:baseline-add" size="24" @click="handleFull()" />
+            <Icon icon="ic:baseline-add" size="24" @click="handleAdd()" />
           </template>
           <template #images="{ record, column }">
             <a-popover title="图片" trigger="hover" placement="right">
               <template #content>
-                <img
-                  :src="img.path"
-                  v-for="img in record.images"
-                  :key="img.path"
-                  class="mr-1 img"
-                  @click="handleClick(img.path)"
-                  :alt="img.path"
-                />
+                <ImageGroup>
+                  <Image
+                    v-for="image in record.images || []"
+                    :width="100"
+                    :height="100"
+                    :src="image.path"
+                    style="height: 100%"
+                  />
+                </ImageGroup>
               </template>
               <a-button type="primary" size="small">
                 {{ record.images.length }} 张图片...
@@ -46,18 +47,8 @@
             <a-popover :title="record.name + ' - 规格'" trigger="hover" placement="left">
               <template #content>
                 <div class="pcode" v-for="color in record.colors">
-                  <input
-                    type="text"
-                    v-model="color.code"
-                    style="background: #eee; border: 0"
-                    placeholder="请输入规格名称"
-                  />
-                  <input
-                    type="text"
-                    v-model="color.price"
-                    style="background: #eee; border: 0"
-                    placeholder="请输入价格"
-                  />
+                  <span> 名称：{{ color.code }} </span>
+                  <span> 价格：{{ color.price }} </span>
                 </div>
               </template>
               <a-button type="primary" size="small">
@@ -90,7 +81,7 @@
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent, reactive } from 'vue';
+  import { defineComponent, reactive, ref, watch } from 'vue';
   import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { createImgPreview } from '/@/components/Preview/index';
@@ -100,7 +91,7 @@
   import { productSetEnabled } from '/@/api/user';
 
   import { FETCH_SETTING } from '/@/api/const';
-  import { Tag, Row, Col, Popconfirm } from 'ant-design-vue';
+  import { Tag, Row, Col, Popconfirm, Image } from 'ant-design-vue';
   import router from '/@/router';
   import { Columns } from './config';
   import Icon from '/@/components/Icon/index';
@@ -110,29 +101,46 @@
   export const CategoryPage = createAsyncComponent(() => import('./category/index.vue'));
 
   export default defineComponent({
-    components: { BasicTable, Tag, TableAction, Row, Col, CategoryPage, Icon, Popconfirm },
+    components: {
+      BasicTable,
+      Tag,
+      TableAction,
+      Row,
+      Col,
+      CategoryPage,
+      Icon,
+      Popconfirm,
+      Image,
+      ImageGroup: Image.PreviewGroup,
+    },
     setup() {
       function handleClick(img: string) {
         createImgPreview({ imageList: [img] });
       }
 
       function handleFull(record?: any) {
-        if (record) {
-          router.push({ name: 'ProductFull', params: { id: record.id_of_es } });
-        } else {
-          router.push({ name: 'ProductFull', params: { id: '添加商品' } });
-        }
+        router.push({ name: 'ProductFull', params: { id: record.id_of_es } });
       }
 
-      const [registerTable] = useTable({
+      function handleAdd() {
+        router.push({ name: 'ProductAdd' });
+      }
+
+      const cateId = ref<Number>(0);
+
+      const [registerTable, { reload }] = useTable({
         title: '商品列表',
         api: productInfoList,
-        filtersConfig: { schemas: [] },
         fetchSetting: FETCH_SETTING,
         columns: Columns,
         showTableSetting: true,
         showIndexColumn: false,
+        searchInfo: () => ({
+          cate_id: cateId.value,
+        }),
       });
+
+      watch(cateId, () => reload());
 
       const enableLoads: any = reactive({});
       const delLoads: any = reactive({});
@@ -141,7 +149,7 @@
       const isDelLoads = (id: string) => delLoads[id];
 
       function onCategoryItem(e: Category) {
-        console.log(e);
+        cateId.value = e.id || 0;
       }
 
       // 开关切换时执行
@@ -171,6 +179,8 @@
         isLoading,
         isDelLoads,
         enabledChange,
+        handleAdd,
+        cateId,
       };
     },
   });

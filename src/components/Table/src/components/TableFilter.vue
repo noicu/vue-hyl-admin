@@ -33,7 +33,7 @@
       });
 
       const onChange = () => {
-        table.reload();
+        table.reload({ page: 1 });
       };
 
       // table.getColumns({ ignoreIndex: true, ignoreAction: true }).forEach((item) => {

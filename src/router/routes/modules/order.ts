@@ -9,7 +9,7 @@ const order: AppRouteModule = {
   redirect: '/order/product',
   component: LAYOUT,
   meta: {
-    icon: 'carbon:table-split',
+    icon: 'fluent:form-new-28-regular',
     title: '订单',
   },
   children: [
@@ -18,7 +18,7 @@ const order: AppRouteModule = {
       name: 'OrderProduct',
       component: () => import('/@/views/order/Product.vue'),
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'fluent:form-new-28-regular',
         title: '商品订单',
       },
     },
@@ -27,7 +27,7 @@ const order: AppRouteModule = {
       name: 'OrderMaster',
       component: () => import('/@/views/order/Master.vue'),
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'fluent:form-new-28-regular',
         title: '大师订单',
         roles: [RoleEnum.SUPER],
       },
@@ -37,7 +37,7 @@ const order: AppRouteModule = {
       name: 'OrderMaster',
       component: () => import('/@/views/order/MasterHis.vue'),
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'fluent:form-new-28-regular',
         title: '大师订单',
         roles: [RoleEnum.BROKER],
       },
@@ -47,7 +47,7 @@ const order: AppRouteModule = {
       name: 'ProductHis',
       component: () => import('/@/views/order/ProductHis.vue'),
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'fluent:form-new-28-regular',
         title: '商品历史订单',
       },
     },
@@ -56,7 +56,7 @@ const order: AppRouteModule = {
       name: 'MasterHis',
       component: () => import('/@/views/order/MasterHis.vue'),
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'fluent:form-new-28-regular',
         title: '大师历史订单',
       },
     },

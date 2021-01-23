@@ -50,8 +50,8 @@ export interface ProductID {
 }
 
 export interface Category {
-  icon: string;
+  icon?: string;
   id?: number;
-  name: string;
-  sort_no: number;
+  name?: string;
+  sort_no?: number;
 }

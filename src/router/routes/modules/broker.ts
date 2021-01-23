@@ -10,7 +10,7 @@ const broker: AppRouteModule = {
   component: LAYOUT,
   redirect: '/broker',
   meta: {
-    icon: 'carbon:table-split',
+    icon: 'mdi:account-group',
     title: t('routes.yi.broker.broker'),
     roles: [RoleEnum.SUPER],
   },
@@ -20,7 +20,7 @@ const broker: AppRouteModule = {
       name: 'Broker',
       component: () => import('/@/views/broker/index.vue'),
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'mdi:account-group',
         title: t('routes.yi.broker.brokerList'),
         roles: [RoleEnum.SUPER],
       },
@@ -31,7 +31,6 @@ const broker: AppRouteModule = {
       component: () => import('/@/views/broker/full/index.vue'),
       meta: {
         title: '运营商',
-        icon: 'carbon:table-split',
         carryParam: true,
         roles: [RoleEnum.SUPER],
       },
@@ -42,7 +41,6 @@ const broker: AppRouteModule = {
       component: () => import('/@/views/broker/full/index.vue'),
       meta: {
         title: '添加',
-        icon: 'carbon:table-split',
         carryParam: true,
         roles: [RoleEnum.SUPER],
       },

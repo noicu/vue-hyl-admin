@@ -8,7 +8,7 @@ const audit: AppRouteModule = {
   name: 'Apply',
   component: LAYOUT,
   meta: {
-    icon: 'carbon:table-split',
+    icon: 'carbon:thumbnail-preview',
     title: '审批',
     roles: [RoleEnum.SUPER],
   },

@@ -32,7 +32,33 @@
         fetchSetting: FETCH_SETTING,
         columns: Columns,
         showTableSetting: true,
-        filtersConfig: { schemas: [] },
+        showIndexColumn: false,
+        filtersConfig: {
+          schemas: [
+            {
+              field: 'nick',
+              label: '昵称',
+            },
+            {
+              field: 'user_code',
+              label: '手机号',
+            },
+            {
+              field: 'enabled',
+              label: '状态',
+              option: [
+                {
+                  label: '启用',
+                  value: 1,
+                },
+                {
+                  label: '禁用',
+                  value: 0,
+                },
+              ],
+            },
+          ],
+        },
       });
 
       const enableLoads: any = reactive({});

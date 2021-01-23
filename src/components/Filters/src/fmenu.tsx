@@ -7,6 +7,7 @@ import './index.less';
 import { FilterMenuItem, FMIT } from './types';
 import { findKey } from './utils';
 import { unique } from '/@/utils';
+import { isNumber } from '/@/utils/is';
 const prefixCls = 'filter-menu';
 
 export default defineComponent({
@@ -40,6 +41,7 @@ export default defineComponent({
         ] as FilterMenuItem[];
       }
       if (val[1] != '' && val[2] == '') {
+        console.log(schemas);
         return [
           {
             label: '属性',
@@ -70,16 +72,23 @@ export default defineComponent({
     // 在预制值里寻找输入值，在预制值里的位置并生成标记
     function searchValue(): FilterMenuItem[] {
       const { schemas, val, data } = unref(props);
-      const field: any = findKey(schemas, val[1])?.field;
+      const items: any = findKey(schemas, val[1]);
+      const field: any = items.field;
       const arr = [];
-      if (field != null) {
+
+      if (items.option) {
+        items.option?.forEach((it: any) => {
+          arr.push({ label: it.label, type: FMIT.value, value: it.value });
+        });
+      } else if (field != null) {
         let label;
         const bol = val[3] == '';
 
         for (let i = 0; i < data.length; i++) {
           label = data[i][field];
+          if (isNumber(label)) label = label.toString();
           if (label && label != '' && (bol || label.indexOf(val[3]) !== -1)) {
-            arr.push({ label, type: FMIT.value, pos: getPos(label, val[3]) });
+            arr.push({ label, type: FMIT.value, pos: getPos(label, val[3]), value: label });
           }
         }
       }

@@ -1,12 +1,12 @@
 import { BasicColumn } from '/@/components/Table';
 
 export const Columns: BasicColumn[] = [
+  // {
+  //   title: 'ID',
+  //   dataIndex: 'id',
+  // },
   {
-    title: 'ID',
-    dataIndex: 'id',
-  },
-  {
-    title: 'nick',
+    title: '昵称',
     dataIndex: 'nick',
   },
   {
@@ -20,6 +20,7 @@ export const Columns: BasicColumn[] = [
   {
     title: '性别',
     dataIndex: 'sex',
+    slots: { customRender: 'sex' },
   },
   {
     title: '状态',

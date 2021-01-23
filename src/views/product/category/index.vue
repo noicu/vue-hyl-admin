@@ -11,7 +11,9 @@
       v-for="it in categorys"
       @click="onCategory(it)"
     >
-      <div v-if="isUrl(it.icon)" class="product-category-icon"><img :src="it.icon" alt="" /></div>
+      <div v-if="isUrl(it.icon || '')" class="product-category-icon"
+        ><img :src="it.icon" alt=""
+      /></div>
       <div v-else class="product-category-icon">
         <Icon icon="mdi:image-off" size="24" />
       </div>
@@ -40,6 +42,7 @@
       const categorys = ref<Category[]>([]);
       const [register, { openModal }] = useModal();
       const loadingRef = ref(false);
+      const cateId = ref<Number>(0);
 
       getCategory();
 
@@ -59,7 +62,13 @@
       }
 
       function onCategory(e: Category) {
-        emit('clickItem', unref(e));
+        if (cateId.value == e.id) {
+          cateId.value = 0;
+          emit('clickItem', { id: 0 });
+        } else {
+          cateId.value = e.id || 0;
+          emit('clickItem', unref(e));
+        }
       }
 
       function onEditCategory(e: Category) {

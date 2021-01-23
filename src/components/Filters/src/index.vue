@@ -37,6 +37,19 @@
               @keydown="handleAdd"
             ></div>
           </div>
+          <div
+            v-if="textArray[3] != ''"
+            style="
+              align-items: center;
+              display: flex;
+              padding: 5px;
+              color: #00bcd4;
+              cursor: pointer;
+            "
+            @click.stop="addFilter"
+          >
+            <Icon icon="mdi:filter-variant-plus" size="20" />
+          </div>
         </div>
       </div>
     </div>
@@ -163,6 +176,20 @@
         innerText.value = el.innerText;
       }
 
+      function addFilter() {
+        let ta = unref(textArray);
+        if (!ta[0]) return;
+        let kbj = findKey(filtersConfig.schemas || [], ta[1]) || { field: ta[1] };
+        console.log(ta, kbj.field);
+        addFilterData({
+          field: kbj.field,
+          label: ta[1],
+          linq: ta[2],
+          value: ta[3],
+          placeholder: ta[3],
+        });
+      }
+
       function handleAdd(e: any) {
         if (e.keyCode == 13) {
           e.preventDefault();
@@ -272,7 +299,7 @@
               field: kbj.field,
               label: ta[1],
               linq: ta[2],
-              value: e.label,
+              value: e.value != undefined ? e.value : e.label,
               placeholder: e.label,
             });
             break;
@@ -364,6 +391,8 @@
         handleFocus,
         handleDelete,
         placeholder,
+        addFilter,
+        textArray,
       };
     },
   });
@@ -436,6 +465,7 @@
       &-container {
         position: relative;
         // display: flex;
+        display: inline-flex;
         min-width: 140px;
       }
     }

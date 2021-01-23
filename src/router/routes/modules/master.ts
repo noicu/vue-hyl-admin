@@ -10,7 +10,7 @@ const master: AppRouteModule = {
   component: LAYOUT,
   redirect: '/master',
   meta: {
-    icon: 'carbon:table-split',
+    icon: 'mdi:account-star-outline',
     title: t('routes.yi.master.master'),
   },
   children: [
@@ -19,7 +19,7 @@ const master: AppRouteModule = {
       name: 'Master',
       component: () => import('/@/views/master/index.vue'),
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'mdi:account-star-outline',
         title: t('routes.yi.master.masterList'),
         roles: [RoleEnum.SUPER],
       },
@@ -29,7 +29,7 @@ const master: AppRouteModule = {
       name: 'Master',
       component: () => import('/@/views/broker/full/Master.vue'),
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'mdi:account-star-outline',
         title: t('routes.yi.master.masterList'),
         roles: [RoleEnum.BROKER],
       },

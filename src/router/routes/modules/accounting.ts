@@ -9,7 +9,7 @@ const accounting: AppRouteModule = {
   component: LAYOUT,
   redirect: '/accounting',
   meta: {
-    icon: 'carbon:table-split',
+    icon: 'mdi:finance',
     title: '账务',
   },
   children: [
@@ -18,7 +18,7 @@ const accounting: AppRouteModule = {
       name: 'Accounting',
       component: () => import('/@/views/accounting/BusinessPlatPage.vue'),
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'mdi:finance',
         title: '账务',
         roles: [RoleEnum.SUPER],
       },
@@ -28,7 +28,7 @@ const accounting: AppRouteModule = {
       name: 'Accounting',
       component: () => import('/@/views/accounting/BusinessBrokerPage.vue'),
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'mdi:finance',
         title: '账务',
         roles: [RoleEnum.BROKER],
       },

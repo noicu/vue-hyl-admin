@@ -1,5 +1,10 @@
 <template>
-  <BasicTable @register="registerTable"> </BasicTable>
+  <BasicTable @register="registerTable">
+    <template #enabled="{ record, column }">
+      <a-tag color="green" v-if="record.enabled"> 正常 </a-tag>
+      <a-tag color="red" v-else> 已冻结 </a-tag>
+    </template>
+  </BasicTable>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
@@ -11,7 +16,7 @@
   export default defineComponent({
     components: { BasicTable },
     props: {
-      brokerId: Number,
+      brokerId: [Number, String],
     },
     setup({ brokerId }) {
       const [registerTable] = useTable({
@@ -22,9 +27,7 @@
         showIndexColumn: false,
         searchInfo: {
           cate_id: 48,
-          where: {
-            broker_id: brokerId,
-          },
+          broker_id: Number(brokerId),
         },
       });
 

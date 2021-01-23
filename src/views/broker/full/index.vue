@@ -1,11 +1,11 @@
 <template>
   <div :loading="loading">
     <a-page-header :title="data.name" class="high-desc">
-      <template #extra>
+      <!-- <template #extra>
         <a-button key="3"> 操作一 </a-button>
         <a-button key="2"> 操作二 </a-button>
         <a-button key="1" type="primary"> 主操作 </a-button>
-      </template>
+      </template> -->
       <template #footer>
         <!-- <div :style="{ marginBottom: '16px' }">
           <a-button @click=""> 添加商品分类 </a-button>

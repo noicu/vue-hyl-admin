@@ -61,9 +61,24 @@
         columns: BrokerColumns,
         showIndexColumn: false,
         showTableSetting: true,
-        filtersConfig: { schemas: [] },
         rowSelection: {
           type: 'checkbox',
+        },
+        filtersConfig: {
+          schemas: [
+            {
+              field: 'nick',
+              label: '昵称',
+            },
+            {
+              field: 'amt',
+              label: '提现金额',
+            },
+            {
+              field: 'tax',
+              label: '税金',
+            },
+          ],
         },
       });
 

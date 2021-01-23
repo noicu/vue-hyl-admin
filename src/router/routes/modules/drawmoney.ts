@@ -9,7 +9,7 @@ const draw: AppRouteModule = {
   redirect: '/draw/bdm',
   component: LAYOUT,
   meta: {
-    icon: 'carbon:table-split',
+    icon: 'vaadin:money-withdraw',
     title: '提现',
   },
   children: [

@@ -2,30 +2,30 @@ import { BasicColumn } from '/@/components/Table';
 
 export const ProductColumns: BasicColumn[] = [
   {
-    title: '金额',
+    title: '总额',
     dataIndex: 'amt',
     width: 120,
   },
-  {
-    title: '运营商名称',
-    dataIndex: 'broker_name',
-  },
   // {
-  //   title: '联系人',
-  //   dataIndex: 'contact',
+  //   title: '运营商名称',
+  //   dataIndex: 'broker_name',
   // },
+  {
+    title: '联系人',
+    dataIndex: 'contact',
+  },
   // {
   //   title: '发货处理人',
   //   dataIndex: 'deliver',
   // },
-  {
-    title: '发货时间',
-    dataIndex: 'delivery_time',
-  },
-  {
-    title: '用户昵称',
-    dataIndex: 'nick',
-  },
+  // {
+  //   title: '发货时间',
+  //   dataIndex: 'delivery_time',
+  // },
+  // {
+  //   title: '用户昵称',
+  //   dataIndex: 'nick',
+  // },
   {
     title: '商品',
     dataIndex: 'items',
@@ -46,9 +46,13 @@ export const ProductColumns: BasicColumn[] = [
 
 export const ProductHisColumns: BasicColumn[] = [
   {
-    title: '金额',
+    title: '总额',
     dataIndex: 'amt',
     width: 120,
+  },
+  {
+    title: '联系人',
+    dataIndex: 'contact',
   },
   {
     title: '运营商名称',
@@ -76,17 +80,25 @@ export const MasterColumns: BasicColumn[] = [
     width: 120,
   },
   {
-    title: '运营商名称',
-    dataIndex: 'broker_name',
+    title: '昵称',
+    dataIndex: 'nick_ref',
   },
   {
-    title: 'comment',
-    dataIndex: 'comment',
+    title: '用户手机号',
+    dataIndex: 'user_code',
   },
-  {
-    title: '诊断',
-    dataIndex: 'diagnose',
-  },
+  // {
+  //   title: '运营商名称',
+  //   dataIndex: 'broker_name',
+  // },
+  // {
+  //   title: 'comment',
+  //   dataIndex: 'comment',
+  // },
+  // {
+  //   title: '诊断',
+  //   dataIndex: 'diagnose',
+  // },
   {
     title: '大师昵称',
     dataIndex: 'master_nick_ref',
@@ -95,21 +107,14 @@ export const MasterColumns: BasicColumn[] = [
     title: '大师手机号',
     dataIndex: 'master_user_code_ref',
   },
+
+  // {
+  //   title: 'order_type',
+  //   dataIndex: 'order_type',
+  // },
   {
-    title: '昵称',
-    dataIndex: 'nick_ref',
-  },
-  {
-    title: 'order_type',
-    dataIndex: 'order_type',
-  },
-  {
-    title: 'stat',
+    title: '状态',
     dataIndex: 'stat',
     slots: { customRender: 'stat' },
-  },
-  {
-    title: '用户手机号',
-    dataIndex: 'user_code',
   },
 ];

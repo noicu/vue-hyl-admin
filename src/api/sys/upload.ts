@@ -33,7 +33,10 @@ export function uploadApi(
 /**
  * @description:七牛云上传
  */
-export async function upload(file: File, process?: (process: UploadProgress) => void) {
+export async function upload(
+  file: File,
+  process?: (process: UploadProgress) => void
+): Promise<any> {
   const options = {
     quality: 0.92,
     noCompressIfLarger: true,

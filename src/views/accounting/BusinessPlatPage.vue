@@ -49,7 +49,36 @@
         fetchSetting: FETCH_SETTING,
         columns: AdminColumns,
         showIndexColumn: false,
-        searchInfo: {},
+        filtersConfig: {
+          schemas: [
+            {
+              field: 'bill_no',
+              label: '业务单号',
+            },
+            {
+              field: 'b_type',
+              label: '业务类型',
+              option: [
+                {
+                  label: '用户充值',
+                  value: 'user-recharge',
+                },
+                {
+                  label: '充值',
+                  value: 'recharge',
+                },
+                {
+                  label: '运营商提现',
+                  value: 'broker-draw-money',
+                },
+                {
+                  label: '大师提现',
+                  value: 'master-draw-money',
+                },
+              ],
+            },
+          ],
+        },
       });
 
       return {

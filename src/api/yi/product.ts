@@ -5,6 +5,17 @@ import { defHttp } from '/@/utils/http/axios';
 import { Result } from '/@/utils/http/axios/types';
 
 /**
+ * @description: 添加商品列表
+ */
+export function productAdd(params: ProductInfo) {
+  return defHttp.request<ResultList<ProductInfo>>({
+    url: Api.PRODUCT_ADD,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
  * @description: 获取商品列表
  */
 export function productInfoList(params: GetListParams<ProductInfo>) {

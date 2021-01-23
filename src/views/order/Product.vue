@@ -19,7 +19,7 @@
         >
           发货
         </a-button>
-        <a-button size="small" @click="opm(record)"> 详情 </a-button>
+        <!-- <a-button size="small" @click="opm(record)"> 详情 </a-button> -->
       </template>
       <template #stat="{ record, column }">
         <a-tag v-if="record.stat == 0"> 待付款 </a-tag>
@@ -27,16 +27,35 @@
         <a-tag color="cyan" v-if="record.stat == 2"> 待收货 </a-tag>
       </template>
       <template #items="{ record, column }">
-        <a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+        <div v-for="it in record.items">
+          名称：{{ it.name }} 规格：{{ it.color_code }} 价格：¥{{ it.price }} 数量：{{ it.qty }}
+        </div>
       </template>
     </BasicTable>
-    <BasicModal @register="register" title="发货" @ok="ok" width="300px">
-      <a-form :model="form" layout="vertical">
-        <a-form-item label="备注">
+    <BasicModal @register="register" title="发货" @ok="ok" width="700px">
+      <a-descriptions bordered size="small">
+        <a-descriptions-item label="收货人"> {{ order.contact }} </a-descriptions-item>
+        <a-descriptions-item label="联系方式" :span="2"> {{ order.mobile }} </a-descriptions-item>
+        <a-descriptions-item label="总额"> ¥{{ order.amt }} </a-descriptions-item>
+        <a-descriptions-item label="下单时间" :span="2">
+          {{ order.CreateDate }}
+        </a-descriptions-item>
+        <a-descriptions-item label="收货地址" :span="3">
+          {{ order.Addr.province }} {{ order.Addr.city }} {{ order.Addr.area }}
+          {{ order.Addr.detail }}; {{ order.Addr.zipcode }}
+        </a-descriptions-item>
+        <a-descriptions-item label="商品信息">
+          <div v-for="it in order.items">
+            名称：{{ it.name }} 规格：{{ it.color_code }} 价格：¥{{ it.price }} 数量：{{ it.qty }}
+          </div>
+        </a-descriptions-item>
+      </a-descriptions>
+      <a-form class="mt-2" :model="form" layout="vertical">
+        <a-form-item label="发货单号">
           <a-textarea
             v-model:value="form.bill_no"
             style="width: 100%"
-            placeholder="请输入备注"
+            placeholder="请输入发货单号"
             allow-clear
           />
         </a-form-item>
@@ -87,12 +106,15 @@
 
       const [register, { openModal }] = useModal();
 
+      const order = ref<any>({});
+
       const form = reactive({
         id: '',
         bill_no: '',
       });
 
       function opm(e: any) {
+        order.value = e;
         form.id = e.id;
         form.bill_no = '';
         openModal();
@@ -124,6 +146,7 @@
         opm,
         ok,
         stat,
+        order,
       };
     },
   });

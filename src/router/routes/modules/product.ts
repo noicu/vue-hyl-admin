@@ -10,7 +10,7 @@ const product: AppRouteModule = {
   component: LAYOUT,
   redirect: '/product',
   meta: {
-    icon: 'carbon:table-split',
+    icon: 'ic:twotone-store-mall-directory',
     title: t('routes.yi.product.product'),
   },
   children: [
@@ -19,7 +19,7 @@ const product: AppRouteModule = {
       name: 'Product',
       component: () => import('/@/views/product/index.vue'),
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'ic:twotone-store-mall-directory',
         title: t('routes.yi.product.productList'),
         roles: [RoleEnum.SUPER],
       },
@@ -29,7 +29,7 @@ const product: AppRouteModule = {
       name: 'Product',
       component: () => import('/@/views/broker/full/Product.vue'),
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'ic:twotone-store-mall-directory',
         title: t('routes.yi.product.productList'),
         roles: [RoleEnum.BROKER],
       },
@@ -40,7 +40,6 @@ const product: AppRouteModule = {
       component: () => import('/@/views/product/full/index.vue'),
       meta: {
         title: '详情',
-        icon: 'carbon:table-split',
         carryParam: true,
         roles: [RoleEnum.SUPER],
       },
@@ -48,10 +47,9 @@ const product: AppRouteModule = {
     {
       path: '/product/',
       name: 'ProductAdd',
-      component: () => import('/@/views/product/full/index.vue'),
+      component: () => import('/@/views/product/full/AddProduct.vue'),
       meta: {
-        title: '添加',
-        icon: 'carbon:table-split',
+        title: '添加商品',
         carryParam: true,
         roles: [RoleEnum.SUPER],
       },

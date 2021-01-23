@@ -48,6 +48,7 @@ export enum FMIT {
 export interface FilterMenuItem {
   label: string;
   type: FMIT;
+  value?: any;
   pos?: Array<string | JSX.Element>;
 }
 

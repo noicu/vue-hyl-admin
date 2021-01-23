@@ -1,7 +1,6 @@
 import type { AppRouteModule } from '/@/router/types';
 
 import { LAYOUT } from '/@/router/constant';
-import { RoleEnum } from '/@/enums/roleEnum';
 
 const dashboard: AppRouteModule = {
   path: '/user-manager',
@@ -9,7 +8,7 @@ const dashboard: AppRouteModule = {
   component: LAYOUT,
   redirect: '/user',
   meta: {
-    icon: 'bx:bx-home',
+    icon: 'bx:bx-user',
     title: '用户',
   },
   children: [
@@ -18,9 +17,9 @@ const dashboard: AppRouteModule = {
       name: 'User',
       component: () => import('/@/views/user/index.vue'),
       meta: {
-        roles: [RoleEnum.BROKER],
+        // roles: [RoleEnum.BROKER],
         title: '用户列表',
-        icon: 'bx:bx-home',
+        icon: 'bx:bx-user',
       },
     },
   ],

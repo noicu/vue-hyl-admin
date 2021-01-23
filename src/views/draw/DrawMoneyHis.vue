@@ -41,7 +41,22 @@
         fetchSetting: FETCH_SETTING,
         columns: unref(cdata)?.columns,
         showTableSetting: true,
-        filtersConfig: { schemas: [] },
+        filtersConfig: {
+          schemas: [
+            {
+              field: 'nick',
+              label: '昵称',
+            },
+            {
+              field: 'amt',
+              label: '提现金额',
+            },
+            {
+              field: 'tax',
+              label: '税金',
+            },
+          ],
+        },
       });
 
       console.log(unref(params).role);

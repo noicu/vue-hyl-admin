@@ -8,7 +8,7 @@ const complaint: AppRouteModule = {
   component: LAYOUT,
   redirect: '/complaint',
   meta: {
-    icon: 'carbon:table-split',
+    icon: 'ic:outline-report',
     title: '投诉',
   },
   children: [
@@ -17,7 +17,7 @@ const complaint: AppRouteModule = {
       name: 'Complaint',
       component: () => import('/@/views/complaint/index.vue'),
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'ic:outline-report',
         title: '投诉',
       },
     },
@@ -26,7 +26,7 @@ const complaint: AppRouteModule = {
       name: 'ComplaintHis',
       component: () => import('/@/views/complaint/ComplaintHis.vue'),
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'ic:outline-report',
         title: '投诉历史',
       },
     },
@@ -35,7 +35,7 @@ const complaint: AppRouteModule = {
       name: 'ComplaintFull',
       component: () => import('/@/views/complaint/Full.vue'),
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'ic:outline-report',
         title: '投诉详情',
       },
     },
@@ -45,7 +45,7 @@ const complaint: AppRouteModule = {
       component: () => import('/@/views/complaint/Full.vue'),
       props: { his: true },
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'ic:outline-report',
         title: '投诉详情',
       },
     },

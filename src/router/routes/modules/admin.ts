@@ -10,7 +10,7 @@ const admin: AppRouteModule = {
   component: LAYOUT,
   redirect: '/admin',
   meta: {
-    icon: 'carbon:table-split',
+    icon: 'mdi:account-tie-outline',
     title: t('routes.yi.admin.admin'),
   },
   children: [
@@ -19,7 +19,7 @@ const admin: AppRouteModule = {
       name: 'Admin',
       component: () => import('/@/views/admin/index.vue'),
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'mdi:account-tie-outline',
         title: t('routes.yi.admin.adminList'),
         roles: [RoleEnum.SUPER],
       },
@@ -29,7 +29,7 @@ const admin: AppRouteModule = {
       name: 'Admin',
       component: () => import('/@/views/broker/full/Admin.vue'),
       meta: {
-        icon: 'carbon:table-split',
+        icon: 'mdi:account-tie-outline',
         title: t('routes.yi.admin.adminList'),
         roles: [RoleEnum.BROKER],
       },

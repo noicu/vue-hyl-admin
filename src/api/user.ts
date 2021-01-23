@@ -492,6 +492,19 @@ export function sysAdminPage(params: GetListParams<AdminInfo>) {
 }
 
 /**
+ * @description: 添加系统管理员
+ */
+export function sysAdminAdd(uid: number) {
+  return defHttp.request<boolean>({
+    url: UserApi.SysAdminAdd,
+    method: 'POST',
+    params: {
+      uid,
+    },
+  });
+}
+
+/**
  * @description: 禁用/启用系统管理员
  */
 export function sysAdminCh(params: EnabledUser) {

@@ -18,7 +18,7 @@
           <template #icon><Icon icon="mdi:alert" style="color: red" /></template>
           <a-button type="danger" size="small" :loading="isDelLoads(record)"> 删除 </a-button>
         </Popconfirm>
-        <a-button class="ml-2" type="primary" size="small"> 详情 </a-button>
+        <!-- <a-button class="ml-2" type="primary" size="small"> 详情 </a-button> -->
       </template>
     </BasicTable>
     <BasicModal @register="register" title="添加管理员" width="800px">
@@ -37,6 +37,7 @@
   import { AdminColumns } from './config';
   import Icon from '/@/components/Icon';
   import { BasicModal, useModal } from '/@/components/Modal';
+  import router from '/@/router';
 
   export default defineComponent({
     components: { BasicTable, Icon, Popconfirm, BasicModal },
@@ -48,7 +49,32 @@
         columns: AdminColumns,
         showIndexColumn: false,
         showTableSetting: true,
-        filtersConfig: { schemas: [] },
+        filtersConfig: {
+          schemas: [
+            {
+              field: 'nick',
+              label: '昵称',
+            },
+            {
+              field: 'user_code',
+              label: '手机号',
+            },
+            {
+              field: 'enabled',
+              label: '状态',
+              option: [
+                {
+                  label: '启用',
+                  value: 1,
+                },
+                {
+                  label: '禁用',
+                  value: 0,
+                },
+              ],
+            },
+          ],
+        },
       });
 
       const columns = [
@@ -86,7 +112,7 @@
         },
       ];
 
-      const [register, { openModal }] = useModal();
+      const [register] = useModal();
 
       const enableLoads: any = reactive({});
       const delLoads: any = reactive({});
@@ -101,7 +127,8 @@
       });
 
       function opm() {
-        openModal();
+        router.push({ name: 'User' });
+        // openModal();
       }
 
       // 开关切换时执行
