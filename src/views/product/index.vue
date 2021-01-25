@@ -91,7 +91,8 @@
   import { productSetEnabled } from '/@/api/user';
 
   import { FETCH_SETTING } from '/@/api/const';
-  import { Tag, Row, Col, Popconfirm, Image } from 'ant-design-vue';
+  import { Tag, Row, Col, Popconfirm } from 'ant-design-vue';
+  import { Image, ImageGroup } from '/@/components/Image';
   import router from '/@/router';
   import { Columns } from './config';
   import Icon from '/@/components/Icon/index';
@@ -111,7 +112,7 @@
       Icon,
       Popconfirm,
       Image,
-      ImageGroup: Image.PreviewGroup,
+      ImageGroup,
     },
     setup() {
       function handleClick(img: string) {

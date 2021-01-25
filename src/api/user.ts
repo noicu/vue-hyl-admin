@@ -132,6 +132,94 @@ export enum UserApi {
 }
 
 /**
+ * @description: 平台商品分类-列表
+ */
+export function categoryList(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.CategoryList,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 运营商商品分类-列表
+ */
+export function brokerCateList(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerCateList,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 运营商商品分类-添加
+ */
+export function brokerCateAdd(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerCateAdd,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 运营商商品分类-删除
+ */
+export function brokerCateRm(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerCateRm,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 运营商商城商品
+ */
+export function brokerProductPage(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerProductPage,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 运营商添加商品
+ */
+export function brokerProductAdd(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerProductAdd,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 运营商修改商品价格
+ */
+export function brokerProductPriceCh(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerProductPriceCh,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * @description: 运营商删除商品
+ */
+export function brokerProductRm(params: any) {
+  return defHttp.request<any>({
+    url: UserApi.BrokerProductRm,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
  * @description: 根据ID获取运营商信息
  */
 export function brokerInfoGet(broker_id: number) {

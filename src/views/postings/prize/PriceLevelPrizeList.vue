@@ -1,12 +1,17 @@
 <template>
   <div :class="prefixCls">
-    <a-page-header title="悬赏贴标准" :ghost="false" :class="`${prefixCls}__header`">
+    <a-page-header v-if="isShow" title="悬赏贴标准" :ghost="false" :class="`${prefixCls}__header`">
       <template #extra>
         <a-button type="primary" @click="opm()"> 新增标准 </a-button>
       </template>
     </a-page-header>
 
-    <div :class="`${prefixCls}__container`">
+    <div
+      :class="{
+        [`${prefixCls}__container`]: true,
+        is_component: !isShow,
+      }"
+    >
       <a-list :loading="loadingRef">
         <template v-for="item in list" :key="item.ID">
           <a-list-item>
@@ -16,7 +21,7 @@
                   <span>价格：</span>
                   <span>{{ item.price }}</span>
                 </div>
-                <div :class="`${prefixCls}__action`">
+                <div v-if="isShow" :class="`${prefixCls}__action`">
                   <div :class="`${prefixCls}__action-item`">
                     <a-button type="primary" size="small" @click="opm(item)"> 编辑 </a-button>
                   </div>
@@ -36,8 +41,18 @@
                   <span>
                     {{ item.title }}
                   </span>
-                  <Tag class="mb-2" style="float: right">{{ item.sort_no }}</Tag></p
-                >
+                  <Tag v-if="isShow" class="mb-2" style="float: right">{{ item.sort_no }}</Tag>
+                  <a-button
+                    v-if="!isShow"
+                    style="float: right"
+                    type="primary"
+                    size="small"
+                    @click="addBrokerPrize(item)"
+                    :disabled="prizelist.map((it) => it.price_level_id).indexOf(item.ID) != -1"
+                  >
+                    添加
+                  </a-button>
+                </p>
               </template>
             </a-list-item-meta>
           </a-list-item>
@@ -67,7 +82,8 @@
 </template>
 <script lang="ts">
   import { Tag } from 'ant-design-vue';
-  import { defineComponent, ref, reactive, onMounted, unref } from 'vue';
+  import { defineComponent, ref, reactive, onMounted, unref, computed, toRaw } from 'vue';
+  import type { PropType } from 'vue';
   import Icon from '/@/components/Icon/index';
   import { BasicForm } from '/@/components/Form/index';
   import {
@@ -80,9 +96,19 @@
   import { BasicModal, useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
 
+  import { userStore } from '/@/store/modules/user';
+  import { RoleEnum } from '/@/enums/roleEnum';
+
   export default defineComponent({
     components: { Icon, Tag, BasicForm, Popconfirm, BasicModal, InputNumber },
-    setup() {
+    emits: ['addBrokerPrize'],
+    props: {
+      prizelist: {
+        type: Array as PropType<any[]>,
+        default: () => [],
+      },
+    },
+    setup({ prizelist }, { emit }) {
       const { createMessage } = useMessage();
 
       const list = ref<any[]>([]);
@@ -92,6 +118,11 @@
       const isLoading = (e: any) => loading[e.ID];
 
       const loadingRef = ref(false);
+
+      const role = ref({
+        broker: userStore.getRoleListState.includes(RoleEnum.BROKER),
+        super: userStore.getRoleListState.includes(RoleEnum.SUPER),
+      });
 
       async function getData() {
         loadingRef.value = true;
@@ -125,6 +156,8 @@
       }
 
       const [register, { openModal }] = useModal();
+
+      const isShow = computed(() => unref(role).super);
 
       const form = reactive({
         id: 0,
@@ -167,6 +200,10 @@
         }
       }
 
+      function addBrokerPrize(it: any) {
+        emit('addBrokerPrize', toRaw(it));
+      }
+
       return {
         prefixCls: 'list-search',
         list,
@@ -177,11 +214,19 @@
         form,
         ok,
         loadingRef,
+        isShow,
+        prizelist,
+        addBrokerPrize,
       };
     },
   });
 </script>
 <style lang="less" scoped>
+  .is_component {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
   .list-search {
     &__header {
       &-form {

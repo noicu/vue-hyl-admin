@@ -23,6 +23,7 @@ export enum TradeApi {
    */
   BrokerDrawMoneyPage = '/yi/trade/BrokerDrawMoneyPage', // 列表
   BrokerDrawMoneyAudit = '/yi/trade/BrokerDrawMoneyAudit', // 处理
+  BrokerDrawMoneyCancel = '/yi/trade/BrokerDrawMoneyCancel', //运营商取消提现
   BrokerDrawMoneyHisPage = '/yi/trade/BrokerDrawMoneyHisPage', // 历史
 
   /**
@@ -250,6 +251,17 @@ export function brokerDrawMoneyPage(params: any) {
 export function brokerDrawMoneyAudit(params: any) {
   return defHttp.request<any>({
     url: TradeApi.BrokerDrawMoneyAudit,
+    method: 'POST',
+    params,
+  });
+}
+
+/**
+ * 运营商提现取消
+ */
+export function brokerDrawMoneyCancel(params: any) {
+  return defHttp.request<any>({
+    url: TradeApi.BrokerDrawMoneyCancel,
     method: 'POST',
     params,
   });

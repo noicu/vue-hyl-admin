@@ -37,6 +37,8 @@ export interface TableRowSelection<T = any> extends ITableRowSelection {
    * @type Function
    */
   onSelectInvert?: (selectedRows: string[] | number[]) => any;
+
+  getCheckboxProps?: (record: T) => any;
 }
 
 export interface TableCustomRecord<T> {

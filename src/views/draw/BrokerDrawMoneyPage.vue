@@ -11,7 +11,7 @@
           class="mr-2"
           type="danger"
           size="small"
-          @click="drawMoneyAudit([record.id], false)"
+          @click="drawMoneyAudit(record.id)"
           :loading="eLoads"
         >
           取消
@@ -40,7 +40,7 @@
   import { defineComponent, ref, reactive, unref, computed } from 'vue';
   import { InputNumber } from 'ant-design-vue';
   import { BasicTable, useTable } from '/@/components/Table';
-  import { brokerDrawMoneyPage, brokerDrawMoneyAudit, brokerDrawMoneyAdd } from '/@/api/trade';
+  import { brokerDrawMoneyPage, brokerDrawMoneyCancel, brokerDrawMoneyAdd } from '/@/api/trade';
   import { FETCH_SETTING } from '/@/api/const';
   import { BrokerColumns, ExBrokerColumns } from './config';
   import { exportExcle } from './exportExcle';
@@ -96,9 +96,13 @@
 
       async function ok() {
         try {
-          await brokerDrawMoneyAdd(unref(form));
+          await brokerDrawMoneyAdd({
+            ...unref(form),
+            broker_id: userStore.getUserInfoState.broker_id,
+          });
           createMessage.success('提现申请已提，请等待审核！');
           openModal(false);
+          await reload();
         } catch (error) {
           console.log(error);
         }
@@ -106,13 +110,10 @@
 
       const eLoads = ref(false);
 
-      async function drawMoneyAudit(list: any[], ok: boolean) {
+      async function drawMoneyAudit(id: any) {
         eLoads.value = true;
         try {
-          await brokerDrawMoneyAudit({
-            ok,
-            lst_id: list,
-          });
+          await brokerDrawMoneyCancel({ id });
           clearSelectedRowKeys();
           await reload();
         } catch (error) {

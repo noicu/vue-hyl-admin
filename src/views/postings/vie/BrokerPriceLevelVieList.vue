@@ -41,8 +41,8 @@
                   <span>
                     {{ item.level_name }}
                   </span>
-                  <Tag class="mb-2" style="float: right">{{ item.price_level_id }}</Tag></p
-                >
+                  <!-- <Tag class="mb-2" style="float: right">{{ item.price_level_id }}</Tag> -->
+                </p>
               </template>
             </a-list-item-meta>
           </a-list-item>
@@ -50,7 +50,7 @@
       </a-list>
     </div>
 
-    <BasicModal @register="register" title="新增标准" @ok="ok" width="300px">
+    <BasicModal @register="register" title="修改收费标准" @ok="ok" width="300px">
       <a-form
         :model="form"
         :label-col="{ span: 6 }"
@@ -61,6 +61,23 @@
           <InputNumber v-model:value="form.offset_price" :min="0" />
         </a-form-item>
       </a-form>
+    </BasicModal>
+
+    <BasicModal @register="registerAddForm" title="添加收费标准" @ok="addOk" width="300px">
+      <a-form
+        :model="addForm"
+        :label-col="{ span: 6 }"
+        :wrapper-col="{ span: 12 }"
+        layout="horizontal"
+      >
+        <a-form-item label="加价">
+          <InputNumber v-model:value="addForm.offset_price" :min="0" />
+        </a-form-item>
+      </a-form>
+    </BasicModal>
+
+    <BasicModal @register="addRegister" title="添加收费标准" width="600px">
+      <PriceLevelVieList v-model:vielist="list" @add-broker-vie="addBrokerVie" />
     </BasicModal>
   </div>
 </template>
@@ -79,9 +96,10 @@
   import { BasicModal, useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { nToB, bToN } from '/@/utils/conversion';
+  import PriceLevelVieList from './PriceLevelVieList.vue';
 
   export default defineComponent({
-    components: { Icon, Tag, BasicForm, Popconfirm, BasicModal, InputNumber },
+    components: { Icon, Tag, BasicForm, Popconfirm, BasicModal, InputNumber, PriceLevelVieList },
     setup() {
       const { createMessage } = useMessage();
 
@@ -131,11 +149,14 @@
 
       const [register, { openModal }] = useModal();
       const [addRegister, { openModal: openAddModal }] = useModal();
+      const [registerAddForm, { openModal: openAddFormModal }] = useModal();
 
       const form = reactive({
         id: 0,
         offset_price: 0,
       });
+
+      const load = ref(true);
 
       const addForm = reactive({
         offset_price: 0,
@@ -146,13 +167,10 @@
       function opm(data: any = { ID: 0, offset_price: 0 }) {
         form.id = data.ID;
         form.offset_price = data.offset_price;
-
         openModal();
       }
 
       function opaddm() {
-        addForm.price_level_id = 0;
-        addForm.offset_price = 0;
         openAddModal();
       }
 
@@ -172,10 +190,20 @@
           await brokerPriceLevelVieAdd(unref(addForm));
           createMessage.success('添加成功！');
           getData();
-          openAddModal(false);
+          load.value = false;
+          openAddFormModal(false);
         } catch (error) {
           console.log(error);
+        } finally {
+          load.value = true;
         }
+      }
+
+      function addBrokerVie(item: any) {
+        console.log(item);
+        addForm.price_level_id = item.ID;
+        addForm.offset_price = 0;
+        openAddFormModal();
       }
 
       return {
@@ -187,10 +215,13 @@
         addRegister,
         opm,
         form,
+        addForm,
         ok,
         addOk,
         opaddm,
         loadingRef,
+        addBrokerVie,
+        registerAddForm,
       };
     },
   });

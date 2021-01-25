@@ -1,35 +1,44 @@
 <template>
-  <div :class="`${prefixCls}__content`">
-    <a-list :pagination="pagination">
-      <template v-for="item in list" :key="item.id">
-        <a-list-item class="list">
-          <a-list-item-meta>
-            <template #avatar>
-              <img v-if="item.icon" :src="item.icon" class="icon" alt="" />
-            </template>
-            <template #title>
-              <span>{{ item.user_code_ref }}</span>
-              <div class="extra">
-                <Popconfirm
-                  :title="`确定要删除 ${item.user_code_ref} 吗?`"
-                  @confirm="onDelete(item)"
-                >
-                  <template #icon><Icon icon="mdi:alert" style="color: red" /></template>
-                  <a-button type="danger" size="small" :loading="isDelLoads(item)"> 删除 </a-button>
-                </Popconfirm>
-              </div>
-            </template>
-            <template #description>
-              <div class="description">{{ item.nick }}</div>
-              <div class="info">
-                <div><span>状态</span>{{ nToB(item.enabled) ? '正常' : '禁用' }}</div>
-                <div><span>更新时间</span>{{ item.update_at }}</div>
-              </div>
-            </template>
-          </a-list-item-meta>
-        </a-list-item>
+  <div>
+    <a-page-header title="管理员列表" :ghost="false" :class="`${prefixCls}__header`">
+      <template #extra>
+        <a-button type="primary" @click="add"> 新增管理员 </a-button>
       </template>
-    </a-list>
+    </a-page-header>
+    <div :class="`${prefixCls}__content`">
+      <a-list :pagination="pagination">
+        <template v-for="item in list" :key="item.id">
+          <a-list-item class="list">
+            <a-list-item-meta>
+              <template #avatar>
+                <img v-if="item.icon" :src="item.icon" class="icon" alt="" />
+              </template>
+              <template #title>
+                <span>{{ item.user_code_ref }}</span>
+                <div class="extra">
+                  <Popconfirm
+                    :title="`确定要删除 ${item.user_code_ref} 吗?`"
+                    @confirm="onDelete(item)"
+                  >
+                    <template #icon><Icon icon="mdi:alert" style="color: red" /></template>
+                    <a-button type="danger" size="small" :loading="isDelLoads(item)">
+                      删除
+                    </a-button>
+                  </Popconfirm>
+                </div>
+              </template>
+              <template #description>
+                <div class="description">{{ item.nick }}</div>
+                <div class="info">
+                  <div><span>状态</span>{{ nToB(item.enabled) ? '正常' : '禁用' }}</div>
+                  <div><span>更新时间</span>{{ item.update_at }}</div>
+                </div>
+              </template>
+            </a-list-item-meta>
+          </a-list-item>
+        </template>
+      </a-list>
+    </div>
   </div>
 </template>
 
@@ -39,6 +48,7 @@
   import Icon from '/@/components/Icon/index';
   import { brokerAdminList, brokerAdminRm } from '/@/api/user';
   import { nToB } from '/@/utils/conversion';
+  import router from '/@/router';
 
   export default defineComponent({
     components: { Icon, Popconfirm },
@@ -72,12 +82,17 @@
         }
       }
 
+      function add() {
+        router.push({ name: 'User' });
+      }
+
       return {
         prefixCls: 'list-basic',
         list,
         isDelLoads,
         onDelete,
         nToB,
+        add,
         pagination: {
           show: true,
           pageSize: 3,
